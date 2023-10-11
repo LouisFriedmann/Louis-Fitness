@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Workouts{% endblock %}
+
+{% block stylesheets %}
+    .button
+    {
+        width: 50;
+        height: 50;
+        background-color: lightgreen;
+        text-align: center;
+    }
+    .align-with-button
+    {
+        font-size: 40px;
+        position: relative;
+        top: -10px;
+    }
+    .add-workout
+    {
+        font-size: 40px;
+        position: relative;
+        top: -10px;
+        left: 10px;
+    }
+    .form-popup
+    {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 15px;
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+        left: 50%;
+        top: 50%;
+        width: 400px;
+        height: 650px;
+        margin-left: -200px;
+        margin-top: -300px;
+        background: white;
+        overflow-x: hidden;
+        Overflow-y: scroll;
+    }
+    .top-right-button
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .form-container
+    {
+        text-align: center;
+    }
+    .submit-button
+    {
+        background-color: lightgreen !important;
+        height: 50px;
+    }
+    .submit-color
+    {
+        color: blue;
+        text-align: center;
+    }
+    .workout-border
+    {
+        border-style: solid;
+        border-color: lightgreen;
+        margin-bottom: 5px;
+    }
+    .schedule-border
+    {
+        border-style: solid;
+        border-color: blue;
+        margin-bottom: 5px;
+    }
+    .current-workout
+    {
+        width: device-width - 40px;
+        height: 100px;
+        text-align: center;
+        position: relative;
+        margin-bottom: 5px;
+    }
+    .current-exercise
+    {
+        height: 20px;
+        text-align: center;
+        position: relative;
+        margin: 5px;
+
+    }
+    .custom-input
+    {
+        margin-bottom: 10px;
+    }
+    .edit-button
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 30px;
+        background-color: orange;
+    }
+    .add-to-schedule-button
+    {
+        position: absolute;
+        top: 35px;
+        right: 0px;
+        width: 80px;
+        height: 30px;
+        background-color: blue;
+    }
+    .begin-button
+    {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 80px;
+        height: 30px;
+        background-color: green;
+    }
+    .delete-button
+    {
+        position: absolute;
+        top: 70px;
+        right: 0px;
+        width: 80px;
+        height: 30px;
+        background-color: red;
+    }
+{% endblock %}
+
+{% block content %}
+    <h1 align="center">Manage Workouts</h1>
+    </br>
+    <h3 align="center">{{ random_quote }}</h3>
+    </br>
+    </br>
+     <div align="center">
+         <button type="submit" class="button" name="add-goal" onclick="openPopup('add-workouts')">
+             <span class="align-with-button">+</span>
+         </button>
+         <span style="display: inline;" class="add-workout">Add workout</span>
+     </div>
+    </br>
+    </br>
+    <!--Display pop up allowing user to add a new workout-->
+    <div class="form-popup" id="add-workouts">
+      <form action="" method="post" id="add-workouts-form">
+        <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('add-workouts')">
+            <span aria-hidden="true" style="color:white">&times;</span>
+        </button>
+        <div class="form-container" id="add-workouts-form-container">
+           <h2>Add Workout</h2>
+           <h5>Please fill out all fields</h5>
+           </br>
+           </br>
+           <label>Workout Title:</label>
+           <input type="text" placeholder="Enter workout title" data-validate="true" maxlength="100" name="workout-title" id="workout-title" required>
+           <label>Workout description:</label>
+           <input type="text" placeholder="Enter workout description" data-validate="true" maxlength="100" name="workout-description" id="workout-description" required>
+           </br>
+           </br>
+           <div align="center">
+              <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form-container', 'add-workouts-form')">
+                  <span class="align-with-button">+</span>
+              </button>
+              <span style="display: inline;" class="add-workout">Add Exercise</span>
+           </div>
+           <label>Title:</label>
+           <input type="text" placeholder="Enter title" data-validate="true" maxlength="100" name="exercise-title-1" pattern="[^0-9]*" title="Numeric characters are NOT allowed here" required>
+           </br>
+           <label>Description:</label>
+           <input type="text" placeholder="Enter description" data-validate="true" maxlength="100" name="exercise-description-1" pattern="[^0-9]*" title="Numeric characters are NOT allowed here" required>
+           </br>
+           </br>
+           <button type="submit" class="submit-button btn btn-primary btn-lg" name="workout-submit-button" id="workout-submit-button" disabled>
+               <p class="submit-color">Submit</p>
+           </button>
+        </div>
+      </form>
+    </div>
+    <!--Display pop up of form allowing user to add a new goal-->
+        <h2 align="center">Schedule</h2>
+        <!--schedule content-->
+        {% for workout in workouts %}
+            {% if workout.user_id == user.id %}
+                {% if workout.add_to_schedule %}
+                    <div class="schedule-border">
+                    <div class="current-workout">
+                        <a href="">
+                            <button name="begin-button" type="submit" class="begin-button">
+                                <span aria-hidden="true" style="color:white">Begin</span>
+                            </button>
+                        </a>
+                        <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id) }}">
+                            <button name="remove-from-schedule-button" type="submit" class="delete-button">
+                                <span aria-hidden="true" style="color:white">Remove</span>
+                            </button>
+                        </a>
+                        <h5>{{ workout.title }}</h5>
+                        <p>{{ workout.description }}</p>
+                    </div>
+                    {% for exercise in workout.exercises %}
+                        <div class="current-exercise">
+                            <h7>Exercise: {{ exercise.title }} {{ exercise.description }}</h7>
+                        </div>
+                        </br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <!--schedule content-->
+        </br>
+        </br>
+        <!--workout content-->
+        <h2 align="center">Workouts</h2>
+        {% for workout in workouts %}
+            {% if workout.user_id == user.id %}
+                <div class="workout-border">
+                    <div class="current-workout">
+                        <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ the_workout_dictionary }}'), 'edit-workout', 'edit-workout-form-container', 'edit-workout-form')">
+                            <span aria-hidden="true" style="color:white">Edit</span>
+                        </button>
+                        <a href="{{ url_for('views.add_to_schedule', workout_id=workout.id) }}">
+                            <button name="edit-workout-add-to-schedule-button" type="submit" class="add-to-schedule-button">
+                                <span aria-hidden="true" style="color:white">Schedule</span>
+                            </button>
+                        </a>
+                        <a href="{{ url_for('views.delete_workout', workout_id=workout.id) }}">
+                            <button name="edit-workout-delete-button" type="submit" class="delete-button">
+                                <span aria-hidden="true" style="color:white">Delete</span>
+                            </button>
+                        </a>
+                        <h5>{{ workout.title }}</h5>
+                        <p>{{ workout.description }}</p>
+                    </div>
+                    {% for exercise in workout.exercises %}
+                        <div class="current-exercise">
+                            <h7>Exercise: {{ exercise.title }} {{ exercise.description }}</h7>
+                        </div>
+                        </br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <!--workout content-->
+
+     <!-- Edit workouts popup form -->
+    <div class="form-popup" id="edit-workout">
+      <form action="{{ url_for('views.edit_workout') }}" method="post" id="edit-workout-form">
+        <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('edit-workout')">
+            <span aria-hidden="true" style="color:white">&times;</span>
+        </button>
+        <div class="form-container" id="edit-workout-form-container">
+            <h2>Edit</h2>
+            </br>
+            <!-- Edit workout elements will be added here from the javascript -->
+            <input id="workout-id" name="workout-id" value="" hidden>
+            </br>
+            <button type="submit" class="submit-button btn btn-primary btn-lg" name="edit-goal-submit-button" id="edit-goal-submit-button" disabled>
+                <p class="submit-color">Submit</p>
+            </button>
+        </div>
+      </form>
+    </div>
+<!-- Edit workouts popup form -->
+{% endblock %}

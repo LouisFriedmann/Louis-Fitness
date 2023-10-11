@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Goals{% endblock %}
+
+{% block stylesheets %}
+    .button
+    {
+        width: 50;
+        height: 50;
+        background-color: lightgreen;
+        text-align: center;
+    }
+    .align-with-button
+    {
+        font-size: 40px;
+        position: relative;
+        top: -10px;
+    }
+    .add-goal
+    {
+        font-size: 40px;
+        position: relative;
+        top: -10px;
+        left: 10px;
+    }
+    .form-popup
+    {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 15px;
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+        left: 50%;
+        top: 50%;
+        width: 400px;
+        height: 650px;
+        margin-left: -200px;
+        margin-top: -300px;
+        background: white;
+        overflow-x: hidden;
+        Overflow-y: scroll;
+    }
+
+    .form-container
+    {
+        text-align: center;
+    }
+    .top-right-button
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .built-in-button
+    {
+        width: 380px;
+        height: 120px;
+        margin-bottom: 10px;
+    }
+    .submit-button
+    {
+        background-color: lightgreen !important;
+        height: 50px;
+    }
+    .submit-color
+    {
+        color: blue;
+        text-align: center;
+    }
+    .custom-input
+    {
+        margin-bottom: 10px;
+    }
+    .current-goal
+    {
+        width: device-width - 40px;
+        height: 100px;
+        border-style: solid;
+        border-color: lightgreen;
+        text-align: center;
+        position: relative;
+        margin: 5px;
+    }
+    .edit-button
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60px;
+        height: 30px;
+        background-color: orange;
+    }
+    .delete-button
+    {
+        position: absolute;
+        top: 67.5px;
+        right: 0px;
+        width: 60px;
+        height: 30px;
+        background-color: red;
+    }
+
+{% endblock %}
+
+{% block content %}
+    <h1 align="center">Manage Goals</h1>
+    </br>
+    </br>
+    <div align="center">
+        <button type="submit" class="button" name="add-goal" onclick="openPopup('add-goals')">
+            <span class="align-with-button">+</span>
+        </button>
+        <span style="display: inline;" class="add-goal">Add goal</span>
+    </div>
+    <!--Display pop up allowing user to add a new goal-->
+    <div class="form-popup" id="add-goals">
+      <form action="" method="post" id="add-goals-form">
+        <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('add-goals')">
+            <span aria-hidden="true" style="color:white">&times;</span>
+        </button>
+        <div class="form-container">
+            <h2>Add Goal</h2>
+            </br>
+            <h3>Built in Goals</h3>
+            <button name="bench-PR" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')" >
+                <h5>Bench 100% of Your Bodyweight</h5>
+                <h6>Type: New PR</h6>
+                <p>Bench your bodyweight ex: if you are 150lbs, you need to bench 150lbs</p>
+            </button>
+            </br>
+            <button name="workout-30-days" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
+                <h5>Workout for 30 days</h5>
+                <h6>Type: Duration</h6>
+                <p>Workout consistently for 30 days straight</p>
+            </button>
+            </br>
+            <button name="lose-weight" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
+                <h5>Lose 10% of your weight</h5>
+                <h6>Type: Lose/Gain Weight</h6>
+                <p>Lose 10% of your bodyweight ex: if you are 100lbs, you need to get to 90lbs</p>
+            </button>
+            </br>
+            <h3>Custom Goal</h3>
+            <h5>Please fill out all fields</h5>
+            <div class="custom-input">
+                <label>Title:</label>
+                <input type="text" placeholder="Enter title" name="goal-title" data-validate="true" maxlength="100" required>
+            </div>
+            <div class="custom-input">
+                <label>Select a goal type:</label>
+                <select id="goal-type" name="goal-type" onchange="toggleAttributeBasedOnOption('goal-type', ['goal-duration', 'goal-rate'])">
+                    <option value="New PR">New PR</option>
+                    <option value="Duration">Duration</option>
+                    <option value="Lose/Gain Weight">Lose/Gain Weight</option>
+                </select>
+            </div>
+            <div id="goal-duration" class="custom-input" hidden>
+                <label>Duration in days:</label>
+                <input type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Enter duration" data-validate="true" name="goal-duration">
+            </div>
+            <div class="custom-input" id="goal-rate" hidden>
+                <label>Days per week:</label>
+                <input type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Enter days per week" data-validate="true" name="goal-rate">
+            </div>
+            <div class="custom-input">
+                <label>Description:</label>
+                <input type="text" placeholder="Enter description" name="goal-description" data-validate="true" maxlength="100" required>
+            </div>
+            </br>
+            <button type="submit" class="submit-button btn btn-primary btn-lg" name="goal-submit-button" id="goal-submit-button" disabled>
+                <p class="submit-color">Submit</p>
+            </button>
+        </div>
+      </form>
+    </div>
+    <!--Display pop up of form allowing user to add a new goal-->
+        </br>
+        </br>
+        <h2 align="center">Current Goals</h2>
+        {% for goal in goals %}
+            {% if goal.user_id == user.id %}
+                <div class="current-goal">
+                    {% if goal.type == "Duration" %}
+                        <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', '{{ goal.type }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}', ['{{ goal.rate }}', '{{ goal.duration }}'])">
+                        <span aria-hidden="true" style="color:white">Edit</span>
+                        </button>
+                        <!--Display time for the goal if the goal is of type duration-->
+                        <h5 class="clock"></h5>
+                        <!--Display time for the goal if the goal is of type duration-->
+                    {% else %}
+                        <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', '{{ goal.type }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}')">
+                        <span aria-hidden="true" style="color:white">Edit</span>
+                        </button>
+                    {% endif %}
+                    <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
+                        <button name="edit-goal-delete-button" type="submit" class="delete-button">
+                            <span aria-hidden="true" style="color:white">Delete</span>
+                        </button>
+                    </a>
+                    <h5>{{ goal.title }}</h5>
+                    <h6>Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | End date: {{ goal.end_date }}</h6>
+                    <p>{{ goal.description }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    <!-- Edit goals popup form -->
+    <div class="form-popup" id="edit-goal">
+      <form action="{{ url_for('views.edit_goal') }}" method="post" id="edit-goal-form">
+        <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('edit-goal')">
+            <span aria-hidden="true" style="color:white">&times;</span>
+        </button>
+        <div class="form-container">
+            <h2>Edit</h2>
+            </br>
+            <div class="custom-input">
+                <label>Title:</label>
+                <input type="text" placeholder="Enter title" name="edit-goal-title" id="edit-goal-title" data-validate="true" maxlength="100" required>
+            </div>
+            <div class="custom-input">
+                <label>Select a goal type:</label>
+                <select id="edit-goal-type" name="edit-goal-type" onchange="toggleAttributeBasedOnOption('edit-goal-type', ['edit-goal-duration', 'edit-goal-rate'])">
+                    <option value="New PR">New PR</option>
+                    <option value="Duration">Duration</option>
+                    <option value="Lose/Gain Weight">Lose/Gain Weight</option>
+                </select>
+            </div>
+            <div class="custom-input" id="edit-goal-duration" hidden>
+                <label>Duration in days:</label>
+                <input type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Enter duration" data-validate="true" name="edit-goal-duration">
+            </div>
+            <div class="custom-input" id="edit-goal-rate" hidden>
+                <label>Days per week:</label>
+                <input type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Enter days per week" data-validate="true" name="edit-goal-rate">
+            </div>
+            <div class="custom-input">
+                <label>Enter Description:</label>
+                <input type="text" placeholder="Description" name="edit-goal-description" id="edit-goal-description" data-validate="true" maxlength="100" required>
+            </div>
+            <input id="goal-id" name="goal-id" value="" hidden>
+            </br>
+            <button type="submit" class="submit-button btn btn-primary btn-lg" name="edit-goal-submit-button" id="edit-goal-submit-button" disabled>
+                <p class="submit-color">Submit</p>
+            </button>
+        </div>
+      </form>
+    </div>
+<!-- Edit goals popup form -->
+{% endblock %}
