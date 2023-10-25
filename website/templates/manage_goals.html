@@ -186,20 +186,21 @@
                         <span aria-hidden="true" style="color:white">Edit</span>
                         </button>
                         <!--Display time for the goal if the goal is of type duration-->
+                        <h5>{{ goal.title }}</h5>
                         <h5 class="clock"></h5>
                         <!--Display time for the goal if the goal is of type duration-->
                     {% else %}
                         <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', '{{ goal.type }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}')">
                         <span aria-hidden="true" style="color:white">Edit</span>
                         </button>
+                        <h5>{{ goal.title }}</h5>
                     {% endif %}
                     <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
                         <button name="edit-goal-delete-button" type="submit" class="delete-button">
                             <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
                     </a>
-                    <h5>{{ goal.title }}</h5>
-                    <h6>Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | End date: {{ goal.end_date }}</h6>
+                    <h6 class="goal-info">Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | End date: {{ goal.end_date }}</h6>
                     <p>{{ goal.description }}</p>
                 </div>
             {% endif %}
@@ -248,3 +249,4 @@
     </div>
 <!-- Edit goals popup form -->
 {% endblock %}
+

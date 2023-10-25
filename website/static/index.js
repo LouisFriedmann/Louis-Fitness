@@ -1,5 +1,3 @@
-process.stdin.setMaxListeners(15);
-
 function openPopup(id)
 {
     document.getElementById(id).style.display = "block";
@@ -343,10 +341,35 @@ setInterval(goalTimer, 1000);
 // controls the timer for all of the duration based goals
 function goalTimer()
 {
-    // Here is the plan: we have the end date stored, so for the timer, subtract the time now from the end date
+    var goalElements = document.getElementsByClassName("current-goal");
+    for (let i = 0; i < goalElements.length; i++)
+    {
+        if (goalElements[i].getElementsByClassName("clock").length > 0)
+        {
+            const goalInfo = goalElements[i].getElementsByClassName("goal-info")[0].innerHTML;
+            const endDate = goalInfo.substring(goalInfo.indexOf("End date:") + 2);
+            const startDateObj = new Date();
+            const endDateObj = new Date(endDate);
+            goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left: " + getTimeDifference(startDateObj, endDateObj);
+            goalElements[i].style.height = 130 + "px";
+        }
+    }
 }
 
+function getTimeDifference(date1, date2) {
+    var timeDifference = date2 - date1;
 
+    // Calculate time difference in days, hours, minutes, and seconds
+    var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    // Create a string representation of the time difference
+    var timeDifferenceString = days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+
+    return timeDifferenceString;
+}
 
 
 
