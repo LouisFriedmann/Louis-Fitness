@@ -266,13 +266,4 @@ def remove_from_schedule(workout_id):
 
 @views.route("/achievements")
 def achievements():
-    # for user in User.query.all():
-    #     db.session.delete(user)
-    # db.session.commit()
-    # for workout in Workout.query.all():
-    #     db.session.delete(workout)
-    # db.session.commit()
-    # for exercise in Exercise.query.all():
-    #     db.session.delete(exercise)
-    # db.session.commit()
     return render_template('achievements.html', user=current_user)
