@@ -21,6 +21,7 @@ class Goal(db.Model):
     rate = db.Column(db.Integer)
     duration = db.Column(db.Integer)
     end_date = db.Column(db.Date)
+    date_started = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -55,7 +56,8 @@ class GoalAchieved(db.Model):
     description = db.Column(db.Text)
     rate = db.Column(db.Integer)
     duration = db.Column(db.Integer)
-    end_date = db.Column(db.Date)
+    date_started = db.Column(db.Date)
+    date_finished = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):

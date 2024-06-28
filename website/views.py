@@ -31,6 +31,7 @@ def manage_goals():
                             rate=1,
                             duration=30,
                             end_date=today + datetime.timedelta(days=31), # End date is the day after the number of days given by user
+                            date_started=datetime.datetime.now().date(),
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -43,6 +44,7 @@ def manage_goals():
                             rate=None,
                             duration=None,
                             end_date=None,
+                            date_started=datetime.datetime.now().date(),
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -55,6 +57,7 @@ def manage_goals():
                             rate=None,
                             duration=None,
                             end_date=None,
+                            date_started=datetime.datetime.now().date(),
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -119,14 +122,14 @@ def edit_goal():
 def mark_goal_complete(goal_id):
     # Add the achievement
     goal = Goal.query.get_or_404(goal_id)
-    goal_title, goal_type, goal_description = goal.title, goal.type, goal.description
-    goal_rate, goal_end_date = goal.rate, goal.end_date
+    goal_title = goal.title
     new_goal_achieved = GoalAchieved(title=goal.title,
                             type=goal.type,
                             description=goal.description,
                             rate=goal.rate,
                             duration=goal.duration,
-                            end_date=goal.end_date,
+                            date_started=goal.date_started,
+                            date_finished=datetime.datetime.now().date(),
                             user_id=current_user.id)
     db.session.add(new_goal_achieved)
     db.session.commit()
