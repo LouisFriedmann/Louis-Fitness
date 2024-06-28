@@ -47,3 +47,17 @@ class Exercise(db.Model):
 
     def __repr__(self):
         return f"<Exercise number {self.id} with title {self.title}>"
+
+class GoalAchieved(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    type = db.Column(db.String)
+    description = db.Column(db.Text)
+    rate = db.Column(db.Integer)
+    duration = db.Column(db.Integer)
+    end_date = db.Column(db.Date)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f"<Achievement number {self.id} with title {self.title}>"
+    

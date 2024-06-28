@@ -3,7 +3,7 @@ from flask_login import current_user, LoginManager, login_manager
 from flask_security import login_required
 import os
 import random
-from .models import Goal, User, Workout, Exercise
+from .models import Goal, User, Workout, Exercise, GoalAchieved
 from . import db
 import datetime
 import json
@@ -112,6 +112,31 @@ def edit_goal():
         return redirect(url_for("views.manage_goals"))
 
     return render_template('manage_goals.html', user=current_user, goals=Goal.query.all())
+
+# Mark a goal as completed
+@views.route('/<int:goal_id>/complete-goal/', methods=['GET', 'POST'])
+@login_required
+def mark_goal_complete(goal_id):
+    # Add the achievement
+    goal = Goal.query.get_or_404(goal_id)
+    goal_title, goal_type, goal_description = goal.title, goal.type, goal.description
+    goal_rate, goal_end_date = goal.rate, goal.end_date
+    new_goal_achieved = GoalAchieved(title=goal.title,
+                            type=goal.type,
+                            description=goal.description,
+                            rate=goal.rate,
+                            duration=goal.duration,
+                            end_date=goal.end_date,
+                            user_id=current_user.id)
+    db.session.add(new_goal_achieved)
+    db.session.commit()
+
+    # Delete the goal
+    db.session.delete(goal)
+    db.session.commit()
+
+    flash(f"Completed \"{goal_title}\"! You can view this now in \"Achievements\"", category="success")
+    return redirect(url_for('views.manage_goals'))
 
 # Delete a goal from the database
 @views.route('/<int:goal_id>/delete-goal/', methods=['GET', 'POST'])
@@ -266,4 +291,4 @@ def remove_from_schedule(workout_id):
 
 @views.route("/achievements")
 def achievements():
-    return render_template('achievements.html', user=current_user)
+    return render_template('achievements.html', user=current_user, goals_achieved=GoalAchieved.query.all())

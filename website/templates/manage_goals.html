@@ -87,16 +87,25 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 60px;
+        width: 80px;
         height: 30px;
         background-color: orange;
+    }
+    .complete-button
+    {
+        position: absolute;
+        top: 33.75px;
+        right: 0px;
+        width: 80px;
+        height: 30px;
+        background-color: green;
     }
     .delete-button
     {
         position: absolute;
         top: 67.5px;
         right: 0px;
-        width: 60px;
+        width: 80px;
         height: 30px;
         background-color: red;
     }
@@ -181,20 +190,20 @@
         {% for goal in goals %}
             {% if goal.user_id == user.id %}
                 <div class="current-goal">
-                    {% if goal.type == "Duration" %}
-                        <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', '{{ goal.type }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}', ['{{ goal.rate }}', '{{ goal.duration }}'])">
+                    <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', '{{ goal.type }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}', ['{{ goal.rate }}', '{{ goal.duration }}'])">
                         <span aria-hidden="true" style="color:white">Edit</span>
                         </button>
-                        <!--Display time for the goal if the goal is of type duration-->
                         <h5>{{ goal.title }}</h5>
+                    {% if goal.type == "Duration" %}
+                        <!--Display time for the goal if the goal is of type duration-->
                         <h5 class="clock"></h5>
                         <!--Display time for the goal if the goal is of type duration-->
-                    {% else %}
-                        <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', '{{ goal.type }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}')">
-                        <span aria-hidden="true" style="color:white">Edit</span>
-                        </button>
-                        <h5>{{ goal.title }}</h5>
                     {% endif %}
+                    <a href="{{ url_for('views.mark_goal_complete', goal_id=goal.id) }}">
+                        <button name="edit-goal-complete-button" type="submit" class="complete-button">
+                            <span aria-hidden="true" style="color:white">Complete</span>
+                        </button>
+                    </a>
                     <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
                         <button name="edit-goal-delete-button" type="submit" class="delete-button">
                             <span aria-hidden="true" style="color:white">Delete</span>

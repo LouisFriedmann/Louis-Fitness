@@ -1,6 +1,30 @@
 {% extends 'base.html' %}
 {% block title %}Achievements{% endblock %}
 
+{% block stylesheets %}
+    .goal-achieved
+        {
+            width: device-width - 40px;
+            height: 100px;
+            border-style: solid;
+            border-color: gold;
+            text-align: center;
+            position: relative;
+            margin: 5px;
+        }
+{% endblock %}
+
 {% block content %}
     <h1 align="center">Achievements</h1>
+    </br>
+    <h2 align="center">Goals Achieved</h2>
+    {% for goal_achieved in goals_achieved %}
+        {% if goal_achieved.user_id == user.id %}
+            <div class="goal-achieved">
+                <h5>{{ goal_achieved.title }}</h5>
+                <h6>Type: {{ goal_achieved.type }} | Rate: {{ goal_achieved.rate }} days per week | End date: {{ goal_achieved.end_date }}</h6>
+                <p>{{ goal_achieved.description }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
