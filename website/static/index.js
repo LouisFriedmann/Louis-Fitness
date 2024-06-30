@@ -346,12 +346,13 @@ function goalTimer()
     {
         if (goalElements[i].getElementsByClassName("clock").length > 0)
         {
-            const goalInfo = goalElements[i].getElementsByClassName("goal-info")[0].innerHTML;
-            const endDate = goalInfo.substring(goalInfo.indexOf("End date:") + 2);
-            const startDateObj = new Date();
-            const endDateObj = new Date(endDate);
-            goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left: " + getTimeDifference(startDateObj, endDateObj);
-            goalElements[i].style.height = 130 + "px";
+            // const goalInfo = goalElements[i].getElementsByClassName("goal-info")[0].innerHTML;
+            // const startDate = goalInfo.substring(goalInfo.indexOf("Start date:") + 12, goalInfo.indexOf("End date") - 1);
+            // const today = new Date();
+            // const startDateObj = new Date(startDate);
+            // goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time to finish week: " + getTimeDifference(startDateObj, endDateObj);
+            // goalElements[i].style.height = 130 + "px";
+            // TO DO: get time left in week based on 'today' and 'startDateObj'
         }
     }
 }

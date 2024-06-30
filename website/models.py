@@ -18,8 +18,8 @@ class Goal(db.Model):
     title = db.Column(db.String)
     type = db.Column(db.String)
     description = db.Column(db.Text)
-    rate = db.Column(db.Integer)
-    duration = db.Column(db.Integer)
+    rate = db.Column(db.Integer) # Days/week
+    duration = db.Column(db.Integer) # Weeks
     end_date = db.Column(db.Date)
     date_started = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

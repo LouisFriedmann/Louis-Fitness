@@ -23,13 +23,13 @@ def manage_goals():
     duration = 0
     if request.method == 'POST':
         # Add built-in button workouts to database if the user presses one ONLY ONCE PER BUTTON
-        if "workout-30-days" in request.form:
+        if "workout-4-weeks" in request.form:
             today = datetime.datetime.now().date()
-            new_goal = Goal(title="Workout for 30 days",
+            new_goal = Goal(title="Workout for 4 weeks",
                             type="Duration",
-                            description="Workout consistently for 30 days",
-                            rate=1,
-                            duration=30,
+                            description="Workout consistently for 4 weeks 4 times/week",
+                            rate=4,
+                            duration=4,
                             end_date=today + datetime.timedelta(days=31), # End date is the day after the number of days given by user
                             date_started=datetime.datetime.now().date(),
                             user_id=current_user.id)

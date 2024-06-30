@@ -138,10 +138,10 @@
                 <p>Bench your bodyweight ex: if you are 150lbs, you need to bench 150lbs</p>
             </button>
             </br>
-            <button name="workout-30-days" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
-                <h5>Workout for 30 days</h5>
+            <button name="workout-4-weeks" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
+                <h5>Workout for 4 weeks</h5>
                 <h6>Type: Duration</h6>
-                <p>Workout consistently for 30 days straight</p>
+                <p>Workout consistently for 4 weeks 4 times/week</p>
             </button>
             </br>
             <button name="lose-weight" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
@@ -165,7 +165,7 @@
                 </select>
             </div>
             <div id="goal-duration" class="custom-input" hidden>
-                <label>Duration in days:</label>
+                <label>Duration in weeks:</label>
                 <input type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Enter duration" data-validate="true" name="goal-duration">
             </div>
             <div class="custom-input" id="goal-rate" hidden>
@@ -209,7 +209,7 @@
                             <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
                     </a>
-                    <h6 class="goal-info">Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | End date: {{ goal.end_date }}</h6>
+                    <h6 class="goal-info">Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | Date started: {{ goal.date_started }} End date: {{ goal.end_date }}</h6>
                     <p>{{ goal.description }}</p>
                 </div>
             {% endif %}
