@@ -112,9 +112,9 @@ function toggleAttributeBasedOnOption(selectId, targetElementIDs)
     }
 }
 
-// change value of goal so when user opens popup to edit a goal, the initial values will be there
-// and the . Same logic with the options. Then, store value of goal_id in hidden html element called goal_id
-function changeGoalAndOpenPopup(title, description, type, formClassId, formId, goalFormId, goalId, durationAttributes)
+// change value of goal so when user opens popup to edit a goal, the initial values of title and description will be there
+// and the. Then, store value of goal_id in hidden html element called goal_id
+function changeGoalAndOpenPopup(title, description, formClassId, formId, goalFormId, goalId)
 {
    const goal_title = document.getElementById("edit-goal-title");
    goal_title.value = title;
@@ -123,29 +123,6 @@ function changeGoalAndOpenPopup(title, description, type, formClassId, formId, g
 
    const form = document.getElementById(formId);
 
-   // when a goal is of type duration, unhide the duration form elements and set their values appropriately
-   if (durationAttributes != undefined)
-   {
-       const edit_goal_rate_div = document.getElementById("edit-goal-rate");
-       const edit_goal_rate = document.getElementsByName("edit-goal-rate")[0];
-       edit_goal_rate.value = durationAttributes[0];
-       edit_goal_rate_div.hidden = false;
-
-       const edit_goal_duration_div = document.getElementById("edit-goal-duration");
-       const edit_goal_duration = document.getElementsByName("edit-goal-duration")[0];
-       edit_goal_duration.value = durationAttributes[1];
-       edit_goal_duration_div.hidden = false;
-   }
-   const goal_type = type;
-   const selectElement = document.getElementById("edit-goal-type");
-   for (let i = 0; i < selectElement.options.length; i++)
-   {
-        if (goal_type === selectElement.options[i].value)
-        {
-            selectElement.options[i].selected = true;
-        }
-   }
-
    const buttons = form.getElementsByTagName("button");
    const submitButton = buttons[buttons.length - 1]; // submit button is last button in form
    submitButton.disabled = false;
@@ -153,7 +130,6 @@ function changeGoalAndOpenPopup(title, description, type, formClassId, formId, g
 
    const goalIdElement = document.getElementById(goalFormId);
    goalIdElement.value = goalId;
-
 }
 
 // change value of workout so when user opens popup to edit a workout, the initial values will be there
@@ -346,30 +322,42 @@ function goalTimer()
     {
         if (goalElements[i].getElementsByClassName("clock").length > 0)
         {
-            // const goalInfo = goalElements[i].getElementsByClassName("goal-info")[0].innerHTML;
-            // const startDate = goalInfo.substring(goalInfo.indexOf("Start date:") + 12, goalInfo.indexOf("End date") - 1);
-            // const today = new Date();
-            // const startDateObj = new Date(startDate);
-            // goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time to finish week: " + getTimeDifference(startDateObj, endDateObj);
-            // goalElements[i].style.height = 130 + "px";
-            // TO DO: get time left in week based on 'today' and 'startDateObj'
+            const startDate = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML;
+            const todayObj = new Date();
+            const startDateObj = new Date(startDate);
+            goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + getTimeInWeek(startDateObj, todayObj);
+            goalElements[i].style.height = 130 + "px";
         }
     }
 }
 
-function getTimeDifference(date1, date2) {
-    var timeDifference = date2 - date1;
+function getTimeInWeek(date1, date2)
+{
+    // Calculate the total milliseconds in a week
+    const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
 
-    // Calculate time difference in days, hours, minutes, and seconds
-    var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    // Calculate the difference in milliseconds between the two dates
+    const diffInMs = date2.getTime() - date1.getTime();
 
-    // Create a string representation of the time difference
-    var timeDifferenceString = days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+    // Calculate the time remaining until the next occurrence of the same time of the week
+    let timeRemainingInMs = MS_PER_WEEK - (diffInMs % MS_PER_WEEK);
+    
+    // Handle negative time remaining (if date2 is before date1 in the same week)
+    if (timeRemainingInMs < 0)
+    {
+        timeRemainingInMs += MS_PER_WEEK;
+    }
 
-    return timeDifferenceString;
+    // Calculate the time components
+    const days = Math.floor(timeRemainingInMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemainingInMs / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((timeRemainingInMs / (1000 * 60)) % 60);
+    const seconds = Math.floor((timeRemainingInMs / 1000) % 60);
+
+    // Create the result string
+    const result = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+
+    return result;
 }
 
 

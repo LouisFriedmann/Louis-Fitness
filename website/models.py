@@ -20,8 +20,9 @@ class Goal(db.Model):
     description = db.Column(db.Text)
     rate = db.Column(db.Integer) # Days/week
     duration = db.Column(db.Integer) # Weeks
+    weeks_completed = db.Column(db.Integer) # regarding the 'duration'
     end_date = db.Column(db.Date)
-    date_started = db.Column(db.Date)
+    date_started = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
