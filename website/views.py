@@ -115,12 +115,13 @@ def handle_finish_week(goal_id):
     weeks_completed = goal.weeks_completed + 1
 
     if weeks_completed == goal.duration:
-        return redirect(url_for('views.mark_goal_complete'))
+        return redirect(url_for('views.mark_goal_complete', goal_id=goal_id))
     else:
         goal.weeks_completed = weeks_completed
         db.session.add(goal)
         db.session.commit()
-
+        flash("Week completed successfully!", category="success")
+        return redirect(url_for('views.manage_goal'))
 
 # Mark a goal as completed
 @views.route('/<int:goal_id>/complete-goal/', methods=['GET', 'POST'])
@@ -145,7 +146,7 @@ def mark_goal_complete(goal_id):
     db.session.commit()
 
     flash(f"Completed \"{goal_title}\"! You can view this now in \"Achievements\"", category="success")
-    return redirect(url_for('views.manage_goals', goal_id=goal_id))
+    return redirect(url_for('views.manage_goals'))
 
 # Delete a goal from the database
 @views.route('/<int:goal_id>/delete-goal/', methods=['GET', 'POST'])
