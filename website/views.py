@@ -118,10 +118,11 @@ def handle_finish_week(goal_id):
         return redirect(url_for('views.mark_goal_complete', goal_id=goal_id))
     else:
         goal.weeks_completed = weeks_completed
+        goal.is_week_finished = True
         db.session.add(goal)
         db.session.commit()
         flash("Week completed successfully!", category="success")
-        return redirect(url_for('views.manage_goal'))
+        return redirect(url_for('views.manage_goals'))
 
 # Mark a goal as completed
 @views.route('/<int:goal_id>/complete-goal/', methods=['GET', 'POST'])

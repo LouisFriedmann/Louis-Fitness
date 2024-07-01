@@ -204,11 +204,11 @@
                         </button>
                         <h5>{{ goal.title }}</h5>
                     {% if goal.type == "Duration" %}
-                        <!--Display time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
+                        <!--Handle time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
+                        <h5 class="clock"></h5>
                         {% if goal.is_week_finished %}
-                            <h5>Week is finished. Great work!</h5>
+                            <h5 class="week-finished" hidden></h5>
                         {% else %}
-                            <h5 class="clock"></h5>
                             <a href="{{ url_for('views.handle_finish_week', goal_id=goal.id) }}">
                              <button name="edit-goal-finish-week-button" type="submit" class="finish-week-button">
                                  <span aria-hidden="true" style="color:white">Finish Week</span>
@@ -216,7 +216,7 @@
                             </a>
                         {% endif %}
                         <h5 name="hidden-start-datetime" hidden>{{ goal.date_started }}</h5>
-                        <!--Display time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
+                        <!--Handle time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
                     {% else %}
                     <a href="{{ url_for('views.mark_goal_complete', goal_id=goal.id) }}">
                         <button name="edit-goal-complete-button" type="submit" class="complete-button">

@@ -320,12 +320,22 @@ function goalTimer()
     var goalElements = document.getElementsByClassName("current-goal");
     for (let i = 0; i < goalElements.length; i++)
     {
+        // Edit clock for duration goal only. (clock only appears for duration goal)
         if (goalElements[i].getElementsByClassName("clock").length > 0)
         {
             const startDate = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML;
             const todayObj = new Date();
             const startDateObj = new Date(startDate);
-            goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + getTimeInWeek(startDateObj, todayObj);
+
+            // Display clocks based on if the duration goal is finished for the week is finished or not
+            if (goalElements[i].getElementsByClassName("week-finished").length > 0)
+            {
+                goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + getTimeInWeek(startDateObj, todayObj);
+            }
+            else
+            {
+                goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + getTimeInWeek(startDateObj, todayObj);
+            }
             goalElements[i].style.height = 130 + "px";
         }
     }
