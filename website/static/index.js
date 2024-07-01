@@ -329,11 +329,7 @@ function goalTimer()
 
             // Display clocks based on if the duration goal is finished for the week is finished or not and handle when timer goes off
             timeDifference = getTimeInWeek(startDateObj, todayObj)
-            if (timeDifference == "")
-            {
-                // Fetch URL to see if user finished the week or not
-            }
-            else if (goalElements[i].getElementsByClassName("week-finished").length > 0)
+            if (goalElements[i].getElementsByClassName("week-finished").length > 0)
             {
                 goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
             }
@@ -360,7 +356,7 @@ function getTimeInWeek(date1, date2)
     // Handle negative time remaining (if date2 is before date1 in the same week)
     if (timeRemainingInMs < 0)
     {
-        return "";
+        timeRemainingInMs += MS_PER_WEEK;
     }
 
     // Calculate the time components

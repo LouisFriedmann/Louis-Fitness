@@ -48,7 +48,7 @@
         {% if goal_achieved.user_id == user.id %}
             <div class="goal-achieved">
                 <h5>{{ goal_achieved.title }}</h5>
-                <h6>Type: {{ goal_achieved.type }} | Rate: {{ goal_achieved.rate }} days per week | Start Date: {{ goal_achieved.date_started }} | End date: {{ goal_achieved.date_finished }}</h6>
+                <h6>Type: {{ goal_achieved.type }} | Rate: {{ goal_achieved.rate }} days per week | Start Date: {{ goal_achieved.date_started }} | Date completed: {{ goal_achieved.date_finished }}</h6>
                 <p>{{ goal_achieved.description }}</p>
             </div>
         {% endif %}

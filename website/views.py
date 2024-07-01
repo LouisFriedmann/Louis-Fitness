@@ -19,6 +19,18 @@ def home():
 @views.route("/manage-goals", methods=['GET', 'POST'])
 @login_required
 def manage_goals():
+    # Handle if the time goes off for the week for duration-based goals
+    for goal in Goal.query.filter_by(user=current_user):
+        if goal.type == "Duration":
+            current_week = (datetime.datetime.today() - goal.date_started).days // 7
+
+            # Check if the user missed a week on their duration goal or if its the next week
+            if current_week - goal.weeks_completed >= 2:
+                flash(f"You have missed one or more weeks on {goal.title}, thus failing to meet its requirements. Deleting goal now", category="error")
+                return redirect(url_for("views.delete_goal", goal_id=goal.id))
+            elif current_week - goal.weeks_completed == 1:
+                goal.is_week_finished = False # Reset the week
+
     rate = 0
     duration = 0
     if request.method == 'POST':
@@ -125,7 +137,7 @@ def handle_finish_week(goal_id):
         return redirect(url_for('views.manage_goals'))
 
 # Mark a goal as completed
-@views.route('/<int:goal_id>/complete-goal/', methods=['GET', 'POST'])
+@views.route('/<int:goal_id>/mark-goal-complete/', methods=['GET', 'POST'])
 @login_required
 def mark_goal_complete(goal_id):
     # Add the achievement
