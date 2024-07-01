@@ -327,14 +327,19 @@ function goalTimer()
             const todayObj = new Date();
             const startDateObj = new Date(startDate);
 
-            // Display clocks based on if the duration goal is finished for the week is finished or not
-            if (goalElements[i].getElementsByClassName("week-finished").length > 0)
+            // Display clocks based on if the duration goal is finished for the week is finished or not and handle when timer goes off
+            timeDifference = getTimeInWeek(startDateObj, todayObj)
+            if (timeDifference == "")
             {
-                goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + getTimeInWeek(startDateObj, todayObj);
+                // Fetch URL to see if user finished the week or not
+            }
+            else if (goalElements[i].getElementsByClassName("week-finished").length > 0)
+            {
+                goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
             }
             else
             {
-                goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + getTimeInWeek(startDateObj, todayObj);
+                goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + timeDifference;
             }
             goalElements[i].style.height = 130 + "px";
         }
@@ -355,7 +360,7 @@ function getTimeInWeek(date1, date2)
     // Handle negative time remaining (if date2 is before date1 in the same week)
     if (timeRemainingInMs < 0)
     {
-        timeRemainingInMs += MS_PER_WEEK;
+        return "";
     }
 
     // Calculate the time components

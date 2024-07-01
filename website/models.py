@@ -25,7 +25,7 @@ class Goal(db.Model):
     weeks_completed = db.Column(db.Integer) # regarding the 'duration'
     date_started = db.Column(db.DateTime)
     end_date = db.Column(db.Date)
-    is_week_finished = db.Column(db.Boolean, default=False)
+    is_week_finished = db.Column(db.Boolean, default=False) # Did user complete the week yet
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
