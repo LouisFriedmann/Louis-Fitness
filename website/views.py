@@ -8,6 +8,7 @@ from . import db
 import datetime
 import json
 from django.utils.html import escapejs
+import math
 
 views = Blueprint('views', __name__)
 
@@ -22,12 +23,15 @@ def manage_goals():
     # Handle if the time goes off for the week for duration-based goals
     for goal in Goal.query.filter_by(user=current_user):
         if goal.type == "Duration":
-            current_week = (datetime.datetime.today() - goal.date_started).days // 7
+            current_week = math.ceil(((datetime.datetime.now() - goal.date_started).days + 1) / 7)
 
             # Check if the user missed a week on their duration goal or if its the next week
             if current_week - goal.weeks_completed >= 2:
-                flash(f"You have missed one or more weeks on {goal.title}, thus failing to meet its requirements. Deleting goal now", category="error")
-                return redirect(url_for("views.delete_goal", goal_id=goal.id))
+                db.session.delete(goal)
+                db.session.commit()
+                flash(f"You have missed one or more weeks on \"{goal.title}\", thus failing to meet its requirements. Goal deleted", category="error")
+                return redirect(url_for('views.manage_goals'))
+            
             elif current_week - goal.weeks_completed == 1:
                 goal.is_week_finished = False # Reset the week
 
@@ -43,7 +47,7 @@ def manage_goals():
                             rate=4,
                             duration=4,
                             end_date=today + datetime.timedelta(days=29), # End date is the day after the number of days given by user
-                            date_started=datetime.datetime.now(),
+                            date_started=today,
                             weeks_completed=0,
                             user_id=current_user.id)
             db.session.add(new_goal)
@@ -57,7 +61,7 @@ def manage_goals():
                             rate=None,
                             duration=None,
                             end_date=None,
-                            date_started=datetime.datetime.now(),
+                            date_started=today,
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -70,7 +74,7 @@ def manage_goals():
                             rate=None,
                             duration=None,
                             end_date=None,
-                            date_started=datetime.datetime.now(),
+                            date_started=today,
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -120,14 +124,25 @@ def edit_goal():
     return render_template('manage_goals.html', user=current_user, goals=Goal.query.all())
 
 # Handle what to do when user finishes week on goal of type 'Duration'
-@views.route('/<int:goal_id>/complete-goal/', methods=['GET', 'POST'])
+@views.route('/<int:goal_id>/handle-finish-week/', methods=['GET', 'POST'])
 @login_required
 def handle_finish_week(goal_id):
     goal = Goal.query.get_or_404(goal_id)
     weeks_completed = goal.weeks_completed + 1
+    current_week = math.ceil(((datetime.datetime.now() - goal.date_started).days + 1) / 7)
 
-    if weeks_completed == goal.duration:
+    # Ensure the user hasn't missed a week first
+    if current_week - goal.weeks_completed >= 2:
+        db.session.delete(goal)
+        db.session.commit()
+        flash(f"You have missed one or more weeks on \"{goal.title}\", thus failing to meet its requirements. Goal deleted", category="error")
+        return redirect(url_for('views.manage_goals'))
+    
+    # If a user finishes all weeks
+    elif weeks_completed == goal.duration:
         return redirect(url_for('views.mark_goal_complete', goal_id=goal_id))
+    
+    # Otherwise, this means they've checked off another week (they haven't finished the goal yet)
     else:
         goal.weeks_completed = weeks_completed
         goal.is_week_finished = True
@@ -309,7 +324,6 @@ def remove_from_schedule(workout_id):
     db.session.commit()
     flash(f"Removed \"{workout.title}\" from schedule successfully", category="success")
     return redirect(url_for('views.manage_workouts'))
-
 
 @views.route("/achievements")
 def achievements():
