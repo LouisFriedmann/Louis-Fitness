@@ -19,10 +19,14 @@ class Goal(db.Model):
     type = db.Column(db.String)
     description = db.Column(db.Text)
     rate = db.Column(db.Integer) # Days/week
+
+    # Attributes for goal of type 'Duration'
     duration = db.Column(db.Integer) # Weeks
     weeks_completed = db.Column(db.Integer) # regarding the 'duration'
-    end_date = db.Column(db.Date)
     date_started = db.Column(db.DateTime)
+    end_date = db.Column(db.Date)
+    is_week_finished = db.Column(db.Boolean, default=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
