@@ -2,20 +2,6 @@
 {% block title %}Achievements{% endblock %}
 
 {% block stylesheets %}
-    .award
-    {
-        width: device-width - 40px;
-        height: 100px;
-        border-style: solid;
-        border-color: gold;
-        text-align: center;
-        position: relative;
-        margin: 5px;
-        background: linear-gradient(45deg, #FFD700, #FFECB3, #FFD700);
-        border: 2px solid #DAA520;
-        border-radius: 10px;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    }
     .goal-achieved {
         width: device-width - 40px;
         height: 100px;
@@ -28,6 +14,55 @@
         border: 2px solid #c0c0c0; /* Border color */
         border-radius: 10px;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+        justify-content: center;
+    }
+    .award {
+        width: device-width - 40px;
+        height: auto;
+        border-style: solid;
+        border-color: gold;
+        text-align: center;
+        position: relative;
+        margin: 5px;
+        background: linear-gradient(45deg, #FFD700, #FFECB3, #FFD700);
+        border: 2px solid #DAA520;
+        border-radius: 10px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+    }
+    
+    .image-award-title-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        width: 100%;
+    }
+    
+    .image-award-title-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .award-image {
+        margin-right: 10px;
+    }
+    
+    .text-center {
+        text-align: center;
+        flex-grow: 1;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .award-description {
+        text-align: center;
+        width: 100%;
     }
 {% endblock %}
 
@@ -36,10 +71,47 @@
     </br>
     <!--Display the awards user earns based on the goals they've achieved-->
     <h2 align="center">Awards</h2>
-    <div class="award">
-        <h5>Title</h5>
-        <p>Description</p>
-    </div>
+    {% for award in awards %}
+        {% if award == 'New PR' %}
+            <div class="award">
+                <div class="image-award-title-container">
+                    <div class="image-award-title-wrapper">
+                        <img class="award-image" src="/static/images/weight.png" width="50" alt="Weight">
+                        <div class="text-center">
+                            <h5>New PR</h5>
+                        </div>
+                    </div>
+                    <p class="award-description">Congratulations, you have completed 3 or more "New PR" goals!</p>
+                </div>
+            </div>
+        {% endif %}
+        {% if award == 'Duration' %}
+            <div class="award">
+                <div class="image-award-title-container">
+                    <div class="image-award-title-wrapper">
+                        <img class="award-image" src="/static/images/clock.png" width="50" alt="Duration">
+                        <div class="text-center">
+                            <h5>Duration</h5>
+                        </div>
+                    </div>
+                    <p class="award-description">Congratulations, you have completed 3 or more "Duration" goals!</p>
+                </div>
+            </div>
+        {% endif %}
+        {% if award == 'Lose/Gain Weight' %}
+            <div class="award">
+                <div class="image-award-title-container">
+                    <div class="image-award-title-wrapper">
+                        <img class="award-image" src="/static/images/scale.png" width="50" alt="Lose/Gain Weight">
+                        <div class="text-center">
+                            <h5>Lose/Gain Weight</h5>
+                        </div>
+                    </div>
+                    <p class="award-description">Congratulations, you have completed 3 or more "Lose/Gain Weight" goals!</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
     <!--Display the awards user earns based on the goals they've achieved-->
     </br>
     <!--Display goals the user achieved-->

@@ -8,6 +8,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String, nullable=False)
     goals = db.relationship('Goal', backref='user')
     workouts = db.relationship('Workout', backref='user')
+    goals_achieved = db.relationship('GoalAchieved', backref='user')
 
     def __repr__(self):
         return f"<User {self.id}>"

@@ -328,4 +328,20 @@ def remove_from_schedule(workout_id):
 @views.route("/achievements")
 def achievements():
     # db.drop_all()
-    return render_template('achievements.html', user=current_user, goals_achieved=GoalAchieved.query.all())
+
+    # Determine the awards the user earns
+    awards = []
+    new_PR_goals_achieved = list(GoalAchieved.query.filter_by(user=current_user, type="New PR"))
+    duration_goals_achieved = list(GoalAchieved.query.filter_by(user=current_user, type="Duration"))
+    weight_goals_achieved = list(GoalAchieved.query.filter_by(user=current_user, type="Lose/Gain Weight"))
+
+    if len(new_PR_goals_achieved) >= 3:
+        awards.append("New PR")
+    
+    if len(duration_goals_achieved) >= 3:
+        awards.append("Duration")
+    
+    if len(weight_goals_achieved) >= 3:
+        awards.append("Lose/Gain Weight")
+
+    return render_template('achievements.html', user=current_user, goals_achieved=GoalAchieved.query.all(), awards=awards)
