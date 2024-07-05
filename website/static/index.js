@@ -178,7 +178,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
    formContainer.insertBefore(br.cloneNode(), submitButton);
 
    var newDescriptionLabel = document.createElement("label");
-   newDescriptionLabel.textContent = "Workout Description:";
+   newDescriptionLabel.textContent = "Workout Description: ";
    var newDescriptionInput = document.createElement("input");
    newDescriptionInput.setAttribute("type", "text");
    newDescriptionInput.setAttribute("placeholder", "Enter workout description");
@@ -219,10 +219,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         // if there is a number at the end of an exercise title, delete it
         if (!isNaN(newTitleInput.value.charAt(newTitleInput.value.length - 1)))
         {
-
-            console.log(newTitleInput.value.charAt(newTitleInput.value.length - 1));
             newTitleInput.value = newTitleInput.value.slice(0, -1);
-            console.log("went through");
         }
 
         formContainer.insertBefore(newTitleLabel, submitButton);
@@ -230,7 +227,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         formContainer.insertBefore(br.cloneNode(), submitButton);
 
         newDescriptionLabel = document.createElement("label");
-        newDescriptionLabel.textContent = "Description:";
+        newDescriptionLabel.textContent = "Description: ";
         newDescriptionInput = document.createElement("input");
         newDescriptionInput.setAttribute("type", "text");
         newDescriptionInput.setAttribute("placeholder", "Enter description");

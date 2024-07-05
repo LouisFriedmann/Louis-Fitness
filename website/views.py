@@ -5,7 +5,7 @@ import os
 import random
 from .models import Goal, User, Workout, Exercise, GoalAchieved
 from . import db
-import datetime
+from datetime import datetime, timezone, timedelta
 import json
 from django.utils.html import escapejs
 import math
@@ -23,7 +23,7 @@ def manage_goals():
     # Handle if the time goes off for the week for duration-based goals
     for goal in Goal.query.filter_by(user=current_user):
         if goal.type == "Duration":
-            current_week = math.ceil(((datetime.datetime.now() - goal.date_started).days + 1) / 7)
+            current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started).days + 1) / 7)
 
             # Check if the user missed a week on their duration goal or if its the next week
             if current_week - goal.weeks_completed >= 2:
@@ -39,15 +39,15 @@ def manage_goals():
     duration = 0
     if request.method == 'POST':
         # Add built-in button workouts to database if the user presses one ONLY ONCE PER BUTTON
-        today = datetime.datetime.now()
+        utc_now = datetime.now(timezone.utc)
         if "workout-4-weeks" in request.form:
             new_goal = Goal(title="Workout for 4 weeks",
                             type="Duration",
                             description="Workout consistently for 4 weeks 4 times/week",
                             rate=4,
                             duration=4,
-                            end_date=today + datetime.timedelta(days=29), # End date is the day after the number of days given by user
-                            date_started=today,
+                            end_date=utc_now + timedelta(days=29), # End date is the day after the number of days given by user
+                            date_started=utc_now,
                             weeks_completed=0,
                             user_id=current_user.id)
             db.session.add(new_goal)
@@ -61,7 +61,7 @@ def manage_goals():
                             rate=None,
                             duration=None,
                             end_date=None,
-                            date_started=today,
+                            date_started=utc_now,
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -74,7 +74,7 @@ def manage_goals():
                             rate=None,
                             duration=None,
                             end_date=None,
-                            date_started=today,
+                            date_started=utc_now,
                             user_id=current_user.id)
             db.session.add(new_goal)
             db.session.commit()
@@ -88,9 +88,9 @@ def manage_goals():
             if goal_type == "Duration":
                 rate = int(request.form.get('goal-rate'))
                 duration = int(request.form.get('goal-duration'))
-                new_goal = Goal(title=title, type=goal_type, description=description, rate=rate, duration=duration, weeks_completed=0, end_date=today + datetime.timedelta(days=duration + 1), date_started=today, user_id=current_user.id)
+                new_goal = Goal(title=title, type=goal_type, description=description, rate=rate, duration=duration, weeks_completed=0, end_date=utc_now + timedelta(days=duration + 1), date_started=utc_now, user_id=current_user.id)
             else:
-                new_goal = Goal(title=title, type=goal_type, description=description, rate=None, duration=None, end_date=None, date_started=today, user_id=current_user.id)
+                new_goal = Goal(title=title, type=goal_type, description=description, rate=None, duration=None, end_date=None, date_started=utc_now, user_id=current_user.id)
 
             db.session.add(new_goal)
             db.session.commit()
@@ -107,8 +107,6 @@ def edit_goal():
         goal_id = int(request.form.get('goal-id'))
         goal = Goal.query.get_or_404(goal_id)
         original_goal_title = goal.title
-
-        today = datetime.datetime.now()
 
         goal.title = request.form.get('edit-goal-title')
         goal.description = request.form.get('edit-goal-description')
@@ -129,7 +127,7 @@ def edit_goal():
 def handle_finish_week(goal_id):
     goal = Goal.query.get_or_404(goal_id)
     weeks_completed = goal.weeks_completed + 1
-    current_week = math.ceil(((datetime.datetime.now() - goal.date_started).days + 1) / 7)
+    current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started).days + 1) / 7)
 
     # Ensure the user hasn't missed a week first
     if current_week - goal.weeks_completed >= 2:
@@ -164,7 +162,7 @@ def mark_goal_complete(goal_id):
                             rate=goal.rate,
                             duration=goal.duration,
                             date_started=goal.date_started,
-                            date_finished=datetime.datetime.now(),
+                            date_finished=math.ceil(((datetime.now(timezone.utc) - goal.date_started).days + 1) / 7),
                             user_id=current_user.id)
     db.session.add(new_goal_achieved)
     db.session.commit()
