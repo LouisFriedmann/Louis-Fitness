@@ -23,7 +23,7 @@ def manage_goals():
     # Handle if the time goes off for the week for duration-based goals
     for goal in Goal.query.filter_by(user=current_user):
         if goal.type == "Duration":
-            current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started).days + 1) / 7)
+            current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started.replace(tzinfo=timezone.utc)).days + 1) / 7)
 
             # Check if the user missed a week on their duration goal or if its the next week
             if current_week - goal.weeks_completed >= 2:
@@ -127,7 +127,7 @@ def edit_goal():
 def handle_finish_week(goal_id):
     goal = Goal.query.get_or_404(goal_id)
     weeks_completed = goal.weeks_completed + 1
-    current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started).days + 1) / 7)
+    current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started.replace(tzinfo=timezone.utc)).days + 1) / 7)
 
     # Ensure the user hasn't missed a week first
     if current_week - goal.weeks_completed >= 2:
@@ -162,7 +162,7 @@ def mark_goal_complete(goal_id):
                             rate=goal.rate,
                             duration=goal.duration,
                             date_started=goal.date_started,
-                            date_finished=math.ceil(((datetime.now(timezone.utc) - goal.date_started).days + 1) / 7),
+                            date_finished=datetime.now(timezone.utc),
                             user_id=current_user.id)
     db.session.add(new_goal_achieved)
     db.session.commit()

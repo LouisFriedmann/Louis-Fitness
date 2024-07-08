@@ -320,12 +320,15 @@ function goalTimer()
         // Edit clock for duration goal only. (clock only appears for duration goal)
         if (goalElements[i].getElementsByClassName("clock").length > 0)
         {
-            const startDate = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML;
-            const todayObj = new Date();
-            const startDateObj = new Date(startDate);
+            // Get local start date (originally in UTC) and local current date of the user 
+            const startDateString = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML.replace(" ", "T") + "Z";
+            const utcStartDate = new Date(startDateString);
+            const localStartDate = new Date(utcStartDate.toLocaleString());
+            const localUserDate = new Date();
+            console.log(localStartDate, localUserDate)
 
             // Display clocks based on if the duration goal is finished for the week is finished or not and handle when timer goes off
-            timeDifference = getTimeInWeek(startDateObj, todayObj)
+            timeDifference = getTimeInWeek(localStartDate, localUserDate)
             if (goalElements[i].getElementsByClassName("week-finished").length > 0)
             {
                 goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
