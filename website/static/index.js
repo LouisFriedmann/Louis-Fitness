@@ -8,19 +8,6 @@ function closePopup(id)
     document.getElementById(id).style.display = "none";
 }
 
-
-// Disable all input elements' required attributes
-function disableInputRequired(formId)
-{
-    const form = document.getElementById(formId);
-    const inputElements = form.querySelectorAll("input");
-    for (let i = 0; i < inputElements.length; i++)
-    {
-        const element = inputElements[i];
-        element.required = false;
-    }
-}
-
 // this EXCLUDES the sign up and login forms
 function checkPopupForm()
 {
