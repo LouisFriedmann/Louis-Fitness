@@ -76,7 +76,7 @@
     .current-workout
     {
         width: device-width - 40px;
-        height: 100px;
+        height: auto;
         text-align: center;
         position: relative;
         margin-bottom: 5px;
@@ -87,7 +87,6 @@
         text-align: center;
         position: relative;
         margin: 5px;
-
     }
     .custom-input
     {
@@ -98,7 +97,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 80px;
+        width: 100px;
         height: 30px;
         background-color: orange;
     }
@@ -107,25 +106,25 @@
         position: absolute;
         top: 35px;
         right: 0px;
-        width: 80px;
+        width: 100px;
         height: 30px;
         background-color: blue;
     }
-    .begin-button
+    .remove-button
     {
         position: absolute;
         top: 0px;
         right: 0px;
-        width: 80px;
+        width: 100px;
         height: 30px;
-        background-color: green;
+        background-color: red;
     }
     .delete-button
     {
         position: absolute;
         top: 70px;
         right: 0px;
-        width: 80px;
+        width: 100px;
         height: 30px;
         background-color: red;
     }
@@ -189,13 +188,8 @@
                 {% if workout.add_to_schedule %}
                     <div class="schedule-border">
                     <div class="current-workout">
-                        <a href="">
-                            <button name="begin-button" type="submit" class="begin-button">
-                                <span aria-hidden="true" style="color:white">Begin</span>
-                            </button>
-                        </a>
                         <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id) }}">
-                            <button name="remove-from-schedule-button" type="submit" class="delete-button">
+                            <button name="remove-from-schedule-button" type="submit" class="remove-button">
                                 <span aria-hidden="true" style="color:white">Remove</span>
                             </button>
                         </a>
@@ -234,16 +228,20 @@
                                 <span aria-hidden="true" style="color:white">Delete</span>
                             </button>
                         </a>
-                        <h5>{{ workout.title }}</h5>
+                        <h3>{{ workout.title }}</h3>
                         <p>{{ workout.description }}</p>
-                    </div>
-                    {% for exercise in workout.exercises %}
+                        </br>
+                        {% for exercise in workout.exercises %}
                         <div class="current-exercise">
-                            <h7>{{ exercise.title }}: </h7>
+                            <h5>Next Exercise</h5>
+                            <h6>{{ exercise.title }} </h6>
                             <h7>{{ exercise.description }}</h7>
                         </div>
                         </br>
+                        </br>
+                        </br>
                     {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         {% endfor %}

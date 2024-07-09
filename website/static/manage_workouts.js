@@ -120,7 +120,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
 
 // Add html element for a new exercise
 function addExerciseElement(formContainerId, formId)
-{
+{   
     const formContainer = document.getElementById(formContainerId);
     const form = document.getElementById(formId);
 
