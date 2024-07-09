@@ -27,7 +27,6 @@
       crossorigin="anonymous"
     />
 
-    <!--Green border-->
     <style>
         html
         {
@@ -38,76 +37,109 @@
             box-sizing: border-box;
             min-height: 100vh;
         }
+        #preloader
+        {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: #fff; /* Change this to your background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner
+        {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin
+        {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .content
+        {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s 1s, opacity 1s ease;
+        }
     </style>
-    <!--Green border-->
 </head>
 <body>
-
+      <div id="preloader">
+        <div class="spinner"></div>
+    </div>
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-custom">
-  <a class="navbar-brand" href="#">Louis Fitness</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views.home') }}">Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views.manage_goals') }}">Manage Goals</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views.manage_workouts') }}">Manage Workouts</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views.achievements') }}">Achievements</a>
-      </li>
-      {% else %}
-        <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('auth.sign_up') }}">Sign Up<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('auth.login') }}">Login<span class="sr-only">(current)</span></a>
-      </li>
-      {% endif %}
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
-<!--Navbar-->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-         {% if messages %}
-               {% for category, message in messages %}
-                  {% if category == 'error' %}
-                  <div class="alert alert-danger" role="alert">
-                      {{ message }}
-                      <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  {% elif category == 'success' %}
-                    <div class="alert alert-success" role="alert">
-                      {{ message }}
-                      <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  {% endif %}
-               {% endfor %}
-         {% endif %}
-      {% endwith %}
-
-    </br>
-
-    <div class="container">
+      <a class="navbar-brand" href="#">Louis Fitness</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('views.home') }}">Home<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('views.manage_goals') }}">Manage Goals</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('views.manage_workouts') }}">Manage Workouts</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('views.achievements') }}">Achievements</a>
+          </li>
+          {% else %}
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.sign_up') }}">Sign Up<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login<span class="sr-only">(current)</span></a>
+          </li>
+          {% endif %}
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <!--Navbar-->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+             {% if messages %}
+                   {% for category, message in messages %}
+                      {% if category == 'error' %}
+                      <div class="alert alert-danger" role="alert">
+                          {{ message }}
+                          <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      {% elif category == 'success' %}
+                        <div class="alert alert-success" role="alert">
+                          {{ message }}
+                          <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      {% endif %}
+                   {% endfor %}
+             {% endif %}
+          {% endwith %}
+    
+        </br>
+    <div class="content">
         {% block content %}{% endblock %}
     </div>
 
@@ -131,6 +163,19 @@
 
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 
-    <script>{% block scripts %}{% endblock %}</script>
+    <script>
+        {% block scripts %}{% endblock %}
+        window.addEventListener('load', function()
+        {
+            // Hide the preloader
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+
+            // Show the main content
+            document.querySelector('.content').style.visibility = 'visible';
+            document.querySelector('.content').style.opacity = '1';
+        });
+    </script>
 </body>
 </html>

@@ -46,7 +46,7 @@ def manage_goals():
                             description="Workout consistently for 4 weeks 4 times/week",
                             rate=4,
                             duration=4,
-                            end_date=utc_now + timedelta(days=29), # End date is the day after the number of days given by user
+                            end_date=utc_now + timedelta(days=28), # End date is the day after the number of days given by user
                             date_started=utc_now,
                             weeks_completed=0,
                             user_id=current_user.id)
@@ -88,7 +88,7 @@ def manage_goals():
             if goal_type == "Duration":
                 rate = int(request.form.get('goal-rate'))
                 duration = int(request.form.get('goal-duration'))
-                new_goal = Goal(title=title, type=goal_type, description=description, rate=rate, duration=duration, weeks_completed=0, end_date=utc_now + timedelta(days=duration + 1), date_started=utc_now, user_id=current_user.id)
+                new_goal = Goal(title=title, type=goal_type, description=description, rate=rate, duration=duration, weeks_completed=0, end_date=utc_now + timedelta(days=duration), date_started=utc_now, user_id=current_user.id)
             else:
                 new_goal = Goal(title=title, type=goal_type, description=description, rate=None, duration=None, end_date=None, date_started=utc_now, user_id=current_user.id)
 

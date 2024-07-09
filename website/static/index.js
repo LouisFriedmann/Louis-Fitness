@@ -322,10 +322,8 @@ function goalTimer()
         {
             // Get local start date (originally in UTC) and local current date of the user 
             const startDateString = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML.replace(" ", "T") + "Z";
-            const utcStartDate = new Date(startDateString);
-            const localStartDate = new Date(utcStartDate.toLocaleString());
+            const localStartDate = UTCToLocal(startDateString);
             const localUserDate = new Date();
-            console.log(localStartDate, localUserDate)
 
             // Display clocks based on if the duration goal is finished for the week is finished or not and handle when timer goes off
             timeDifference = getTimeInWeek(localStartDate, localUserDate)
@@ -340,6 +338,13 @@ function goalTimer()
             goalElements[i].style.height = 130 + "px";
         }
     }
+}
+
+function UTCToLocal(datetimeString)
+{
+    const utcStartDate = new Date(datetimeString);
+    const localStartDate = new Date(utcStartDate.toLocaleString());
+    return localStartDate;
 }
 
 function getTimeInWeek(date1, date2)
@@ -370,6 +375,68 @@ function getTimeInWeek(date1, date2)
 
     return result;
 }
+
+// Change dates to reflect local times
+document.addEventListener('DOMContentLoaded', function()
+{  
+    const now = new Date();
+    const timeZoneAbbreviation = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(now)
+    .find(part => part.type === 'timeZoneName').value;
+    console.log(timeZoneAbbreviation)
+
+    // First in 'manage_goal.html'
+    var goalElements = document.getElementsByClassName("current-goal");
+    for (let i = 0; i < goalElements.length; i++)
+    {
+        const goalInfoElements = goalElements[i].getElementsByClassName("goal-info");
+        for (let j = 0; j < goalInfoElements.length; j++)
+        {
+            const goalInfo = goalElements[i].getElementsByClassName("goal-info")[j];
+            const goalInfoString = goalInfo.innerHTML;
+
+            const startDateTimeString = goalInfoString.substring(goalInfoString.indexOf("Start date:") + 12, goalInfoString.indexOf("End date:") - 3);
+            const startDateTimeStringUTC = startDateTimeString.replace(" ", "T") + "Z";
+            const localStartDate = UTCToLocal(startDateTimeStringUTC);
+            const formattedLocalStartDate = `${String(localStartDate.getMonth() + 1).padStart(2, '0')}-${String(localStartDate.getDate()).padStart(2, '0')}-${localStartDate.getFullYear()} ${timeZoneAbbreviation}`;
+            goalInfo.innerHTML = goalInfo.innerHTML.replace(startDateTimeString, formattedLocalStartDate);
+
+            // Edit end date for duration goal only. (clock only appears for duration goal)
+            if (goalElements[i].getElementsByClassName("clock").length > 0)
+            {
+                const endDateTimeString = goalInfoString.substring(goalInfoString.indexOf("End date:") + 10);
+                const endDateTimeStringUTC = endDateTimeString.replace(" ", "T") + "Z";
+                const localEndDate = UTCToLocal(endDateTimeStringUTC);
+                const formattedLocalEndDate = `${String(localEndDate.getMonth() + 1).padStart(2, '0')}-${String(localEndDate.getDate()).padStart(2, '0')}-${localEndDate.getFullYear()} ${timeZoneAbbreviation}`;
+                goalInfo.innerHTML = goalInfo.innerHTML.replace(endDateTimeString, formattedLocalEndDate);
+            }
+        }
+    }
+
+    // Then in 'achievements.html'
+    var achievementElements = document.getElementsByClassName("goal-achieved");
+    for (let i = 0; i < achievementElements.length; i++)
+    {
+        const achievementInfoElements = achievementElements[i].getElementsByClassName("achievement-info");
+        for (let j = 0; j < achievementInfoElements.length; j++)
+        {
+            const achievementInfo = achievementElements[i].getElementsByClassName("achievement-info")[j];
+            const achievementInfoString = achievementInfo.innerHTML;
+
+            const startDateTimeString = achievementInfoString.substring(achievementInfoString.indexOf("Start date:") + 12, achievementInfoString.indexOf("Date completed:") - 3);
+            const startDateTimeStringUTC = startDateTimeString.replace(" ", "T") + "Z";
+            const localStartDate = UTCToLocal(startDateTimeStringUTC);
+            const formattedLocalStartDate = `${String(localStartDate.getMonth() + 1).padStart(2, '0')}-${String(localStartDate.getDate()).padStart(2, '0')}-${localStartDate.getFullYear()} ${timeZoneAbbreviation}`;
+            achievementInfo.innerHTML = achievementInfo.innerHTML.replace(startDateTimeString, formattedLocalStartDate);
+
+            const endDateTimeString = achievementInfoString.substring(achievementInfoString.indexOf("Date completed:") + 16);
+            const endDateTimeStringUTC = endDateTimeString.replace(" ", "T") + "Z";
+            const localEndDate = UTCToLocal(endDateTimeStringUTC);
+            const formattedLocalEndDate = `${String(localEndDate.getMonth() + 1).padStart(2, '0')}-${String(localEndDate.getDate()).padStart(2, '0')}-${localEndDate.getFullYear()} ${timeZoneAbbreviation}`;
+            achievementInfo.innerHTML = achievementInfo.innerHTML.replace(endDateTimeString, formattedLocalEndDate);
+    }
+    }
+
+});
 
 
 
