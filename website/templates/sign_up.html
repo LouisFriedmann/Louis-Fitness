@@ -61,7 +61,7 @@
 				{% endif %}
 			</div>
         </div>
-        <div>By signing up, you agree to the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></div>
+        <div>By signing up, you agree to the <a href="{{ url_for('auth.terms_of_use') }}">Terms of Use</a> &amp; <a href="{{ url_for('auth.privacy_policy') }}">Privacy Policy</a></div>
 		</br>
 		<div class="form-group">
             <button type="submit" class="btn btn-primary btn-lg" name="sign-up-submit-button" value="sign-up-submit-button">Sign Up</button>

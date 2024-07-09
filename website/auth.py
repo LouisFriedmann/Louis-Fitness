@@ -157,3 +157,15 @@ def logout():
     flash("Logged out successfully", category="success")
     return redirect(url_for('auth.sign_up'))
 
+@auth.route("/terms-of-use", methods=["GET", "POST"])
+def terms_of_use():
+    return render_template('terms_of_use.html', user=current_user)
+
+@auth.route("/lol", methods=["GET", "POST"])
+def lol():
+    return render_template('lol.html', user=current_user)
+
+@auth.route("/privacy-policy", methods=["GET", "POST"])
+def privacy_policy():
+    return render_template('privacy_policy.html', user=current_user)
+
