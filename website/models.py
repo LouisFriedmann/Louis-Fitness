@@ -41,6 +41,7 @@ class Workout(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     exercises = db.relationship('Exercise', backref='workout')
     add_to_schedule = db.Column(db.Boolean)
+    day_scheduled = db.Column(db.String)
 
     def __repr__(self):
         return f"<Workout number {self.id} with title {self.title}>"

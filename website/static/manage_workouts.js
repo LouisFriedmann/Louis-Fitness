@@ -171,3 +171,18 @@ function addExerciseElement(formContainerId, formId)
 
     // Insert a space between the label and the input element
 }
+
+// Add hidden scheduled workout id to schedule workout form
+function addScheduledWorkoutId(scheduleFormId, workoutId)
+{
+    form = document.getElementById(scheduleFormId);
+
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', "scheduled-workout");
+    hiddenInput.setAttribute('value', workoutId);
+
+    form.appendChild(hiddenInput);
+
+
+}

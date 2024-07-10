@@ -300,17 +300,21 @@ def delete_workout(workout_id):
     return redirect(url_for('views.manage_workouts'))
 
 
-@views.route("/<int:workout_id>add-to-schedule/", methods=['GET', 'POST'])
+@views.route("/add-to-schedule", methods=['GET', 'POST'])
 @login_required
-def add_to_schedule(workout_id):
+def add_to_schedule():
+    workout_id = int(request.form.get("scheduled-workout"))
     workout = Workout.query.get_or_404(workout_id)
+
     if workout.add_to_schedule:
         flash(f"\"{workout.title}\" has already been added to schedule", category="error")
     else:
-        workout.add_to_schedule = True
-        db.session.add(workout)
-        db.session.commit()
-        flash(f"Added \"{workout.title}\" to schedule successfully!", category="success")
+        if request.method == "POST":
+            workout.add_to_schedule = True
+            workout.day_scheduled = request.form.get("schedule-day")
+            db.session.add(workout)
+            db.session.commit()
+            flash(f"Added \"{workout.title}\" to schedule successfully!", category="success")
     return redirect(url_for('views.manage_workouts'))
 
 @views.route("/<int:workout_id>remove-from-schedule/", methods=['GET', 'POST'])
