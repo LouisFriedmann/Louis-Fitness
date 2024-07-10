@@ -187,6 +187,9 @@ def delete_goal(goal_id):
 
 with open(os.path.abspath(os.path.dirname(__file__)) + '/workout_quotes.txt', encoding="utf-8") as f:
     lines = f.read().splitlines()
+
+DAYS_ORDER = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
 @views.route("/manage-workouts", methods=['GET', 'POST'])
 @login_required
 def manage_workouts():
@@ -254,7 +257,11 @@ def manage_workouts():
 
     the_workout_dictionary = escapejs(json.dumps(workout_dictionary))
 
-    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], the_workout_dictionary=the_workout_dictionary)
+    workouts = Workout.query.filter_by(user=current_user).all()
+    filtered_workouts = [workout for workout in workouts if workout.day_scheduled in DAYS_ORDER and workout.add_to_schedule]
+    sorted_user_workouts = sorted(filtered_workouts, key=lambda workout: DAYS_ORDER.index(workout.day_scheduled))
+
+    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], the_workout_dictionary=the_workout_dictionary, sorted_user_workouts=sorted_user_workouts)
 
 # Edit a workout
 @views.route('/edit-workout/', methods=['GET', 'POST'])
