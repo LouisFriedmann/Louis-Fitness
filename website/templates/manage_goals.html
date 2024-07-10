@@ -216,7 +216,7 @@
                             </a>
                         {% endif %}
                         <h5 name="hidden-start-datetime" hidden>{{ goal.date_started }}</h5>
-                        <h6 class="goal-info">Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | Start date: {{ goal.date_started }} | End date: {{ goal.end_date }}</h6>
+                        <h6 class="goal-info">Type: {{ goal.type }} | Duration: {{ goal.duration }} weeks | Rate: {{ goal.rate }} days per week | Start date: {{ goal.date_started }} | End date: {{ goal.end_date }}</h6>
                         <!--Handle time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
                     {% else %}
                         <a href="{{ url_for('views.mark_goal_complete', goal_id=goal.id) }}">
@@ -224,7 +224,7 @@
                                 <span aria-hidden="true" style="color:white">Complete</span>
                             </button>
                         </a>
-                        <h6 class="goal-info">Type: {{ goal.type }} | Rate: {{ goal.rate }} days per week | Start date: {{ goal.date_started }} | End date: {{ goal.end_date }}</h6>
+                        <h6 class="goal-info">Type: {{ goal.type }} | Start date: {{ goal.date_started }}</h6>
                     {% endif %}
                     <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
                         <button name="edit-goal-delete-button" type="submit" class="delete-button">

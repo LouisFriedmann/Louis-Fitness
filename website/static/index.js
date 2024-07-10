@@ -96,13 +96,22 @@ document.addEventListener('DOMContentLoaded', function()
             const goalInfo = goalElements[i].getElementsByClassName("goal-info")[j];
             const goalInfoString = goalInfo.innerHTML;
 
-            const startDateTimeString = goalInfoString.substring(goalInfoString.indexOf("Start date:") + 12, goalInfoString.indexOf("End date:") - 3);
+            // End date only appears for duration goals (clock only appears for duration goal)
+            var startDateTimeString = null;
+            if (goalElements[i].getElementsByClassName("clock").length > 0)
+            {
+                startDateTimeString = goalInfoString.substring(goalInfoString.indexOf("Start date:") + 12, goalInfoString.indexOf("End date:") - 3);
+            }
+            else
+            {
+                startDateTimeString = goalInfoString.substring(goalInfoString.indexOf("Start date:") + 12);
+            }
             const startDateTimeStringUTC = startDateTimeString.replace(" ", "T") + "Z";
             const localStartDate = UTCToLocal(startDateTimeStringUTC);
             const formattedLocalStartDate = `${String(localStartDate.getMonth() + 1).padStart(2, '0')}-${String(localStartDate.getDate()).padStart(2, '0')}-${localStartDate.getFullYear()} ${timeZoneAbbreviation}`;
             goalInfo.innerHTML = goalInfo.innerHTML.replace(startDateTimeString, formattedLocalStartDate);
 
-            // Edit end date for duration goal only. (clock only appears for duration goal)
+            // Edit end date for duration goal only. 
             if (goalElements[i].getElementsByClassName("clock").length > 0)
             {
                 const endDateTimeString = goalInfoString.substring(goalInfoString.indexOf("End date:") + 10);

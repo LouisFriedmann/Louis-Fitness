@@ -126,7 +126,11 @@
         {% if goal_achieved.user_id == user.id %}
             <div class="goal-achieved">
                 <h5>{{ goal_achieved.title }}</h5>
-                <h6 class="achievement-info">Type: {{ goal_achieved.type }} | Rate: {{ goal_achieved.rate }} days per week | Start date: {{ goal_achieved.date_started }} | Date completed: {{ goal_achieved.date_finished }}</h6>
+                {% if goal_achieved.type == 'Duration' %}
+                    <h6 class="achievement-info">Type: {{ goal_achieved.type }} | Duration: {{ goal_achieved.duration }} week | Rate: {{ goal_achieved.rate }} days per week | Start date: {{ goal_achieved.date_started }} | Date completed: {{ goal_achieved.date_finished }}</h6>
+                {% else %}
+                    <h6 class="achievement-info">Type: {{ goal_achieved.type }} | Start date: {{ goal_achieved.date_started }} | Date completed: {{ goal_achieved.date_finished }}</h6>
+                {% endif %}
                 <p>{{ goal_achieved.description }}</p>
             </div>
         {% endif %}
