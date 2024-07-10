@@ -156,20 +156,58 @@ function addExerciseElement(formContainerId, formId)
 
     descriptionInput.setAttribute("name", "exercise-description-" + String(newExerciseNumber));
 
+    // create the delete button
+    var deleteButton = document.createElement("button");
+    deleteButton.setAttribute("type", "button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.style.width = "80px";
+    deleteButton.style.height = "30px";
+    deleteButton.style.backgroundColor = "red";
+
+    // delete the two title and description elements on top of the button when it is clicked (the corresponding elements created in this function call)
+    deleteButton.onclick = function()
+    {
+        titleLabel.remove();
+        titleInput.remove();
+        descriptionLabel.remove();
+        descriptionInput.remove();
+        br1.remove();
+        br2.remove();
+        br3.remove();
+        br4.remove();
+        deleteButton.remove();
+
+        // Update submit button if form has all elements filled in
+        const formInputs = form.querySelectorAll('input');
+        const allFilled = Array.from(formInputs).every(input => input.value.trim() !== '');
+        console.log(allFilled);
+        if (allFilled)
+        {
+            submitButton.disabled = false;
+        }
+    };
+
     // Append them to form before the submit button, adding a break line afterwards
     const buttons = form.getElementsByTagName("button");
     const submitButton = buttons[buttons.length - 1]; // submit button is last button in form
 
     var br = document.createElement("br");
+    var br1 = br.cloneNode();
+    var br2 = br.cloneNode();
+    var br3 = br.cloneNode();
+    var br4 = br.cloneNode();
     formContainer.insertBefore(titleLabel, submitButton);
     formContainer.insertBefore(titleInput, submitButton);
-    formContainer.insertBefore(br.cloneNode(), submitButton);
+    formContainer.insertBefore(br1, submitButton);
     formContainer.insertBefore(descriptionLabel, submitButton);
     formContainer.insertBefore(descriptionInput, submitButton);
-    formContainer.insertBefore(br.cloneNode(), submitButton);
-    formContainer.insertBefore(br.cloneNode(), submitButton);
+    formContainer.insertBefore(br2, submitButton);
+    formContainer.insertBefore(deleteButton, submitButton);
+    formContainer.insertBefore(br3, submitButton);
+    formContainer.insertBefore(br4, submitButton);
 
     // Insert a space between the label and the input element
+
 }
 
 // Add hidden scheduled workout id to schedule workout form
