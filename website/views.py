@@ -306,7 +306,6 @@ def delete_workout(workout_id):
     flash(f"Deleted \"{workout_title}\" successfully", category="success")
     return redirect(url_for('views.manage_workouts'))
 
-
 @views.route("/add-to-schedule", methods=['GET', 'POST'])
 @login_required
 def add_to_schedule():
