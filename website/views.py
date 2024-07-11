@@ -272,19 +272,36 @@ def edit_workout():
         workout = Workout.query.get_or_404(workout_id)
         original_workout_title = workout.title
 
-        request_form_data = dict(request.form)
         workout.title = request.form.get('edit-workout-title')
         workout.description = request.form.get('edit-workout-description')
-        for i in range(len(workout.exercises)):
-            workout.exercises[i].title = request.form.get(f"edit-workout{workout_id}-exercise{i + 1}-title")
-            workout.exercises[i].description = request.form.get(f"edit-workout{workout_id}-exercise{i + 1}-description")
 
-        workout.user_id = current_user.id
+        # First, delete all exercises for this workout
+        for i in range(len(workout.exercises)):
+            db.session.delete(workout.exercises[i])
+
+        # Then, add the workout and all the exercises
+        added_input_titles = []
+        added_input_descriptions = []
+        request_form_data = dict(request.form)
+        del request_form_data["edit-workout-title"]
+        del request_form_data["edit-workout-description"]
+
+        for name, value in request_form_data.items():
+            if "title" in name:
+                added_input_titles.append(value)
+            elif "description" in name:
+                added_input_descriptions.append(value)
+
         db.session.add(workout)
         db.session.commit()
+        for i in range(len(added_input_titles)):
+            next_exercise_title = added_input_titles[i]
+            next_exercise_description = added_input_descriptions[i]
+            new_exercise = Exercise(title=next_exercise_title, description=next_exercise_description, workout_id=workout.id)
+            db.session.add(new_exercise)
+            db.session.commit()
 
         flash(f"Edited \"{original_workout_title}\" successfully", category="success")
-
         return redirect(url_for("views.manage_workouts"))
 
     return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all())

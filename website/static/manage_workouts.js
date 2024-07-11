@@ -28,6 +28,8 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
    workoutDescriptionElement.value = workoutDescription;
 
    var br = document.createElement("br");
+   var br1 = br.cloneNode();
+   var br2 = br.cloneNode();
    var newTitleLabel = document.createElement("label");
    newTitleLabel.textContent = "Workout Title:";
    var newTitleInput = document.createElement("input");
@@ -49,7 +51,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
    newDescriptionInput.setAttribute("type", "text");
    newDescriptionInput.setAttribute("placeholder", "Enter workout description");
    newDescriptionInput.setAttribute("data-validate", "true");
-   newDescriptionInput.setAttribute("maxlength", "100");
+   newDescriptionInput.setAttribute("maxlength", "130");
    newDescriptionInput.setAttribute("required", "true");
    newDescriptionInput.setAttribute("name", "edit-workout-description");
    newDescriptionInput.value = workoutDescription;
@@ -105,9 +107,41 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         newDescriptionInput.setAttribute("title", "Numeric characters are NOT allowed here");
         newDescriptionInput.value = exercises[key2];
 
+    // create the delete button
+    var deleteButton = document.createElement("button");
+    deleteButton.setAttribute("type", "button");
+    deleteButton.innerHTML = "Delete";
+    deleteButton.style.width = "80px";
+    deleteButton.style.height = "30px";
+    deleteButton.style.backgroundColor = "red";
+
+    // delete the two title and description elements on top of the button when it is clicked (the corresponding elements created in this function call)
+    deleteButton.onclick = function()
+    {
+        newTitleLabel.remove();
+        newTitleInput.remove();
+        newDescriptionLabel.remove();
+        newDescriptionInput.remove();
+        deleteButton.remove();
+        br.remove();
+        br1.remove();
+        br2.remove();
+
+        // Update submit button if form has all elements filled in
+        const formInputs = form.querySelectorAll('input');
+        const allFilled = Array.from(formInputs).every(input => input.value.trim() !== '');
+        if (allFilled)
+        {
+            submitButton.disabled = false;
+        }
+    };
+
         formContainer.insertBefore(newDescriptionLabel, submitButton);
         formContainer.insertBefore(newDescriptionInput, submitButton);
-        formContainer.insertBefore(br.cloneNode(), submitButton);
+        formContainer.insertBefore(br, submitButton);
+        formContainer.insertBefore(deleteButton, submitButton);
+        formContainer.insertBefore(br1, submitButton);
+        formContainer.insertBefore(br2, submitButton);
 
         exerciseNumber++;
     }
@@ -180,7 +214,6 @@ function addExerciseElement(formContainerId, formId)
         // Update submit button if form has all elements filled in
         const formInputs = form.querySelectorAll('input');
         const allFilled = Array.from(formInputs).every(input => input.value.trim() !== '');
-        console.log(allFilled);
         if (allFilled)
         {
             submitButton.disabled = false;
