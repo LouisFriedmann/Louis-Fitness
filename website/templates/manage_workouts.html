@@ -162,7 +162,7 @@
            </br>
            </br>
            <div align="center">
-              <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form-container', 'add-workouts-form')">
+              <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form-container', 'add-workouts-form', 'add')">
                   <span class="align-with-button">+</span>
               </button>
               <span style="display: inline;" class="add-workout">Add Exercise</span>
@@ -217,7 +217,7 @@
             {% if workout.user_id == user.id %}
                 <div class="workout-border">
                     <div class="current-workout">
-                        <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ the_workout_dictionary }}'), 'edit-workout', 'edit-workout-form-container', 'edit-workout-form')">
+                        <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ the_workout_dictionary }}'), 'edit-workout', 'edit-workout-form')">
                             <span aria-hidden="true" style="color:white">Edit</span>
                         </button>
                         <button name="edit-workout-add-to-schedule-button" type="submit" class="add-to-schedule-button" onclick="openPopup('schedule-workout'); addScheduledWorkoutId('schedule-workout-form', '{{ workout.id }}')">
@@ -253,13 +253,23 @@
         <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('edit-workout')">
             <span aria-hidden="true" style="color:white">&times;</span>
         </button>
-        <div class="form-container" id="edit-workout-form-container">
+        <div class="form-container">
             <h2>Edit</h2>
             </br>
-            <!-- Edit workout elements will be added here from the javascript -->
+            <div align="center">
+                <button type="button" class="button" name="add-workout" onclick="addExerciseElement('edit-workout', 'edit-workout-form', 'edit')">
+                    <span class="align-with-button">+</span>
+                </button>
+                <span style="display: inline;" class="add-workout">Add Exercise</span>
+             </div>
+            </br>
+             <div id="edit-workout-elements-created">
+                <!-- Edit workout elements will be added here from the javascript -->
+                <!-- Edit workout elements will be added here from the javascript -->
+             </div>
             <input id="workout-id" name="workout-id" value="" hidden>
             </br>
-            <button type="submit" class="submit-button btn btn-primary btn-lg" name="edit-goal-submit-button" id="edit-goal-submit-button" disabled>
+            <button type="submit" class="submit-button btn btn-primary btn-lg" name="edit-workout-submit-button" id="edit-workout-submit-button" disabled>
                 <p class="submit-color">Submit</p>
             </button>
         </div>
