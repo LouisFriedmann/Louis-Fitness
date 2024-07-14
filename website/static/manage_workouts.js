@@ -77,7 +77,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         var breakLines = [br.cloneNode(), br.cloneNode(), br.cloneNode(), br.cloneNode()];
 
         var newHeaderTag = document.createElement("h4");
-        newHeaderTag.innerText = "Exercise " + String(exerciseNumber);
+        newHeaderTag.innerText = "Next Exercise";
         newHeaderTag.align = "center";
         elementsCreated.appendChild(breakLines[0]);
         elementsCreated.appendChild(newHeaderTag);
@@ -200,7 +200,7 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     titleInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
     titleInput.setAttribute("title", "Numeric characters are NOT allowed here");
     var newHeaderTag = document.createElement("h4");
-    newHeaderTag.innerText = "Exercise " + String(newExerciseNumber);
+    newHeaderTag.innerText = "Next Exercise"
     newHeaderTag.align = "center";
 
     var descriptionLabel = document.createElement("label");
