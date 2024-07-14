@@ -61,18 +61,6 @@
         color: blue;
         text-align: center;
     }
-    .workout-border
-    {
-        border-style: solid;
-        border-color: lightgreen;
-        margin-bottom: 5px;
-    }
-    .schedule-border
-    {
-        border-style: solid;
-        border-color: blue;
-        margin-bottom: 5px;
-    }
     .current-workout
     {
         width: device-width - 40px;
@@ -80,6 +68,25 @@
         text-align: center;
         position: relative;
         margin-bottom: 5px;
+        background: lightgreen;
+        margin-bottom: 0px;
+        border-style: solid;
+        border-color: black;
+        border-width: 5px;
+        margin-bottom: 5px;
+    }
+    .current-scheduled-workout
+    {
+        width: device-width - 40px;
+        height: auto;
+        text-align: center;
+        position: relative;
+        margin-bottom: 5px;
+        background: lightblue;
+        margin-bottom: 0px;
+        border-style: solid;
+        border-color: black;
+        border-width: 5px;
     }
     .current-exercise
     {
@@ -189,28 +196,26 @@
         <h2 align="center">Schedule</h2>
         <!--schedule content-->
         {% for workout in sorted_user_workouts %}
-            <div class="schedule-border">
-                <div class="current-workout">
-                    <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id) }}">
-                        <button name="remove-from-schedule-button" type="submit" class="remove-button">
-                            <span aria-hidden="true" style="color:white">Remove</span>
-                        </button>
-                    </a>
-                    <h3>{{ workout.day_scheduled }}</h3>
+            <div class="current-scheduled-workout">
+                <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id) }}">
+                    <button name="remove-from-schedule-button" type="submit" class="remove-button">
+                        <span aria-hidden="true" style="color:white">Remove</span>
+                    </button>
+                </a>
+                <h3>{{ workout.day_scheduled }}</h3>
+                </br>
+                <h4>{{ workout.title }}</h4>
+                <p>{{ workout.description }}</p>
+                {% for exercise in workout.exercises %}
+                    <div class="current-exercise">
+                        <h5>Next Exercise</h5>
+                        <h6>{{ exercise.title }}</h6>
+                        <p>{{ exercise.description }}</p>
+                    </div>
                     </br>
-                    <h4>{{ workout.title }}</h4>
-                    <p>{{ workout.description }}</p>
-                    {% for exercise in workout.exercises %}
-                        <div class="current-exercise">
-                            <h5>Next Exercise</h5>
-                            <h6>{{ exercise.title }}</h6>
-                            <p>{{ exercise.description }}</p>
-                        </div>
-                        </br>
-                        </br>
-                        </br>
-                    {% endfor %}
-                </div>
+                    </br>
+                    </br>
+                {% endfor %}
             </div>
         {% endfor %}
         <!--schedule content-->
@@ -220,33 +225,31 @@
         <h2 align="center">Workouts</h2>
         {% for workout in workouts %}
             {% if workout.user_id == user.id %}
-                <div class="workout-border">
-                    <div class="current-workout">
-                        <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ the_workout_dictionary }}'), 'edit-workout', 'edit-workout-form')">
-                            <span aria-hidden="true" style="color:white">Edit</span>
+                <div class="current-workout">
+                    <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ the_workout_dictionary }}'), 'edit-workout', 'edit-workout-form')">
+                        <span aria-hidden="true" style="color:white">Edit</span>
+                    </button>
+                    <button name="edit-workout-add-to-schedule-button" type="submit" class="add-to-schedule-button" onclick="openPopup('schedule-workout'); addScheduledWorkoutId('schedule-workout-form', '{{ workout.id }}')">
+                        <span aria-hidden="true" style="color:white">Schedule</span>
+                    </button>
+                    <a href="{{ url_for('views.delete_workout', workout_id=workout.id) }}">
+                        <button name="edit-workout-delete-button" type="submit" class="delete-button">
+                            <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
-                        <button name="edit-workout-add-to-schedule-button" type="submit" class="add-to-schedule-button" onclick="openPopup('schedule-workout'); addScheduledWorkoutId('schedule-workout-form', '{{ workout.id }}')">
-                            <span aria-hidden="true" style="color:white">Schedule</span>
-                        </button>
-                        <a href="{{ url_for('views.delete_workout', workout_id=workout.id) }}">
-                            <button name="edit-workout-delete-button" type="submit" class="delete-button">
-                                <span aria-hidden="true" style="color:white">Delete</span>
-                            </button>
-                        </a>
-                        <h3>{{ workout.title }}</h3>
-                        <p>{{ workout.description }}</p>
-                        </br>
-                        {% for exercise in workout.exercises %}
-                        <div class="current-exercise">
-                            <h5>Next Exercise</h5>
-                            <h6>{{ exercise.title }} </h6>
-                            <h7>{{ exercise.description }}</h7>
-                        </div>
-                        </br>
-                        </br>
-                        </br>
-                    {% endfor %}
+                    </a>
+                    <h3>{{ workout.title }}</h3>
+                    <p>{{ workout.description }}</p>
+                    </br>
+                    {% for exercise in workout.exercises %}
+                    <div class="current-exercise">
+                        <h5>Next Exercise</h5>
+                        <h6>{{ exercise.title }} </h6>
+                        <h7>{{ exercise.description }}</h7>
                     </div>
+                    </br>
+                    </br>
+                    </br>
+                {% endfor %}
                 </div>
             {% endif %}
         {% endfor %}
