@@ -253,7 +253,6 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     var br2 = br.cloneNode();
     var br3 = br.cloneNode();
     var br4 = br.cloneNode();
-    var br5 = br.cloneNode();
 
     elementsCreatedContainer.appendChild(br1);
     elementsCreatedContainer.appendChild(newHeaderTag);
@@ -265,7 +264,6 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     elementsCreatedContainer.appendChild(br3);
     elementsCreatedContainer.appendChild(deleteButton);
     elementsCreatedContainer.appendChild(br4);
-    elementsCreatedContainer.appendChild(br5);
 
     // Insert a space between the label and the input element
 
