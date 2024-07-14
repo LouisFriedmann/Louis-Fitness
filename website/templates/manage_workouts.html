@@ -162,18 +162,23 @@
            </br>
            </br>
            <div align="center">
-              <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form-container', 'add-workouts-form', 'add')">
+              <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form-container', 'add-workouts-form', 'add', 'workout-submit-button', 'add-workouts-elements-created')">
                   <span class="align-with-button">+</span>
               </button>
               <span style="display: inline;" class="add-workout">Add Exercise</span>
            </div>
-           <label>Title:</label>
-           <input type="text" placeholder="Enter title" data-validate="true" maxlength="100" name="exercise-title-1" pattern="[^0-9]*" title="Numeric characters are NOT allowed here" required>
            </br>
-           <label>Description:</label>
-           <input type="text" placeholder="Enter description" data-validate="true" maxlength="100" name="exercise-description-1" pattern="[^0-9]*" title="Numeric characters are NOT allowed here" required>
-           </br>
-           </br>
+           <div id="add-workouts-elements-created">
+                <h4>Exercise 1</h4>
+                <label>Title:</label>
+                <input type="text" placeholder="Enter title" data-validate="true" maxlength="100" name="exercise-title-1" pattern="[^0-9]*" title="Numeric characters are NOT allowed here" required>
+                </br>
+                <label>Description:</label>
+                <input type="text" placeholder="Enter description" data-validate="true" maxlength="100" name="exercise-description-1" pattern="[^0-9]*" title="Numeric characters are NOT allowed here" required>
+                </br>
+                </br>
+                <!--New exercises will be created here-->
+           </div>
            <button type="submit" class="submit-button btn btn-primary btn-lg" name="workout-submit-button" id="workout-submit-button" disabled>
                <p class="submit-color">Submit</p>
            </button>
@@ -255,13 +260,6 @@
         </button>
         <div class="form-container">
             <h2>Edit</h2>
-            </br>
-            <div align="center">
-                <button type="button" class="button" name="add-workout" onclick="addExerciseElement('edit-workout', 'edit-workout-form', 'edit')">
-                    <span class="align-with-button">+</span>
-                </button>
-                <span style="display: inline;" class="add-workout">Add Exercise</span>
-             </div>
             </br>
              <div id="edit-workout-elements-created">
                 <!-- Edit workout elements will be added here from the javascript -->

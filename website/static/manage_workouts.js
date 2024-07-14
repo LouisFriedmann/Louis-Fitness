@@ -43,8 +43,32 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     elementsCreated.appendChild(newDescriptionLabel);
     elementsCreated.appendChild(newDescriptionInput);
     elementsCreated.appendChild(br.cloneNode());
-    const exercises = workouts[workoutTitle][1];
 
+    // Create the add exercise button and add it to elements created
+    const newBreakLine = document.createElement("br");
+    const newBreakLine1 = document.createElement("br");
+    var addExerciseButton = document.createElement("button");
+    addExerciseButton.setAttribute("type", "button");
+    addExerciseButton.setAttribute("class", "button");
+    addExerciseButton.setAttribute("name", "add-workout");
+    addExerciseButton.onclick = function() {
+        addExerciseElement('edit-workout', 'edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created');
+    };
+    var plusSign = document.createElement("span");
+    plusSign.setAttribute("class", "align-with-button")
+    plusSign.textContent = "+";
+    var addExerciseButtonLabel = document.createElement("span");
+    addExerciseButtonLabel.setAttribute("style", "display: inline;");
+    addExerciseButtonLabel.setAttribute("class", "add-workout");
+    addExerciseButtonLabel.textContent = "Add Exercise";
+
+    elementsCreated.appendChild(newBreakLine);
+    addExerciseButton.appendChild(plusSign);
+    elementsCreated.appendChild(addExerciseButton);
+    elementsCreated.appendChild(addExerciseButtonLabel);
+    elementsCreated.appendChild(newBreakLine1);
+
+    const exercises = workouts[workoutTitle][1];
     var exerciseNumber = 1;
     var submitButton = document.getElementById('edit-workout-submit-button');
     const form = document.getElementById(formId);
@@ -90,7 +114,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         newDescriptionInput.setAttribute("data-validate", "true");
         newDescriptionInput.setAttribute("maxlength", "100");
         newDescriptionInput.setAttribute("required", "true");
-        newDescriptionInput.setAttribute("name", "edit-workout" + String(workoutId) + "-" + "exercise" + String(exerciseNumber) + "-description");
+        newDescriptionInput.setAttribute("name", "edit-workout" + String(workoutId) + "-" + "exercise-description-" + String(exerciseNumber));
         newDescriptionInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
         newDescriptionInput.setAttribute("title", "Numeric characters are NOT allowed here");
         newDescriptionInput.value = exercises[key2];
@@ -142,18 +166,28 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
 }
 
 // Add html element for a new exercise
-function addExerciseElement(formContainerId, formId, nameKeyword)
+function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId, elementsCreatedContainerId)
 {   
     const formContainer = document.getElementById(formContainerId);
     const form = document.getElementById(formId);
+    const elementsCreatedContainer = document.getElementById(elementsCreatedContainerId);
 
-    // Get the number of the last form element, then add one to it, store in variable. This is the new exercise number
-    const inputElements = form.getElementsByTagName("input");
-    const lastInputElementName = inputElements[inputElements.length - 1].name;
-    const exerciseNumber = Number(String(lastInputElementName).charAt(lastInputElementName.length - 1));
-    const newExerciseNumber = exerciseNumber + 1;
+    // Get next exercise number
+    
+    // Handle case where there are no exercise elements added
+    if (Array.from(elementsCreatedContainer.getElementsByTagName('h4')).filter(h4 => h4.innerHTML.includes('Exercise')) == 0)
+    {
+        var newExerciseNumber = 1;
+    }
+    else
+    {
+        const inputElements = elementsCreatedContainer.getElementsByTagName("input");
+        const lastInputElementName = inputElements[inputElements.length - 1].name;
+        const exerciseNumber = Number(String(lastInputElementName).substring(String(lastInputElementName).lastIndexOf('-') + 1));
+        var newExerciseNumber = exerciseNumber + 1;
+    }
 
-    // create two new label and input elements for: Title of exercise and its description
+    // create two new label and input elements for: Title of exercise and its description and a header for next exercise
     var titleLabel = document.createElement("label");
     titleLabel.textContent = "Title:";
     var titleInput = document.createElement("input");
@@ -165,6 +199,9 @@ function addExerciseElement(formContainerId, formId, nameKeyword)
     titleInput.setAttribute("name", nameKeyword + "-exercise-title-" + String(newExerciseNumber));
     titleInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
     titleInput.setAttribute("title", "Numeric characters are NOT allowed here");
+    var newHeaderTag = document.createElement("h4");
+    newHeaderTag.innerText = "Exercise " + String(newExerciseNumber);
+    newHeaderTag.align = "center";
 
     var descriptionLabel = document.createElement("label");
     descriptionLabel.textContent = "Description:";
@@ -188,6 +225,7 @@ function addExerciseElement(formContainerId, formId, nameKeyword)
     deleteButton.style.backgroundColor = "red";
 
     // delete the two title and description elements on top of the button when it is clicked (the corresponding elements created in this function call)
+    const submitButton = document.getElementById(submitButtonId);
     deleteButton.onclick = function()
     {
         titleLabel.remove();
@@ -198,6 +236,7 @@ function addExerciseElement(formContainerId, formId, nameKeyword)
         br2.remove();
         br3.remove();
         br4.remove();
+        newHeaderTag.remove();
         deleteButton.remove();
 
         // Update submit button if form has all elements filled in
@@ -209,24 +248,24 @@ function addExerciseElement(formContainerId, formId, nameKeyword)
         }
     };
 
-    // Append them to form before the submit button, adding a break line afterwards
-    const buttons = form.getElementsByTagName("button");
-    const submitButton = buttons[buttons.length - 1]; // submit button is last button in form
-
     var br = document.createElement("br");
     var br1 = br.cloneNode();
     var br2 = br.cloneNode();
     var br3 = br.cloneNode();
     var br4 = br.cloneNode();
-    formContainer.insertBefore(titleLabel, submitButton);
-    formContainer.insertBefore(titleInput, submitButton);
-    formContainer.insertBefore(br1, submitButton);
-    formContainer.insertBefore(descriptionLabel, submitButton);
-    formContainer.insertBefore(descriptionInput, submitButton);
-    formContainer.insertBefore(br2, submitButton);
-    formContainer.insertBefore(deleteButton, submitButton);
-    formContainer.insertBefore(br3, submitButton);
-    formContainer.insertBefore(br4, submitButton);
+    var br5 = br.cloneNode();
+
+    elementsCreatedContainer.appendChild(br1);
+    elementsCreatedContainer.appendChild(newHeaderTag);
+    elementsCreatedContainer.appendChild(titleLabel);
+    elementsCreatedContainer.appendChild(titleInput);
+    elementsCreatedContainer.appendChild(br2);
+    elementsCreatedContainer.appendChild(descriptionLabel);
+    elementsCreatedContainer.appendChild(descriptionInput);
+    elementsCreatedContainer.appendChild(br3);
+    elementsCreatedContainer.appendChild(deleteButton);
+    elementsCreatedContainer.appendChild(br4);
+    elementsCreatedContainer.appendChild(br5);
 
     // Insert a space between the label and the input element
 
