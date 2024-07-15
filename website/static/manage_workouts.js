@@ -54,11 +54,14 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     addExerciseButton.onclick = function() {
         addExerciseElement('edit-workout', 'edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created');
     };
-    var plusSign = document.createElement("span");
-    plusSign.setAttribute("class", "align-with-button")
-    plusSign.textContent = "+";
+    // <img src="/static/images/plus_sign.png" alt="Add" width="35" style="display: block;"></img>
+    var plusSign = document.createElement("img");
+    plusSign.setAttribute("src", "/static/images/plus_sign.png")
+    plusSign.setAttribute("alt", "Add")
+    plusSign.setAttribute("width", "35")
+    plusSign.setAttribute("style", "display: block;")
     var addExerciseButtonLabel = document.createElement("span");
-    addExerciseButtonLabel.setAttribute("style", "display: inline;");
+    addExerciseButtonLabel.setAttribute("style", "display: inline-flex;");
     addExerciseButtonLabel.setAttribute("class", "add-workout");
     addExerciseButtonLabel.textContent = "Add Exercise";
 
