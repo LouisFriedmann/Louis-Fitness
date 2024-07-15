@@ -1,5 +1,6 @@
 from . import db
 from flask_login import UserMixin
+import json
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,8 +41,16 @@ class Workout(db.Model):
     description = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     exercises = db.relationship('Exercise', backref='workout')
+
+    # If the workout is scheduled
     add_to_schedule = db.Column(db.Boolean)
-    day_scheduled = db.Column(db.String)
+    days_scheduled = db.Column(db.String)
+
+    def set_days_scheduled(self, days_scheduled):
+        self.days_scheduled = json.dumps(days_scheduled)
+
+    def get_days_scheduled(self):
+        return json.loads(self.days_scheduled)
 
     def __repr__(self):
         return f"<Workout number {self.id} with title {self.title}>"

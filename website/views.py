@@ -258,10 +258,18 @@ def manage_workouts():
     the_workout_dictionary = escapejs(json.dumps(workout_dictionary))
 
     workouts = Workout.query.filter_by(user=current_user).all()
-    filtered_workouts = [workout for workout in workouts if workout.day_scheduled in DAYS_ORDER and workout.add_to_schedule]
-    sorted_user_workouts = sorted(filtered_workouts, key=lambda workout: DAYS_ORDER.index(workout.day_scheduled))
+    days_workouts = dict() # Stores a day with its corresponding workouts
+    for workout in workouts:
+        if workout.add_to_schedule:
+            for day in workout.get_days_scheduled():
+                if day in days_workouts:
+                    days_workouts[day].append(workout)
+                else:
+                    days_workouts[day] = [workout]
+    
+    print(days_workouts)
 
-    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], the_workout_dictionary=the_workout_dictionary, sorted_user_workouts=sorted_user_workouts)
+    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], the_workout_dictionary=the_workout_dictionary, days_order=DAYS_ORDER, days_workouts=days_workouts)
 
 # Edit a workout
 @views.route('/edit-workout/', methods=['GET', 'POST'])
@@ -329,25 +337,30 @@ def add_to_schedule():
     workout_id = int(request.form.get("scheduled-workout"))
     workout = Workout.query.get_or_404(workout_id)
 
-    if workout.add_to_schedule:
-        flash(f"\"{workout.title}\" has already been added to schedule", category="error")
-    else:
-        if request.method == "POST":
-            workout.add_to_schedule = True
-            workout.day_scheduled = request.form.get("schedule-day")
-            db.session.add(workout)
-            db.session.commit()
-            flash(f"Added \"{workout.title}\" to schedule successfully!", category="success")
+    if request.method == "POST":
+        workout.add_to_schedule = True
+        day_name_list = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+        days_scheduled = [request.form.get(name) for name in day_name_list if request.form.get(name)]
+        print(days_scheduled)
+        workout.set_days_scheduled(days_scheduled)
+        db.session.add(workout)
+        db.session.commit()
+        flash(f"Added \"{workout.title}\" to schedule successfully!", category="success")
     return redirect(url_for('views.manage_workouts'))
 
-@views.route("/<int:workout_id>remove-from-schedule/", methods=['GET', 'POST'])
+@views.route("/<int:workout_id>/<string:day>/remove-from-schedule/", methods=['GET', 'POST'])
 @login_required
-def remove_from_schedule(workout_id):
+def remove_from_schedule(workout_id, day):
     workout = Workout.query.get_or_404(workout_id)
-    workout.add_to_schedule = False
+    workout_days_scheduled = workout.get_days_scheduled()
+    workout_days_scheduled.remove(day)
+    if not workout_days_scheduled:
+        workout.add_to_schedule = False
+
+    workout.set_days_scheduled(workout_days_scheduled)
     db.session.add(workout)
     db.session.commit()
-    flash(f"Removed \"{workout.title}\" from schedule successfully", category="success")
+    flash(f"Removed \"{workout.title}\" on \"{day}\" from schedule successfully", category="success")
     return redirect(url_for('views.manage_workouts'))
 
 @views.route("/achievements")
