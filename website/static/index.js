@@ -18,6 +18,7 @@ function checkPopupForm()
           const form = event.target.closest("form");
           if (form && form.id != "sign-up-form" && form.id != "login-form")
           {
+              console.log("went through");
               const inputElements = form.querySelectorAll('input');
               const buttons = form.getElementsByTagName("button");
               const submitButton = buttons[buttons.length - 1]; // submit button is last button in form

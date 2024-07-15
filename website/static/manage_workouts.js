@@ -280,6 +280,33 @@ function addScheduledWorkoutId(scheduleFormId, workoutId)
     hiddenInput.setAttribute('value', workoutId);
 
     form.appendChild(hiddenInput);
-
-
 }
+
+// User must check at least one checkbox for schedule form to be enabled
+function checkScheduleForm()
+{
+    function checkScheduleFormValidity(event)
+    {
+        const form = event.target.closest("form");
+        if (form)
+        {
+            console.log(form.id);
+            if (form.id === 'schedule-workout-form')
+            {
+                const submitButton = document.getElementById("schedule-submit-button");
+                for (inputElement of form.querySelectorAll('input'))
+                {
+                    if (inputElement.checked)
+                    {
+                        submitButton.disabled = false;
+                        return;
+                    }
+                }
+                submitButton.disabled = true;
+            }
+        }
+    }
+    document.addEventListener("input", checkScheduleFormValidity);
+    document.addEventListener("click", checkScheduleFormValidity);
+}
+document.addEventListener("DOMContentLoaded", checkScheduleForm);
