@@ -224,39 +224,6 @@ def manage_workouts():
         flash("Workout created successfully", category="success")
         return redirect(url_for("views.manage_workouts"))
 
-    # Convert workout and exercise data attributes into dictionary to use later in the javascript
-    # {workout1: {exercise1: description, exercise2: description}, workout2: {exercise1: description, exercise2: description}}
-    workout_dictionary = {} # Contains all data about workouts
-    for workout in Workout.query.filter_by(user=current_user):
-        exercises = {} # Contains all exercises for the workout we are upto in the loop
-
-        for exercise in workout.exercises:
-            next_exercise = exercise
-            next_exercise_title = exercise.title
-            # If there is a duplicate title, then number that title and all further titles accordingly to avoid duplicate errors
-            if next_exercise_title in exercises:
-                next_title_number = 2
-                next_exercise_title += str(next_title_number)
-                while next_exercise_title in exercises:
-                    next_exercise_title = next_exercise_title[:-1]
-                    next_title_number += 1
-                    next_exercise_title += str(next_title_number)
-            exercises[next_exercise_title] = next_exercise.description # Add exercise title and description to exercises in the form {title: description}
-
-        next_workout = workout
-        next_workout_title = workout.title
-        # Same as the exercise, make sure there are no duplicate workout titles
-        if next_workout_title in workout_dictionary:
-            next_title_number = 2
-            next_workout_title += str(next_title_number)
-            while next_workout_title in workout_dictionary:
-                next_workout_title = next_workout_title[:-1]
-                next_title_number += 1
-                next_workout_title += str(next_title_number)
-        workout_dictionary[next_workout_title] = [next_workout.description, exercises]
-
-    the_workout_dictionary = escapejs(json.dumps(workout_dictionary))
-
     workouts = Workout.query.filter_by(user=current_user).all()
     days_workouts = dict() # Stores a day with its corresponding workouts
     for workout in workouts:
@@ -266,10 +233,11 @@ def manage_workouts():
                     days_workouts[day].append(workout)
                 else:
                     days_workouts[day] = [workout]
-    
-    print(days_workouts)
 
-    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], the_workout_dictionary=the_workout_dictionary, days_order=DAYS_ORDER, days_workouts=days_workouts)
+    # To pass into javascript to access exercise titles and descriptions for each exercise in each workout
+    workout_exercises = {workout.id: [[exercise.title, exercise.description] for exercise in workout.exercises] for workout in Workout.query.filter_by(user=current_user)}
+
+    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], workout_exercises=escapejs(json.dumps(workout_exercises)), days_order=DAYS_ORDER, days_workouts=days_workouts)
 
 # Edit a workout
 @views.route('/edit-workout/', methods=['GET', 'POST'])

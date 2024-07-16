@@ -1,6 +1,6 @@
 // change value of workout so when user opens popup to edit a workout, the initial values will be there
 // and the . Then, store value of goal_id in hidden html element called goal_id
-function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, workouts, formClassId, formId)
+function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, workout_exercises, formClassId, formId)
 {
     // First, delete all previous form container elements
     const elementsCreated = document.getElementById('edit-workout-elements-created');
@@ -54,7 +54,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     addExerciseButton.onclick = function() {
         addExerciseElement('edit-workout', 'edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created');
     };
-    // <img src="/static/images/plus_sign.png" alt="Add" width="35" style="display: block;"></img>
+
     var plusSign = document.createElement("img");
     plusSign.setAttribute("src", "/static/images/plus_sign.png")
     plusSign.setAttribute("alt", "Add")
@@ -71,11 +71,11 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     elementsCreated.appendChild(addExerciseButtonLabel);
     elementsCreated.appendChild(newBreakLine1);
 
-    const exercises = workouts[workoutTitle][1];
+    const exercises = workout_exercises[workoutId];
     var exerciseNumber = 1;
     var submitButton = document.getElementById('edit-workout-submit-button');
     const form = document.getElementById(formId);
-    for (let key2 in exercises)
+    for (const [title, description] of exercises)
     {
         var breakLines = [br.cloneNode(), br.cloneNode(), br.cloneNode(), br.cloneNode()];
 
@@ -93,17 +93,9 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         newTitleInput.setAttribute("data-validate", "true");
         newTitleInput.setAttribute("maxlength", "100");
         newTitleInput.setAttribute("required", "true");
-        newTitleInput.setAttribute("name", "edit-workout" + String(workoutId) + "-" + "exercise" + String(exerciseNumber) + "-title");
-        newTitleInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
-        newTitleInput.setAttribute("title", "Numeric characters are NOT allowed here");
+        newTitleInput.setAttribute("name", "edit-workout-" + String(workoutId) + "-exercise-" + String(exerciseNumber) + "-title");
 
-        newTitleInput.value = key2;
-
-        // if there is a number at the end of an exercise title, delete it
-        if (!isNaN(newTitleInput.value.charAt(newTitleInput.value.length - 1)))
-        {
-            newTitleInput.value = newTitleInput.value.slice(0, -1);
-        }
+        newTitleInput.value = title;
 
         elementsCreated.appendChild(newTitleLabel);
         elementsCreated.appendChild(newTitleInput);
@@ -117,10 +109,8 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         newDescriptionInput.setAttribute("data-validate", "true");
         newDescriptionInput.setAttribute("maxlength", "100");
         newDescriptionInput.setAttribute("required", "true");
-        newDescriptionInput.setAttribute("name", "edit-workout" + String(workoutId) + "-" + "exercise-description-" + String(exerciseNumber));
-        newDescriptionInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
-        newDescriptionInput.setAttribute("title", "Numeric characters are NOT allowed here");
-        newDescriptionInput.value = exercises[key2];
+        newDescriptionInput.setAttribute("name", "edit-workout-" + String(workoutId) + "-" + "exercise-description-" + String(exerciseNumber));
+        newDescriptionInput.value = description;
 
         // create the delete button
         var deleteButton = document.createElement("button");
@@ -200,8 +190,6 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     titleInput.setAttribute("maxlength", "100");
     titleInput.setAttribute("required", "true");
     titleInput.setAttribute("name", nameKeyword + "-exercise-title-" + String(newExerciseNumber));
-    titleInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
-    titleInput.setAttribute("title", "Numeric characters are NOT allowed here");
     var newHeaderTag = document.createElement("h4");
     newHeaderTag.innerText = "Next Exercise"
     newHeaderTag.align = "center";
@@ -214,8 +202,6 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     descriptionInput.setAttribute("data-validate", "true");
     descriptionInput.setAttribute("maxlength", "100");
     descriptionInput.setAttribute("required", "true");
-    descriptionInput.setAttribute("pattern", "[^0-9]*"); // only allow non-numeric characters
-    descriptionInput.setAttribute("title", "Numeric characters are NOT allowed here");
 
     descriptionInput.setAttribute("name", "exercise-description-" + String(newExerciseNumber));
 
