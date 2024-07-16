@@ -5,7 +5,6 @@ import json
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     goals = db.relationship('Goal', backref='user')
     workouts = db.relationship('Workout', backref='user')

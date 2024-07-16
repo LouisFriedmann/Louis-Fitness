@@ -74,28 +74,24 @@ def generate_password():
 def sign_up():
     generated_password = ""
     username = ""
-    email = ""
     password = ""
     confirmed_password = ""
     if request.method == 'POST':
         # Check if the user wants their password to be generated randomly, save user info except passwords
         username = request.form.get('username')
-        email = request.form.get('email')
         password = request.form.get('password')
         confirmed_password = request.form.get('confirm-password')
 
         if "password-generator" in request.form:
             generated_password = generate_password()
-        elif not username or not email or not password or not confirmed_password:
+        elif not username or not password or not confirmed_password:
             flash("Please fill out the entire form", category="error")
         else:
-            # Check if email already exists or if the password isn't strong enough, if this criteria is met, create the account
-            if db.session.query(User.id).filter_by(email=email).first():
-               flash(f"A user with the email {email} already exists, please choose another email", category="error")
+            # Check if the username already exists or if the password isn't strong enough, if this criteria is met, create the account
+            if db.session.query(User.id).filter_by(username=username).first():
+               flash(f"A user with the username \"{username}\" already exists, please choose another username", category="error")
             elif password != confirmed_password:
                 flash("Passwords don't match", category="error")
-            elif email.count("@") != 1 or email.index("@") == 0 or email.index("@") == len(email) - 1 or " " in email:
-                flash("Email must be in the form ___@___ without any spaces", category="error")
             elif len(password) <= 8:
                 flash("Password must be more than 8 characters long", category="error")
             elif password.upper() == password:
@@ -118,7 +114,7 @@ def sign_up():
                 else:
 
                     # Add user to website and log them in
-                    new_user = User(username=username, email=email, password=generate_password_hash(password, method="scrypt"))
+                    new_user = User(username=username, password=generate_password_hash(password, method="scrypt"))
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(new_user, remember=True)
@@ -128,17 +124,17 @@ def sign_up():
 
     if generated_password:
         flash(f"Your new generated password is {generated_password}", category="success")
-        return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, email=email, password=password, confirmed_password=confirmed_password)
+        return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
 
-    return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, email=email, password=password, confirmed_password=confirmed_password)
+    return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
 
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
-    email = ""
+    username = ""
     if request.method == 'POST':
-        email = request.form.get('email')
+        username = request.form.get('username')
         password = request.form.get('password')
-        user_account = User.query.filter_by(email=email).first()
+        user_account = User.query.filter_by(username=username).first()
         if user_account:
             if check_password_hash(pwhash=user_account.password, password=password):
                 login_user(user_account, remember=True)
@@ -147,9 +143,9 @@ def login():
             else:
                 flash("Incorrect password, please try again", category="error")
         else:
-            flash(f"There is no account with the email {email}", category='error')
+            flash(f"There is no account with the username \"{username}\")", category='error')
 
-    return render_template('login.html', user=current_user, email=email)
+    return render_template('login.html', user=current_user, username=username)
 
 @auth.route("/logout")
 def logout():
