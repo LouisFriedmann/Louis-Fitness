@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash
+from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import current_user, login_user, logout_user
 from .models import User
 from . import db
@@ -78,9 +78,9 @@ def sign_up():
     confirmed_password = ""
     if request.method == 'POST':
         # Check if the user wants their password to be generated randomly, save user info except passwords
-        username = request.form.get('username')
-        password = request.form.get('password')
-        confirmed_password = request.form.get('confirm-password')
+        username = request.form.get('sign-up-username')
+        password = request.form.get('sign-up-password')
+        confirmed_password = request.form.get('sign-up-confirm-password')
 
         if "password-generator" in request.form:
             generated_password = generate_password()
@@ -122,9 +122,9 @@ def sign_up():
 
                     return redirect(url_for('views.home'))
 
-    if generated_password:
-        flash(f"Your new generated password is {generated_password}", category="success")
-        return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
+        if generated_password:
+            flash(f"Your new generated password is {generated_password}", category="success")
+            return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
 
     return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
 
@@ -132,8 +132,8 @@ def sign_up():
 def login():
     username = ""
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = request.form.get('login-username')
+        password = request.form.get('login-password')
         user_account = User.query.filter_by(username=username).first()
         if user_account:
             if check_password_hash(pwhash=user_account.password, password=password):
