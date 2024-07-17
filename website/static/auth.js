@@ -53,10 +53,19 @@ function loadLoginData()
     }
 }
 
-function loadAuthData()
+function loadAndSaveAuthData()
 {
     if (document.getElementById('sign-up-form'))
     {
+        // Only save password and confirm password if they aren't blank (this means a password was generated and needs to be saved)
+        var password = document.getElementById('sign-up-password').value;
+        var confirmPassword = document.getElementById('sign-up-confirm-password').value;
+        if (password && confirmPassword)
+        {
+            localStorage.setItem('sign-up-password', password);
+            localStorage.setItem('sign-up-confirm-password', confirmPassword);
+        }
+        
         loadSignUpData();
     }
     if (document.getElementById('login-form'))
@@ -64,4 +73,4 @@ function loadAuthData()
         loadLoginData();
     }
 }
-window.onload = loadAuthData;
+window.onload = loadAndSaveAuthData;
