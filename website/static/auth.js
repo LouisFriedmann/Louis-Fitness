@@ -74,3 +74,11 @@ function loadAndSaveAuthData()
     }
 }
 window.onload = loadAndSaveAuthData;
+
+// Ensure data is deleted from local storage when user submits sign-up form
+function removeSignUpData()
+{
+    localStorage.removeItem('sign-up-username')
+    localStorage.removeItem('sign-up-password')
+    localStorage.removeItem('sign-up-confirm-password')
+}
