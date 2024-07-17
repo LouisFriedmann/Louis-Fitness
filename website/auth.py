@@ -124,7 +124,7 @@ def sign_up():
 
         if generated_password:
             flash(f"Your new generated password is {generated_password}", category="success")
-            return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
+            return redirect(url_for('auth.sign_up', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password))
 
     return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)
 
