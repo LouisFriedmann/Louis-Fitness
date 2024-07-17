@@ -72,10 +72,11 @@ def generate_password():
 
 @auth.route("/sign-up", methods=['GET', 'POST'])
 def sign_up():
-    generated_password = ""
-    username = ""
-    password = ""
-    confirmed_password = ""
+    generated_password = session.get('generated_password', "")
+    username = session.get('username', "")
+    password = session.get('password', "")
+    confirmed_password = session.get('confirmed_password', "")
+
     if request.method == 'POST':
         # Check if the user wants their password to be generated randomly, save user info except passwords
         username = request.form.get('sign-up-username')
@@ -120,10 +121,19 @@ def sign_up():
                     login_user(new_user, remember=True)
                     flash("Signed up successfully!", category="success")
 
+                    session.pop('generated_password', None)
+                    session.pop('username', None)
+                    session.pop('password', None)
+                    session.pop('confirmed_password', None)
+
                     return redirect(url_for('views.home'))
 
-        if generated_password:
+        if generated_password and "password-generator" in request.form:
             flash(f"Your new generated password is {generated_password}", category="success")
+            session['generated_password'] = generated_password
+            session['username'] = username
+            session['password'] = password
+            session['confirmed_password'] = confirmed_password
             return redirect(url_for('auth.sign_up', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password))
 
     return render_template('sign_up.html', user=current_user, generated_password=generated_password, username=username, password=password, confirmed_password=confirmed_password)

@@ -21,7 +21,7 @@
     </br>
 
     <div class="signup-form">
-    <form oninput="saveSignUpData()" onsubmit="removeSignUpData()" method="post" id="sign-up-form" novalidate>
+    <form oninput="saveSignUpData()" method="post" id="sign-up-form" novalidate>
 		<p>Please fill in this form to create an account!</p>
 		<hr>
         <div class="form-group">
@@ -62,7 +62,7 @@
         <div>By signing up, you agree to the <a href="{{ url_for('auth.terms_of_use') }}">Terms of Use</a> &amp; <a href="{{ url_for('auth.privacy_policy') }}">Privacy Policy</a></div>
 		</br>
 		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg" name="sign-up-submit-button" value="sign-up-submit-button">Sign Up</button>
+            <button type="submit" class="btn btn-primary btn-lg" name="sign-up-submit-button" value="sign-up-submit-button" onclick="removeSignUpData()">Sign Up</button>
         </div>
     </form>
 	<div class="text-center">Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></div>
