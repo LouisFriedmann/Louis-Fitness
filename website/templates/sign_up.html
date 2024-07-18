@@ -61,8 +61,11 @@
         </div>
         <div>By signing up, you agree to the <a href="{{ url_for('auth.terms_of_use') }}">Terms of Use</a> &amp; <a href="{{ url_for('auth.privacy_policy') }}">Privacy Policy</a></div>
 		</br>
+		<!-- Hidden field to store submission type -->
+		<input type="hidden" id="sign-up-submission-type" name="sign-up-submission-type">
+		<!-- Hidden field to store submission type -->
 		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg" name="sign-up-submit-button" value="sign-up-submit-button" onclick="removeSignUpData()">Sign Up</button>
+            <button type="submit" class="btn btn-primary btn-lg" name="sign-up-submit-button" value="sign-up-submit-button" onclick="removeSignUpData(); setSignUpSubmissionType('button')">Sign Up</button>
         </div>
     </form>
 	<div class="text-center">Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></div>

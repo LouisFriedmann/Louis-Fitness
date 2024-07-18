@@ -82,3 +82,21 @@ function removeSignUpData()
     localStorage.removeItem('sign-up-password')
     localStorage.removeItem('sign-up-confirm-password')
 }
+
+// Handle enter key press for sign-up form
+function setSignUpSubmissionType(type)
+{
+    document.getElementById("sign-up-submission-type").value = type;
+}
+
+var signUpForm = document.getElementById("sign-up-form");
+if (signUpForm)
+{
+    document.getElementById('sign-up-form').addEventListener('keypress', function(event)
+    {
+        if (event.key === 'Enter')
+        {
+            setSignUpSubmissionType('enter');
+        }
+    });
+}

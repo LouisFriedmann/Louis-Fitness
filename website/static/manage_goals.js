@@ -1,11 +1,11 @@
 // Disable all input elements' required attributes
 function disableInputRequired(formId)
 {
-    const form = document.getElementById(formId);
-    const inputElements = form.querySelectorAll("input");
+    var form = document.getElementById(formId);
+    var inputElements = form.querySelectorAll("input");
     for (let i = 0; i < inputElements.length; i++)
     {
-        const element = inputElements[i];
+        var element = inputElements[i];
         element.required = false;
     }
 }
@@ -120,3 +120,28 @@ function getTimeInWeek(date1, date2)
 
     return result;
 }
+
+// Handle enter key press for submitting manage goals form
+
+// Add event listener for keydown event on the form
+document.getElementById("add-goals-form").addEventListener("keypress",
+    function(event)
+    {
+        if (event.key == "Enter")
+        {
+            event.preventDefault();
+
+            // check if all input elements are filled in before clicking submit button
+            var addGoalsFormInputs = document.getElementById('add-goals-form').querySelectorAll("input");
+            for (let i = 0; i < addGoalsFormInputs.length; i++)
+            {
+                if (!addGoalsFormInputs[i].value && addGoalsFormInputs[i].required)
+                {
+                    return;
+                }
+            }
+            var submitButton = document.getElementById("goal-submit-button");
+            submitButton.click();
+        }
+    }
+);

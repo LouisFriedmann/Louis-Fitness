@@ -77,13 +77,16 @@ def sign_up():
     password = session.get('password', "")
     confirmed_password = session.get('confirmed_password', "")
 
+    submit_event = request.form.get('sign-up-submission-type')
+    print(f"Submit event: {submit_event}")
+
     if request.method == 'POST':
         # Check if the user wants their password to be generated randomly, save user info except passwords
         username = request.form.get('sign-up-username')
         password = request.form.get('sign-up-password')
         confirmed_password = request.form.get('sign-up-confirm-password')
 
-        if "password-generator" in request.form:
+        if "password-generator" in request.form and submit_event != "enter":
             generated_password = generate_password()
         elif not username or not password or not confirmed_password:
             flash("Please fill out the entire form", category="error")
@@ -128,7 +131,7 @@ def sign_up():
 
                     return redirect(url_for('views.home'))
 
-        if generated_password and "password-generator" in request.form:
+        if generated_password and "password-generator" in request.form and submit_event != "enter":
             flash(f"Your new generated password is {generated_password}", category="success")
             session['generated_password'] = generated_password
             session['username'] = username
@@ -153,7 +156,7 @@ def login():
             else:
                 flash("Incorrect password, please try again", category="error")
         else:
-            flash(f"There is no account with the username \"{username}\")", category='error')
+            flash(f"There is no account with the username \"{username}\"", category='error')
 
     return render_template('login.html', user=current_user, username=username)
 

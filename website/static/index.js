@@ -40,38 +40,6 @@ function checkPopupForm()
 }
 document.addEventListener("DOMContentLoaded", checkPopupForm);
 
-// Validate default submission user enter for all forms (COMMENT FOR NOW AND RESOLVE LATER) FOR NOW, DISABLE ENTER FOR ALL FORMS
-//function handleEnter()
-//{
-//     function handleEnterKeyPress(event)
-//     {
-//            if (event.keyCode === 13)
-//            {
-//                const formButtons = form.querySelectorAll("button");
-//                const formSubmitButton = formButtons[formButtons.length - 1];
-//                if (formSubmitButton.disabled)
-//                {
-//                    console.log("oof");
-//                    event.preventDefault(); // Prevent default form submission
-//                }
-//            }
-//     }
-//
-//        document.addEventListener("keydown", handleEnterKeyPress);
-//}
-//document.addEventListener("DOMContentLoaded", handleEnter);
-const forms = document.querySelectorAll("form");
-
-forms.forEach(form => {
-  form.addEventListener("keydown", function(event)
-  {
-    if (event.key === "Enter")
-    {
-      event.preventDefault();
-    }
-  });
-});
-
 function UTCToLocal(datetimeString)
 {
     const utcStartDate = new Date(datetimeString);
@@ -145,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function()
             const localEndDate = UTCToLocal(endDateTimeStringUTC);
             const formattedLocalEndDate = `${String(localEndDate.getMonth() + 1).padStart(2, '0')}-${String(localEndDate.getDate()).padStart(2, '0')}-${localEndDate.getFullYear()} ${timeZoneAbbreviation}`;
             achievementInfo.innerHTML = achievementInfo.innerHTML.replace(endDateTimeString, formattedLocalEndDate);
-    }
+        }
     }
 
 });
