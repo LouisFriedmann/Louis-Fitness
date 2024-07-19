@@ -124,7 +124,7 @@ function getTimeInWeek(date1, date2)
 // Handle enter key press for submitting manage goals form
 
 // Add event listener for keydown event on the form
-document.getElementById("add-goals-form").addEventListener("keypress",
+document.getElementById('add-goals-form').addEventListener("keypress",
     function(event)
     {
         if (event.key == "Enter")

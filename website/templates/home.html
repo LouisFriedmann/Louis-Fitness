@@ -12,13 +12,14 @@
     .moving-stayhardspeechbubble
     {
         position: relative; /* Enables positioning */
-        left: 625px;
-        top: -350px;
+        transform: translate(275%, -375%);
+        vertical-align: initial; /* Override the default vertical-align */
     }
-    .moving-goggins
+    .goggins
     {
         position: relative; /* Enables positioning */
-        top: 50px;
+        width: 50vw; /* 50% of viewport width */
+        height: 50vh; /* 50% of viewport height */
     }
 {% endblock %}
 
@@ -27,6 +28,6 @@
     <h1 align="center">Louis Fitness</h1>
     </br>
     <h3 align="center">Maintain consistency and set new PR's by keeping track of your workouts</h3>
-    <img class="center moving-goggins" src="/static/images/goggins.png" width="613" alt="Goggins">
-    <img class="moving-stayhardspeechbubble" src="/static/images/stay_hard_speech_bubble.png" width="250" alt="Stay Hard Speech Bubble">
+    <img class="center goggins" src="/static/images/goggins.png" alt="Goggins">
+    <img class="moving-stayhardspeechbubble" src="/static/images/stay_hard_speech_bubble.png" width="20%" alt="Stay Hard Speech Bubble">
 {% endblock %}
