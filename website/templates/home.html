@@ -9,17 +9,12 @@
         margin-left: auto;
         margin-right: auto;
     }
-    .moving-stayhardspeechbubble
-    {
-        position: relative; /* Enables positioning */
-        transform: translate(275%, -375%);
-        vertical-align: initial; /* Override the default vertical-align */
-    }
     .goggins
     {
         position: relative; /* Enables positioning */
-        width: 50vw; /* 50% of viewport width */
-        height: 50vh; /* 50% of viewport height */
+        width: 60vw; 
+        height: 60vh;
+        object-fit: cover;
     }
 {% endblock %}
 
@@ -29,5 +24,4 @@
     </br>
     <h3 align="center">Maintain consistency and set new PR's by keeping track of your workouts</h3>
     <img class="center goggins" src="/static/images/goggins.png" alt="Goggins">
-    <img class="moving-stayhardspeechbubble" src="/static/images/stay_hard_speech_bubble.png" width="20%" alt="Stay Hard Speech Bubble">
 {% endblock %}
