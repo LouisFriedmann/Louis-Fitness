@@ -3,17 +3,37 @@
 {% block title %}Manage Goals{% endblock %}
 
 {% block stylesheets %}
-    .button
-    {
-        width: 50;
-        height: 50;
-        background-color: lightgreen;
-        text-align: center;
-    }
-    .button:hover
-    {
-        background-color: #45a049;
-    }
+.button {
+    width: 50px; /* Specify units */
+    height: 50px; /* Specify units */
+    background-color: lightgreen;
+    cursor: pointer; /* Change cursor to pointer */
+    position: relative; /* Enable positioning for the image */
+    display: inline-flex;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.plus-sign {
+    width: 35px; /* Specify units */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    position: absolute; /* Override the align center */
+    top: 50%; /* Position in the center vertically */
+    left: 50%; /* Position in the center horizontally */
+    transform: translate(-50%, -50%); /* Adjust the positioning */
+    vertical-align: middle;
+}
+.add-goal-span
+{
+    display: inline-flex;
+    align-items: center; /* Aligns the text vertically in the center */
+    margin-left: 8px; /* Space between button and text */
+    vertical-align: middle; /* Aligns the span with the button */
+}
+
     .align-with-button
     {
         font-size: 40px;
@@ -26,21 +46,19 @@
         position: relative;
         top: -10px;
         left: 10px;
+        
     }
     .form-popup
     {
         display: none;
-        position: fixed;
-        bottom: 0;
-        right: 15px;
-        border: 3px solid #f1f1f1;
+        position: absolute; /* Position the content */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
         z-index: 9;
-        left: 50%;
-        top: 50%;
-        width: 400px;
-        height: 650px;
-        margin-left: -200px;
-        margin-top: -300px;
+        transform: translate(-50%, -50%); /* Offset by half of its width and height */
+        width: 60vw;
+        height: 70vh;
+        border: 3px solid #f1f1f1;
         background: white;
         overflow-x: hidden;
         Overflow-y: scroll;
@@ -58,7 +76,7 @@
     }
     .built-in-button
     {
-        width: 380px;
+        width: 50vw;
         height: 120px;
         margin-bottom: 10px;
     }
@@ -128,6 +146,11 @@
         height: 30px;
         background-color: red;
     }
+    .rectangle {
+        height: 100px; /* Set a fixed height */
+        overflow: auto; /* Enables scrollbars if content overflows */
+    }
+    
 
 {% endblock %}
 
@@ -137,7 +160,7 @@
     </br>
     <div align="center">
         <button type="submit" class="button" name="add-goal" onclick="openPopup('add-goals')">
-            <img src="/static/images/plus_sign.png" alt="Add" width="35" style="display: block;">
+            <img align="" src="/static/images/plus_sign.png" alt="Add" width="35" class="plus-sign">
         </button>
         <span style="display: inline-flex;" class="add-goal">Add goal</span>
     </div>
@@ -152,21 +175,27 @@
             </br>
             <h3>Built in Goals</h3>
             <button name="bench-PR" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')" >
-                <h5>Bench 100% of Your Bodyweight</h5>
-                <h6>Type: New PR</h6>
-                <p>Bench your bodyweight ex: if you are 150lbs, you need to bench 150lbs</p>
+                <div class="rectangle">
+                    <h5>Bench 100% of Your Bodyweight</h5>
+                    <h6>Type: New PR</h6>
+                    <p>Bench your bodyweight ex: if you are 150lbs, you need to bench 150lbs</p>
+                </div>
             </button>
             </br>
             <button name="workout-4-weeks" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
-                <h5>Workout for 4 weeks</h5>
-                <h6>Type: Duration</h6>
-                <p>Workout consistently for 4 weeks 4 times/week</p>
+                <div class="rectangle">
+                    <h5>Workout for 4 weeks</h5>
+                    <h6>Type: Duration</h6>
+                    <p>Workout consistently for 4 weeks 4 times/week</p>
+                </div>
             </button>
             </br>
             <button name="lose-weight" class="built-in-button" type="submit" onclick="disableInputRequired('add-goals-form'); closePopup('add-goals')">
-                <h5>Lose 10% of your weight</h5>
-                <h6>Type: Lose/Gain Weight</h6>
-                <p>Lose 10% of your bodyweight ex: if you are 100lbs, you need to get to 90lbs</p>
+                <div class="rectangle">
+                    <h5>Lose 10% of your weight</h5>
+                    <h6>Type: Lose/Gain Weight</h6>
+                    <p>Lose 10% of your bodyweight ex: if you are 100lbs, you need to get to 90lbs</p>
+                </div>
             </button>
             </br>
             <h3>Custom Goal</h3>
