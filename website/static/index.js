@@ -1,6 +1,32 @@
 // Any function used in or is an event listener for: two or more files will be in this file
 
+
 function openPopup(id) {
+    // Wait a second for content to load for view full goal
+    const viewFullGoalElements = document.getElementById('view-full-goal-elements');
+
+    if (viewFullGoalElements)
+    {
+        viewFullGoalElements.style.visibility = 'hidden';
+        viewFullGoalElements.style.opacity = '0';
+
+        const preloader = document.getElementById('preloader1');
+        preloader.style.opacity = '1';
+        preloader.style.visibility = 'visible';
+        if (id == 'view-full-goal')
+        {
+            setTimeout(() => {
+                // Hide the preloader
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+
+                // Show the main content
+                viewFullGoalElements.style.visibility = 'visible';
+                viewFullGoalElements.style.opacity = '1';
+            }, 1000);
+        }
+    }
+
     const popup = document.getElementById(id);
     popup.style.display = "block";
 
