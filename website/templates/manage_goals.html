@@ -63,6 +63,10 @@
         overflow-x: hidden;
         Overflow-y: scroll;
     }
+    .form-popup-full-goal
+    {
+        height: auto;
+    }
 
     .form-container
     {
@@ -110,7 +114,6 @@
         margin: 5px;
         background: lightgreen;
         overflow: hidden;
-        display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 147px;
@@ -371,7 +374,7 @@
 <!-- Edit goals popup form -->
 
 <!-- View full goal popup form -->
-<div class="form-popup" id="view-full-goal">
+<div class="form-popup form-popup-full-goal" id="view-full-goal">
     <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('view-full-goal')">
         <span aria-hidden="true" style="color:white">&times;</span>
     </button>
