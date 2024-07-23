@@ -52,10 +52,9 @@
     {
         display: none;
         position: absolute; /* Position the content */
-        top: 50%; /* Center vertically */
         left: 50%; /* Center horizontally */
         z-index: 9;
-        transform: translate(-50%, -50%); /* Offset by half of its width and height */
+        transform: translate(-50%, 0%); /* Offset by half of its width and height */
         width: 60vw;
         height: 70vh;
         border: 3px solid #f1f1f1;
@@ -67,6 +66,7 @@
     .form-popup-full-goal
     {
         height: auto;
+        min-height: 200px;
         word-break: break-word;
     }
 
@@ -160,11 +160,19 @@
             display: none;
         }
     }
-
+    .view-goal-button
+    {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 110px;
+        height: 30px;
+        background-color: purple;
+    }
     .edit-button
     {
         position: absolute;
-        top: 0;
+        top: 33.75px;
         right: 0;
         width: 110px;
         height: 30px;
@@ -174,7 +182,7 @@
     .finish-week-button
     {
         position: absolute;
-        top: 33.75px;
+        top: 67.5px;
         right: 0px;
         width: 110px;
         height: 30px;
@@ -183,7 +191,7 @@
     .complete-button
     {
         position: absolute;
-        top: 33.75px;
+        top: 67.5px;
         right: 0px;
         width: 110px;
         height: 30px;
@@ -192,20 +200,11 @@
     .delete-button
     {
         position: absolute;
-        top: 67.5px;
-        right: 0px;
-        width: 110px;
-        height: 30px;
-        background-color: red;
-    }
-    .view-goal-button
-    {
-        position: absolute;
         top: 101.25px;
         right: 0px;
         width: 110px;
         height: 30px;
-        background-color: purple;
+        background-color: red;
     }
     .rectangle {
         height: 100px; /* Set a fixed height */
@@ -302,6 +301,15 @@
         {% for goal in goals %}
             {% if goal.user_id == user.id %}
                 <div class="current-goal">
+                    {% if goal.type == "Duration" %}
+                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '{{ goal.rate }}', '{{ goal.duration }}', '{{ goal.date_started }}', '{{ goal.end_date }}', '{{ goal.is_week_finished }}'); openPopup('view-full-goal')">
+                        <span aria-hidden="true" style="color:white">Full Goal</span>
+                        </button>
+                    {% else %}
+                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '', '', '{{ goal.date_started }}', '', ''); openPopup('view-full-goal')">
+                        <span aria-hidden="true" style="color:white">Full Goal</span>
+                        </button>
+                    {% endif %}
                     <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', 'edit-goal', 'edit-goal-form', 'goal-id', '{{ goal.id }}')">
                         <span aria-hidden="true" style="color:white">Edit</span>
                         </button>
@@ -334,15 +342,6 @@
                             <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
                     </a>
-                    {% if goal.type == "Duration" %}
-                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '{{ goal.rate }}', '{{ goal.duration }}', '{{ goal.date_started }}', '{{ goal.end_date }}', '{{ goal.is_week_finished }}'); openPopup('view-full-goal')">
-                        <span aria-hidden="true" style="color:white">Full Goal</span>
-                        </button>
-                    {% else %}
-                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '', '', '{{ goal.date_started }}', '', ''); openPopup('view-full-goal')">
-                        <span aria-hidden="true" style="color:white">Full Goal</span>
-                        </button>
-                    {% endif %}
                     <p class="current-goal-description">{{ goal.description }}</p>
                 </div>
             {% endif %}

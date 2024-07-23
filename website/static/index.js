@@ -1,9 +1,35 @@
 // Any function used in or is an event listener for: two or more files will be in this file
 
-function openPopup(id)
-{
-    document.getElementById(id).style.display = "block";
+function openPopup(id) {
+    const popup = document.getElementById(id);
+    popup.style.display = "block";
+
+    // Center the popup at the mouse position
+    const adjustedY = mouseY - popup.offsetHeight / 2;
+    popup.style.top = `${adjustedY}px`;
+
+    // Adjust popup position if it goes out of the viewport
+    const margin = 10;
+    const viewportHeight = window.innerHeight;
+    const popupRect = popup.getBoundingClientRect();
+    
+    // Check if the popup is going past the bottom of the viewport
+    if (popupRect.bottom > viewportHeight) {
+        popup.style.top = `${window.scrollY + viewportHeight - popup.offsetHeight - margin}px`;
+    }
+    
+    // Check if the popup is going past the top of the viewport
+    if (popupRect.top < 0) {
+        popup.style.top = `${window.scrollY + margin}px`;
+    }
 }
+
+// Update mouse vertical position for when openPopup is called
+let mouseY;
+
+document.addEventListener('mousemove', function(event) {
+    mouseY = event.clientY + window.scrollY;
+});
 
 function closePopup(id)
 {
