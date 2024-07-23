@@ -73,9 +73,9 @@ function goalTimer()
         if (goalElements[i].getElementsByClassName("clock").length > 0)
         {
             // Get local start date (originally in UTC) and local current date of the user 
-            const startDateString = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML.replace(" ", "T") + "Z";
-            const localStartDate = UTCToLocal(startDateString);
-            const localUserDate = new Date();
+            var startDateString = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML.replace(" ", "T") + "Z";
+            var localStartDate = UTCToLocal(startDateString);
+            var localUserDate = new Date();
 
             // Display clocks based on if the duration goal is finished for the week is finished or not and handle when timer goes off
             timeDifference = getTimeInWeek(localStartDate, localUserDate)
@@ -87,7 +87,26 @@ function goalTimer()
             {
                 goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + timeDifference;
             }
-            goalElements[i].style.height = 130 + "px";
+        }
+    }
+
+    // Edit time for view full goal popup
+    var fullGoalForm = document.getElementById('view-full-goal');
+    var hiddenStartDatetimeElement = fullGoalForm.querySelector('h5[name="hidden-start-datetime"]');
+    if (hiddenStartDatetimeElement)
+    {
+        startDateString = hiddenStartDatetimeElement.innerHTML.replace(" ", "T") + "Z";
+        localStartDate = UTCToLocal(startDateString);
+        localUserDate = new Date();
+
+        timeDifference = getTimeInWeek(localStartDate, localUserDate)
+        if (fullGoalForm.getElementsByClassName("week-finished").length > 0)
+        {
+            fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
+        }
+        else
+        {
+            fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + timeDifference;
         }
     }
 }
@@ -145,3 +164,45 @@ document.getElementById('add-goals-form').addEventListener("keypress",
         }
     }
 );
+
+function addContentToViewGoal(title, type, description, rate, duration, dateStarted, endDate, isWeekFinished)
+{
+    var elementsContainer = document.getElementById('view-full-goal-elements');
+    elementsContainer.innerHTML = "";
+
+    var titleElement = document.createElement('h5');
+    var otherGoalInfoElement = document.createElement('h6');
+    var descriptionElement = document.createElement('p');
+    var hiddenStartDatetimeElement = document.createElement('h5');
+    var hiddenIsWeekFinishedElement = document.createElement('h5');
+    var clockElement = document.createElement('h5');
+
+    titleElement.innerHTML = title;
+    if (type === 'Duration')
+    {
+        otherGoalInfoElement.innerHTML = `Type:  ${type} | Duration: ${duration} weeks | Rate: ${rate} days per week | Start date: ${dateStarted} | End date: ${endDate}`;
+    }
+    else
+    {
+        otherGoalInfoElement.innerHTML = `Type: ${type} | Start date: ${dateStarted}`;
+    }
+    descriptionElement.innerHTML = description;
+    hiddenStartDatetimeElement.innerHTML = dateStarted;
+    hiddenStartDatetimeElement.setAttribute("name", "hidden-start-datetime");
+    hiddenStartDatetimeElement.setAttribute("hidden", "true");
+    clockElement.setAttribute("class", "clock");
+    hiddenIsWeekFinishedElement.setAttribute("class", "week-finished");
+
+    elementsContainer.appendChild(titleElement);
+    if (type === "Duration")
+    {
+        elementsContainer.appendChild(clockElement);
+    }
+    elementsContainer.appendChild(otherGoalInfoElement);
+    elementsContainer.appendChild(descriptionElement);
+    elementsContainer.appendChild(hiddenStartDatetimeElement);
+    if (isWeekFinished)
+    {
+        elementsContainer.appendChild(hiddenIsWeekFinishedElement);
+    }
+}
