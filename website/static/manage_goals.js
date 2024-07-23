@@ -170,6 +170,8 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     var elementsContainer = document.getElementById('view-full-goal-elements');
     elementsContainer.innerHTML = "";
 
+    var formHeader = document.createElement('h2');
+    var br = document.createElement('br');
     var titleElement = document.createElement('h5');
     var otherGoalInfoElement = document.createElement('h6');
     var descriptionElement = document.createElement('p');
@@ -177,6 +179,7 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     var hiddenIsWeekFinishedElement = document.createElement('h5');
     var clockElement = document.createElement('h5');
 
+    formHeader.innerHTML = "Full Goal";
     titleElement.innerHTML = title;
     if (type === 'Duration')
     {
@@ -193,6 +196,8 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     clockElement.setAttribute("class", "clock");
     hiddenIsWeekFinishedElement.setAttribute("class", "week-finished");
 
+    elementsContainer.appendChild(formHeader);
+    elementsContainer.appendChild(br);
     elementsContainer.appendChild(titleElement);
     if (type === "Duration")
     {
