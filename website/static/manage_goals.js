@@ -91,6 +91,11 @@ function goalTimer()
     }
 
     // Edit time for view full goal popup
+    editViewGoalClock();
+}
+
+function editViewGoalClock()
+{
     var fullGoalForm = document.getElementById('view-full-goal');
     var hiddenStartDatetimeElement = fullGoalForm.querySelector('h5[name="hidden-start-datetime"]');
     if (hiddenStartDatetimeElement)
