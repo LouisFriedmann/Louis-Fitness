@@ -5,14 +5,26 @@
 {% block stylesheets %}
     .button
     {
-        width: 50;
-        height: 50;
+        width: 50px; /* Specify units */
+        height: 50px; /* Specify units */
         background-color: lightgreen;
-        text-align: center;
+        cursor: pointer; /* Change cursor to pointer */
+        position: relative; /* Enable positioning for the image */
+        display: inline-flex;
     }
     .button:hover
     {
         background-color: #45a049;
+    }
+    .plus-sign {
+        width: 35px; /* Specify units */
+        height: auto; /* Maintain aspect ratio */
+        display: block;
+        position: absolute; /* Override the align center */
+        top: 50%; /* Position in the center vertically */
+        left: 50%; /* Position in the center horizontally */
+        transform: translate(-50%, -50%); /* Adjust the positioning */
+        vertical-align: middle;
     }
     .align-with-button
     {
@@ -30,20 +42,17 @@
     .form-popup
     {
         display: none;
-        position: fixed;
-        bottom: 0;
-        right: 15px;
-        border: 3px solid #f1f1f1;
+        position: absolute; /* Position the content */
+        left: 50%; /* Center horizontally */
         z-index: 9;
-        left: 50%;
-        top: 50%;
-        width: 400px;
-        height: 650px;
-        margin-left: -200px;
-        margin-top: -300px;
+        transform: translate(-50%, 0%); /* Offset by half of its width and height */
+        width: 60vw;
+        height: 70vh;
+        border: 3px solid #f1f1f1;
         background: white;
         overflow-x: hidden;
         Overflow-y: scroll;
+        padding: 10px;
     }
     .top-right-button
     {
@@ -146,7 +155,7 @@
     </br>
     <div align="center">
         <button type="submit" class="button" name="add-workout" onclick="openPopup('add-workouts')">
-            <img src="/static/images/plus_sign.png" alt="Add" width="35" style="display: block;">
+            <img src="/static/images/plus_sign.png" alt="Add" width="35" class="plus-sign" style="display: block;">
         </button>
         <span style="display: inline-flex;" class="add-workout">Add workout</span>
     </div>
@@ -171,7 +180,7 @@
            </br>
            <div align="center">
               <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form-container', 'add-workouts-form', 'add', 'workout-submit-button', 'add-workouts-elements-created')">
-                <img src="/static/images/plus_sign.png" alt="Add" width="35" style="display: block;">
+                <img src="/static/images/plus_sign.png" alt="Add" width="35" class="plus-sign" style="display: block;">
               </button>
               <span style="display: inline-flex;" class="add-workout">Add Exercise</span>
            </div>
@@ -193,7 +202,7 @@
         </div>
       </form>
     </div>
-    <!--Display pop up of form allowing user to add a new goal-->
+    <!--Display pop up of form allowing user to add a new workout-->
         <h2 align="center">Schedule</h2>
         <!--schedule content-->
         {% for day in days_order %}

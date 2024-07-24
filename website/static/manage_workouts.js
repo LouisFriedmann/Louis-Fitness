@@ -59,6 +59,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     plusSign.setAttribute("src", "/static/images/plus_sign.png")
     plusSign.setAttribute("alt", "Add")
     plusSign.setAttribute("width", "35")
+    plusSign.setAttribute("class", "plus-sign")
     plusSign.setAttribute("style", "display: block;")
     var addExerciseButtonLabel = document.createElement("span");
     addExerciseButtonLabel.setAttribute("style", "display: inline-flex;");
