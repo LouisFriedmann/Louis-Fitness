@@ -302,11 +302,11 @@
             {% if goal.user_id == user.id %}
                 <div class="current-goal">
                     {% if goal.type == "Duration" %}
-                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '{{ goal.rate }}', '{{ goal.duration }}', '{{ goal.date_started }}', '{{ goal.end_date }}', '{{ goal.is_week_finished }}'); openPopup('view-full-goal')">
+                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '{{ goal.rate }}', '{{ goal.duration }}', '{{ goal.date_started }}', '{{ goal.end_date }}', '{{ goal.is_week_finished }}'); openPopup('view-full-goal'); editFullGoalDates('{{ goal.type }}')">
                         <span aria-hidden="true" style="color:white">Full Goal</span>
                         </button>
                     {% else %}
-                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '', '', '{{ goal.date_started }}', '', ''); openPopup('view-full-goal')">
+                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '', '', '{{ goal.date_started }}', '', ''); openPopup('view-full-goal'); editFullGoalDates('{{ goal.type }}')">
                         <span aria-hidden="true" style="color:white">Full Goal</span>
                         </button>
                     {% endif %}

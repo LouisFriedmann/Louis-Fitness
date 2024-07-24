@@ -194,6 +194,7 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     {
         otherGoalInfoElement.innerHTML = `Type: ${type} | Start date: ${dateStarted}`;
     }
+    otherGoalInfoElement.setAttribute("class", "other-goal-info");
     descriptionElement.innerHTML = description;
     hiddenStartDatetimeElement.innerHTML = dateStarted;
     hiddenStartDatetimeElement.setAttribute("name", "hidden-start-datetime");
