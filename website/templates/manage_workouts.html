@@ -54,6 +54,12 @@
         Overflow-y: scroll;
         padding: 10px;
     }
+    .form-popup-full-workout
+    {
+        height: auto;
+        min-height: 200px;
+        word-break: break-word;
+    }
     .top-right-button
     {
         position: absolute;
@@ -85,6 +91,12 @@
         border-color: black;
         border-width: 5px;
         margin-bottom: 5px;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: center;
+        min-height: 147px;
+        display: flex;
+        justify-content: center;
     }
     .current-scheduled-workout
     {
@@ -105,15 +117,52 @@
         position: relative;
         margin: 5px;
     }
+    @media (min-width: 800px)
+    {
+        .current-workout-title
+        {
+            max-width: 100%;
+            word-break: break-word; /* Break long words */
+        }
+        .current-workout-other-info 
+        {
+            max-width: 70%;
+            overflow: hidden;
+            word-break: break-word; /* Break long words */
+        }
+    }
+    @media (max-width: 799px)
+    {
+        .current-workout-title
+        {
+            max-width: 100%;
+            word-break: break-word; /* Break long words */
+            margin-right: 120px;
+            vertical-align: center;
+        }
+        .current-workout-other-info 
+        {
+            display: none;
+        }
+    }
     .custom-input
     {
         margin-bottom: 10px;
     }
+    .view-workout-button
+    {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 100px;
+        height: 30px;
+        background-color: purple;
+    }
     .edit-button
     {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 35px;
+        right: 0px;
         width: 100px;
         height: 30px;
         background-color: orange;
@@ -121,7 +170,7 @@
     .add-to-schedule-button
     {
         position: absolute;
-        top: 35px;
+        top: 70px;
         right: 0px;
         width: 100px;
         height: 30px;
@@ -139,7 +188,7 @@
     .delete-button
     {
         position: absolute;
-        top: 70px;
+        top: 105px;
         right: 0px;
         width: 100px;
         height: 30px;
@@ -168,6 +217,7 @@
             <span aria-hidden="true" style="color:white">&times;</span>
         </button>
         <div class="form-container" id="add-workouts-form-container">
+           </br>
            <h2>Add Workout</h2>
            <h5>Please fill out all fields</h5>
            </br>
@@ -238,6 +288,9 @@
         {% for workout in workouts %}
             {% if workout.user_id == user.id %}
                 <div class="current-workout">
+                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout(); openPopup('view-full-workout')">
+                        <span aria-hidden="true" style="color:white">Details</span>
+                    </button>
                     <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), 'edit-workout', 'edit-workout-form')">
                         <span aria-hidden="true" style="color:white">Edit</span>
                     </button>
@@ -249,19 +302,23 @@
                             <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
                     </a>
-                    <h3>{{ workout.title }}</h3>
-                    <p>{{ workout.description }}</p>
-                    </br>
-                    {% for exercise in workout.exercises %}
-                    <div class="current-exercise">
-                        <h5>Next Exercise</h5>
-                        <h6>{{ exercise.title }} </h6>
-                        <h7>{{ exercise.description }}</h7>
+                    <div class="current-workout-title">
+                        <h3>{{ workout.title }}</h3>
                     </div>
-                    </br>
-                    </br>
-                    </br>
-                {% endfor %}
+                    <div class="current-workout-other-info">
+                        <p>{{ workout.description }}</p>
+                        </br>
+                        {% for exercise in workout.exercises %}
+                            <div class="current-exercise">
+                                <h5>Next Exercise</h5>
+                                <h6>{{ exercise.title }} </h6>
+                                <h7>{{ exercise.description }}</h7>
+                            </div>
+                            </br>
+                            </br>
+                            </br>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         {% endfor %}
@@ -327,4 +384,15 @@
         </form>
     </div>
     <!-- Schedule workouts popup form -->
+
+    <!-- View full workout popup form -->
+    <div class="form-popup form-popup-full-workout" id="view-full-workout">
+        <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('view-full-workout')">
+            <span aria-hidden="true" style="color:white">&times;</span>
+        </button>
+        <div class="view-full-workout-elements" id="view-full-workout-elements">
+            <!-- Full workout will be displayed here -->
+        </div>
+    </div>
+    <!-- View full workout popup form -->
 {% endblock %}
