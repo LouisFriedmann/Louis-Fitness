@@ -104,8 +104,9 @@ function editViewGoalClock()
         localStartDate = UTCToLocal(startDateString);
         localUserDate = new Date();
 
-        timeDifference = getTimeInWeek(localStartDate, localUserDate)
-        if (fullGoalForm.getElementsByClassName("week-finished").length > 0)
+        const timeDifference = getTimeInWeek(localStartDate, localUserDate);
+        const isWeekFinished = fullGoalForm.getElementsByClassName("week-finished")[0].getAttribute("data-value");
+        if (isWeekFinished == "True")
         {
             fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
         }
@@ -201,6 +202,7 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     hiddenStartDatetimeElement.setAttribute("hidden", "true");
     clockElement.setAttribute("class", "clock");
     hiddenIsWeekFinishedElement.setAttribute("class", "week-finished");
+    hiddenIsWeekFinishedElement.setAttribute("data-value", isWeekFinished);
 
     elementsContainer.appendChild(formHeader);
     elementsContainer.appendChild(br);
