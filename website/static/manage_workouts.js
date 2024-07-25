@@ -304,9 +304,11 @@ document.addEventListener("DOMContentLoaded", checkScheduleForm);
 // Adding content to view full workout
 function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExercises, workoutId)
 {
+    // First, remove previous content
     const elementsContainer = document.getElementById('view-full-workout-elements');
+    elementsContainer.innerHTML = "";
 
-    // First, create and insert title and description
+    // Then, create and insert title and description
     const workoutTitleElement = document.createElement('h3');
     workoutTitleElement.innerHTML = workoutTitle;
     const workoutDescriptionElement = document.createElement('p');

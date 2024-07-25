@@ -179,7 +179,7 @@
     .remove-button
     {
         position: absolute;
-        top: 0px;
+        top: 35px;
         right: 0px;
         width: 100px;
         height: 30px;
@@ -263,25 +263,32 @@
         {% for day in days_order %}
             {% for workout in days_workouts[day] %}
                 <div class="current-scheduled-workout">
+                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}'); openPopup('view-full-workout')">
+                        <span aria-hidden="true" style="color:white">Details</span>
+                    </button>
                     <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id, day=day) }}">
                         <button name="remove-from-schedule-button" type="submit" class="remove-button">
                             <span aria-hidden="true" style="color:white">Remove</span>
                         </button>
                     </a>
-                    <h3>{{ day }}</h3>
+                    <h3 class="current-workout-title">{{ day }}</h3>
                     </br>
-                    <h4>{{ workout.title }}</h4>
+                    <div class="current-workout-title">
+                        <h4>{{ workout.title }}</h4>
+                    </div>
+                    <div class="current-workout-other-info">
                     <p>{{ workout.description }}</p>
-                    {% for exercise in workout.exercises %}
-                        <div class="current-exercise">
-                            <h5>Next Exercise</h5>
-                            <h6>{{ exercise.title }}</h6>
-                            <p>{{ exercise.description }}</p>
-                        </div>
-                        </br>
-                        </br>
-                        </br>
-                    {% endfor %}
+                        {% for exercise in workout.exercises %}
+                            <div class="current-exercise">
+                                <h5>Next Exercise</h5>
+                                <h6>{{ exercise.title }}</h6>
+                                <p>{{ exercise.description }}</p>
+                            </div>
+                            </br>
+                            </br>
+                            </br>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         {% endfor %}
