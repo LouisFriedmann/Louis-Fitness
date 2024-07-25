@@ -46,8 +46,9 @@
         left: 50%; /* Center horizontally */
         z-index: 9;
         transform: translate(-50%, 0%); /* Offset by half of its width and height */
-        width: 60vw;
-        height: 70vh;
+        width: auto;
+        height: auto;
+        max-height: 500px;
         border: 3px solid #f1f1f1;
         background: white;
         overflow-x: hidden;
@@ -56,9 +57,8 @@
     }
     .form-popup-full-workout
     {
-        height: auto;
-        min-height: 200px;
         word-break: break-word;
+        min-width: 300px;
     }
     .top-right-button
     {
@@ -194,6 +194,10 @@
         height: 30px;
         background-color: red;
     }
+    .view-full-workout-elements
+    {
+        text-align: center;
+    }
 {% endblock %}
 
 {% block content %}
@@ -224,6 +228,7 @@
            </br>
            <label>Workout Title:</label>
            <input type="text" placeholder="Enter workout title" data-validate="true" maxlength="100" name="workout-title" id="workout-title" required>
+            </br>
            <label>Workout description:</label>
            <input type="text" placeholder="Enter workout description" data-validate="true" maxlength="130" name="workout-description" id="workout-description" required>
            </br>
@@ -288,7 +293,7 @@
         {% for workout in workouts %}
             {% if workout.user_id == user.id %}
                 <div class="current-workout">
-                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout(); openPopup('view-full-workout')">
+                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}'); openPopup('view-full-workout')">
                         <span aria-hidden="true" style="color:white">Details</span>
                     </button>
                     <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), 'edit-workout', 'edit-workout-form')">

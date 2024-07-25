@@ -300,3 +300,43 @@ function checkScheduleForm()
     document.addEventListener("click", checkScheduleFormValidity);
 }
 document.addEventListener("DOMContentLoaded", checkScheduleForm);
+
+// Adding content to view full workout
+function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExercises, workoutId)
+{
+    const elementsContainer = document.getElementById('view-full-workout-elements');
+
+    // First, create and insert title and description
+    const workoutTitleElement = document.createElement('h3');
+    workoutTitleElement.innerHTML = workoutTitle;
+    const workoutDescriptionElement = document.createElement('p');
+    workoutDescriptionElement.innerHTML = workoutDescription;
+    const br = document.createElement('br');
+
+    elementsContainer.appendChild(workoutTitleElement);
+    elementsContainer.appendChild(workoutDescriptionElement);
+    elementsContainer.appendChild(br.cloneNode());
+
+    // Then, create and append each exercise
+    const exercises = workoutExercises[workoutId];
+
+    for (const [title, description] of exercises)
+    {
+        const exerciseDiv = document.createElement('div');
+        exerciseDiv.setAttribute("class", "current-exercise")
+        const exerciseLabel = document.createElement('h5');
+        exerciseLabel.innerHTML = "Next Exercise";
+        const exerciseTitle = document.createElement('h6');
+        exerciseTitle.innerHTML = title;
+        const exerciseDescription = document.createElement('h7');
+        exerciseDescription.innerHTML = description;
+
+        exerciseDiv.appendChild(exerciseLabel);
+        exerciseDiv.appendChild(exerciseTitle);
+        exerciseDiv.appendChild(exerciseDescription);
+        elementsContainer.appendChild(exerciseDiv);
+        elementsContainer.appendChild(br.cloneNode());
+        elementsContainer.appendChild(br.cloneNode());
+        elementsContainer.appendChild(br.cloneNode());
+    }
+}
