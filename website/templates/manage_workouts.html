@@ -100,15 +100,7 @@
     }
     .current-scheduled-workout
     {
-        width: device-width - 40px;
-        height: auto;
-        text-align: center;
-        position: relative;
-        margin-bottom: 5px;
         background: lightblue;
-        border-style: solid;
-        border-color: black;
-        border-width: 5px;
     }
     .current-exercise
     {
@@ -129,6 +121,7 @@
             max-width: 70%;
             overflow: hidden;
             word-break: break-word; /* Break long words */
+            align-text: center;
         }
     }
     @media (max-width: 799px)
@@ -262,7 +255,7 @@
         <!--schedule content-->
         {% for day in days_order %}
             {% for workout in days_workouts[day] %}
-                <div class="current-scheduled-workout">
+                <div class="current-workout current-scheduled-workout">
                     <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}'); openPopup('view-full-workout')">
                         <span aria-hidden="true" style="color:white">Details</span>
                     </button>
@@ -403,7 +396,7 @@
             <span aria-hidden="true" style="color:white">&times;</span>
         </button>
         <div class="view-full-workout-elements" id="view-full-workout-elements">
-            <!-- Full workout will be displayed here -->
+            <!-- Full workout will be added here -->
         </div>
     </div>
     <!-- View full workout popup form -->
