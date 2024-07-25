@@ -172,40 +172,6 @@ document.addEventListener('DOMContentLoaded', function()
 
 });
 
-// For the view goal popup when it is clicked
-function editFullGoalDates(goalType)
-{
-    const goalInfo = document.getElementById("view-full-goal").querySelector(".other-goal-info")
-    const goalInfoString = goalInfo.innerHTML;
-    const now = new Date();
-    const timeZoneAbbreviation = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(now)
-    .find(part => part.type === 'timeZoneName').value;
-    
-    var startDateTimeString = null;
-    if (goalType === "Duration")
-    {
-        startDateTimeString = goalInfoString.substring(goalInfoString.indexOf("Start date:") + 12, goalInfoString.indexOf("End date:") - 3);
-    }
-    else
-    {
-        startDateTimeString = goalInfoString.substring(goalInfoString.indexOf("Start date:") + 12);
-    }
-    const startDateTimeStringUTC = startDateTimeString.replace(" ", "T") + "Z";
-    const localStartDate = UTCToLocal(startDateTimeStringUTC);
-    const formattedLocalStartDate = `${String(localStartDate.getMonth() + 1).padStart(2, '0')}-${String(localStartDate.getDate()).padStart(2, '0')}-${localStartDate.getFullYear()} ${timeZoneAbbreviation}`;
-    goalInfo.innerHTML = goalInfo.innerHTML.replace(startDateTimeString, formattedLocalStartDate);
-
-    // Edit end date for duration goal only. 
-    if (goalType === "Duration")
-    {
-        const endDateTimeString = goalInfoString.substring(goalInfoString.indexOf("End date:") + 10);
-        const endDateTimeStringUTC = endDateTimeString.replace(" ", "T") + "Z";
-        const localEndDate = UTCToLocal(endDateTimeStringUTC);
-        const formattedLocalEndDate = `${String(localEndDate.getMonth() + 1).padStart(2, '0')}-${String(localEndDate.getDate()).padStart(2, '0')}-${localEndDate.getFullYear()} ${timeZoneAbbreviation}`;
-        goalInfo.innerHTML = goalInfo.innerHTML.replace(endDateTimeString, formattedLocalEndDate);
-    }
-}
-
 
 
 
