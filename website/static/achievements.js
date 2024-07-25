@@ -22,6 +22,7 @@ function addContentToViewAchievement(title, type, description, rate, duration, d
     otherAchievementInfoElement.setAttribute("class", "other-achievement-info");
     descriptionElement.innerHTML = description;
 
+    elementsContainer.appendChild(br.cloneNode());
     elementsContainer.appendChild(formHeader);
     elementsContainer.appendChild(br);
     elementsContainer.appendChild(titleElement);

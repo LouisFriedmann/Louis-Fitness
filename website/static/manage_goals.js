@@ -204,6 +204,7 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     hiddenIsWeekFinishedElement.setAttribute("class", "week-finished");
     hiddenIsWeekFinishedElement.setAttribute("data-value", isWeekFinished);
 
+    elementsContainer.appendChild(br.cloneNode());
     elementsContainer.appendChild(formHeader);
     elementsContainer.appendChild(br);
     elementsContainer.appendChild(titleElement);

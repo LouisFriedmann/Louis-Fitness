@@ -308,13 +308,17 @@ function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExerci
     const elementsContainer = document.getElementById('view-full-workout-elements');
     elementsContainer.innerHTML = "";
 
-    // Then, create and insert title and description
+    // Then, create and insert 'Full Workout' label, title and description
+    const fullWorkoutLabel = document.createElement('h2');
+    fullWorkoutLabel.innerHTML = "Full Workout"
     const workoutTitleElement = document.createElement('h3');
     workoutTitleElement.innerHTML = workoutTitle;
     const workoutDescriptionElement = document.createElement('p');
     workoutDescriptionElement.innerHTML = workoutDescription;
     const br = document.createElement('br');
 
+    elementsContainer.appendChild(br.cloneNode());
+    elementsContainer.appendChild(fullWorkoutLabel);
     elementsContainer.appendChild(workoutTitleElement);
     elementsContainer.appendChild(workoutDescriptionElement);
     elementsContainer.appendChild(br.cloneNode());
