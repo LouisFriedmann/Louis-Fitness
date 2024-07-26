@@ -256,7 +256,7 @@
         {% for day in days_order %}
             {% for workout in days_workouts[day] %}
                 <div class="current-workout current-scheduled-workout">
-                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}'); openPopup('view-full-workout')">
+                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', '{{ day }}'); openPopup('view-full-workout')">
                         <span aria-hidden="true" style="color:white">Details</span>
                     </button>
                     <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id, day=day) }}">
@@ -283,7 +283,7 @@
         {% for workout in workouts %}
             {% if workout.user_id == user.id %}
                 <div class="current-workout">
-                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}'); openPopup('view-full-workout')">
+                    <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', ''); openPopup('view-full-workout')">
                         <span aria-hidden="true" style="color:white">Details</span>
                     </button>
                     <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), 'edit-workout', 'edit-workout-form')">

@@ -302,15 +302,22 @@ function checkScheduleForm()
 document.addEventListener("DOMContentLoaded", checkScheduleForm);
 
 // Adding content to view full workout
-function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExercises, workoutId)
+function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExercises, workoutId, dayScheduled)
 {
     // First, remove previous content
     const elementsContainer = document.getElementById('view-full-workout-elements');
     elementsContainer.innerHTML = "";
 
     // Then, create and insert 'Full Workout' label, title and description
-    const fullWorkoutLabel = document.createElement('h2');
-    fullWorkoutLabel.innerHTML = "Full Workout"
+    const header = document.createElement('h2');
+    if (dayScheduled)
+    {
+        header.innerHTML = dayScheduled;
+    }
+    else
+    {
+        header.innerHTML = "Full Workout";
+    }
     const workoutTitleElement = document.createElement('h3');
     workoutTitleElement.innerHTML = workoutTitle;
     const workoutDescriptionElement = document.createElement('p');
@@ -318,7 +325,7 @@ function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExerci
     const br = document.createElement('br');
 
     elementsContainer.appendChild(br.cloneNode());
-    elementsContainer.appendChild(fullWorkoutLabel);
+    elementsContainer.appendChild(header);
     elementsContainer.appendChild(workoutTitleElement);
     elementsContainer.appendChild(workoutDescriptionElement);
     elementsContainer.appendChild(br.cloneNode());
