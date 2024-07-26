@@ -122,7 +122,7 @@ def sign_up():
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(new_user, remember=True)
-                    flash("Signed up successfully!", category="success")
+                    flash(f"Hello {username}!", category="success")
 
                     session.pop('generated_password', None)
                     session.pop('username', None)
@@ -155,7 +155,7 @@ def login():
         elif user_account:
             if check_password_hash(pwhash=user_account.password, password=password):
                 login_user(user_account, remember=True)
-                flash("Logged in successfully!", category="success")
+                flash(f"Hello {username}!", category="success")
                 return redirect(url_for('views.home'))
             else:
                 flash("Incorrect password, please try again", category="error")
