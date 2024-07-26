@@ -105,9 +105,6 @@
           <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.manage_goals') }}">Manage Goals</a>
           </li>
           <li class="nav-item">
@@ -115,6 +112,9 @@
           </li>
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.achievements') }}">Achievements</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
           </li>
           {% else %}
             <li class="nav-item">
