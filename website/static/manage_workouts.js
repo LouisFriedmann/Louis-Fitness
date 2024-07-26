@@ -20,7 +20,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     newTitleInput.setAttribute("type", "text");
     newTitleInput.setAttribute("placeholder", "Enter workout title");
     newTitleInput.setAttribute("data-validate", "true");
-    newTitleInput.setAttribute("maxlength", "100");
+    newTitleInput.setAttribute("maxlength", "50");
     newTitleInput.setAttribute("required", "true");
     newTitleInput.setAttribute("name", "edit-workout-title");
     newTitleInput.value = workoutTitle;
@@ -35,7 +35,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     newDescriptionInput.setAttribute("type", "text");
     newDescriptionInput.setAttribute("placeholder", "Enter workout description");
     newDescriptionInput.setAttribute("data-validate", "true");
-    newDescriptionInput.setAttribute("maxlength", "130");
+    newDescriptionInput.setAttribute("maxlength", "200");
     newDescriptionInput.setAttribute("required", "true");
     newDescriptionInput.setAttribute("name", "edit-workout-description");
     newDescriptionInput.value = workoutDescription;
@@ -92,7 +92,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         newTitleInput.setAttribute("type", "text");
         newTitleInput.setAttribute("placeholder", "Enter title");
         newTitleInput.setAttribute("data-validate", "true");
-        newTitleInput.setAttribute("maxlength", "100");
+        newTitleInput.setAttribute("maxlength", "50");
         newTitleInput.setAttribute("required", "true");
         newTitleInput.setAttribute("name", "edit-workout-" + String(workoutId) + "-exercise-" + String(exerciseNumber) + "-title");
 
@@ -108,7 +108,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
         newDescriptionInput.setAttribute("type", "text");
         newDescriptionInput.setAttribute("placeholder", "Enter description");
         newDescriptionInput.setAttribute("data-validate", "true");
-        newDescriptionInput.setAttribute("maxlength", "100");
+        newDescriptionInput.setAttribute("maxlength", "200");
         newDescriptionInput.setAttribute("required", "true");
         newDescriptionInput.setAttribute("name", "edit-workout-" + String(workoutId) + "-" + "exercise-description-" + String(exerciseNumber));
         newDescriptionInput.value = description;
@@ -188,7 +188,7 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     titleInput.setAttribute("type", "text");
     titleInput.setAttribute("placeholder", "Enter title");
     titleInput.setAttribute("data-validate", "true");
-    titleInput.setAttribute("maxlength", "100");
+    titleInput.setAttribute("maxlength", "50");
     titleInput.setAttribute("required", "true");
     titleInput.setAttribute("name", nameKeyword + "-exercise-title-" + String(newExerciseNumber));
     var newHeaderTag = document.createElement("h4");
@@ -201,7 +201,7 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     descriptionInput.setAttribute("type", "text");
     descriptionInput.setAttribute("placeholder", "Enter description");
     descriptionInput.setAttribute("data-validate", "true");
-    descriptionInput.setAttribute("maxlength", "100");
+    descriptionInput.setAttribute("maxlength", "200");
     descriptionInput.setAttribute("required", "true");
 
     descriptionInput.setAttribute("name", "exercise-description-" + String(newExerciseNumber));
