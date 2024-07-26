@@ -148,7 +148,11 @@ def login():
         username = request.form.get('login-username')
         password = request.form.get('login-password')
         user_account = User.query.filter_by(username=username).first()
-        if user_account:
+
+        if not username or not password:
+            flash("Please fill out the entire form", category="error")
+
+        elif user_account:
             if check_password_hash(pwhash=user_account.password, password=password):
                 login_user(user_account, remember=True)
                 flash("Logged in successfully!", category="success")
