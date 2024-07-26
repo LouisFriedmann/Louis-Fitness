@@ -7,6 +7,7 @@ function saveSignUpData()
     localStorage.setItem('sign-up-username', username);
     localStorage.setItem('sign-up-password', password);
     localStorage.setItem('sign-up-confirm-password', confirmPassword);
+    console.log("saved");
 }
 
 function saveLoginData()
@@ -78,9 +79,10 @@ window.onload = loadAndSaveAuthData;
 // Ensure data is deleted from local storage when user submits sign-up form
 function removeSignUpData()
 {
-    localStorage.removeItem('sign-up-username')
-    localStorage.removeItem('sign-up-password')
-    localStorage.removeItem('sign-up-confirm-password')
+    localStorage.removeItem('sign-up-username');
+    localStorage.removeItem('sign-up-password');
+    localStorage.removeItem('sign-up-confirm-password');
+    console.log("removed");
 }
 
 // Handle enter key press for sign-up form
@@ -97,6 +99,7 @@ if (signUpForm)
         if (event.key === 'Enter')
         {
             setSignUpSubmissionType('enter');
+            removeSignUpData();
         }
     });
 }
