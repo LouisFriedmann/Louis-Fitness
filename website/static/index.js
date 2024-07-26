@@ -173,6 +173,12 @@ document.addEventListener('DOMContentLoaded', function()
 });
 
 
-
-
-
+// Confirm deletion with delete buttons
+function confirmDelete(event, name)
+{
+    // Show a confirmation dialog
+    if (!confirm(`Are you sure you want to delete this ${name}?`)) {
+        // Prevent the default action (navigation) if the user clicks "Cancel"
+        event.preventDefault();
+    }
+}

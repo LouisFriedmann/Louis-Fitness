@@ -338,7 +338,7 @@
                         <h6 class="goal-info current-goal-other-info">Type: {{ goal.type }} | Start date: {{ goal.date_started }}</h6>
                     {% endif %}
                     <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
-                        <button name="edit-goal-delete-button" type="submit" class="delete-button">
+                        <button name="edit-goal-delete-button" type="submit" class="delete-button" onclick="confirmDelete(event, 'goal')">
                             <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
                     </a>

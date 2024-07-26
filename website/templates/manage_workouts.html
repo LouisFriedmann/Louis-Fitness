@@ -260,7 +260,7 @@
                         <span aria-hidden="true" style="color:white">Details</span>
                     </button>
                     <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id, day=day) }}">
-                        <button name="remove-from-schedule-button" type="submit" class="remove-button">
+                        <button name="remove-from-schedule-button" type="submit" class="remove-button" onclick="confirmDelete(event, 'scheduled workout')">
                             <span aria-hidden="true" style="color:white">Remove</span>
                         </button>
                     </a>
@@ -293,7 +293,7 @@
                         <span aria-hidden="true" style="color:white">Schedule</span>
                     </button>
                     <a href="{{ url_for('views.delete_workout', workout_id=workout.id) }}">
-                        <button name="edit-workout-delete-button" type="submit" class="delete-button">
+                        <button name="edit-workout-delete-button" type="submit" class="delete-button" onclick="confirmDelete(event, 'workout, this will also delete its corresponding scheduled workouts')">
                             <span aria-hidden="true" style="color:white">Delete</span>
                         </button>
                     </a>
