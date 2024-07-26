@@ -312,17 +312,6 @@
                     </div>
                     <div class="current-workout-other-info">
                         <p>{{ workout.description }}</p>
-                        </br>
-                        {% for exercise in workout.exercises %}
-                            <div class="current-exercise">
-                                <h5>Next Exercise</h5>
-                                <h6>{{ exercise.title }} </h6>
-                                <h7>{{ exercise.description }}</h7>
-                            </div>
-                            </br>
-                            </br>
-                            </br>
-                        {% endfor %}
                     </div>
                 </div>
             {% endif %}
