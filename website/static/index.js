@@ -1,19 +1,14 @@
 // Any function used in or is an event listener for: two or more files will be in this file
-function openPopup(id) {
+
+function openPopup(id)
+{
     const popup = document.getElementById(id);
     popup.style.display = "block";
 
-    // Wait a second for content to load for view full goal
+    // Wait a second for content to load if popup is view full goal to give time for c
     const viewFullGoalElements = document.getElementById('view-full-goal-elements');
     if (viewFullGoalElements)
     {
-        viewFullGoalElements.style.visibility = 'hidden';
-        viewFullGoalElements.style.opacity = '0';
-
-        const preloader = document.getElementById('preloader1');
-        preloader.style.opacity = '1';
-        preloader.style.visibility = 'visible';
-
         if (id == 'view-full-goal')
         {
             if (popup.querySelector('.clock'))
@@ -21,15 +16,6 @@ function openPopup(id) {
                 editViewGoalClock(); // Height of the form takes into account the height of the clock
             }
 
-            setTimeout(() => {
-                // Hide the preloader
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-
-                // Show the main content
-                viewFullGoalElements.style.visibility = 'visible';
-                viewFullGoalElements.style.opacity = '1';
-            }, 1000);
         }
     }
 
