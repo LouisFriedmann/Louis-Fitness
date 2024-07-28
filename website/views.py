@@ -1,16 +1,19 @@
 # 'views.py' handles the routes proceeding user authentication
 
-from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import current_user, LoginManager, login_manager
-from flask_security import login_required
 import os
 import random
-from .models import Goal, User, Workout, Exercise, GoalAchieved
-from . import db
-from datetime import datetime, timezone, timedelta
 import json
-from django.utils.html import escapejs
 import math
+
+from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask_login import current_user
+from flask_security import login_required
+
+from .models import Goal, Workout, Exercise, GoalAchieved
+from . import db
+
+from datetime import datetime, timezone, timedelta
+from django.utils.html import escapejs
 
 views = Blueprint('views', __name__)
 
@@ -27,81 +30,68 @@ def manage_goals():
         if goal.type == "Duration":
             current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started.replace(tzinfo=timezone.utc)).days + 1) / 7)
 
-            # Check if the user missed a week on their duration goal or if its the next week
+            # If user missed a week, delete the goal
             if current_week - goal.weeks_completed >= 2:
                 db.session.delete(goal)
                 db.session.commit()
                 flash(f"You have missed one or more weeks on \"{goal.title}\", thus failing to meet its requirements. Goal deleted", category="error")
                 return redirect(url_for('views.manage_goals'))
             
+            # If its next week reset weeks finished status
             elif current_week - goal.weeks_completed == 1:
-                goal.is_week_finished = False # Reset the week
+                goal.is_week_finished = False
 
     rate = 0
     duration = 0
     if request.method == 'POST':
-        # Add built-in button workouts to database if the user presses one ONLY ONCE PER BUTTON
         utc_now = datetime.now(timezone.utc)
+
+        # Add built in button goal if user clicks one of the buttons on the form
         if "workout-4-weeks" in request.form:
-            new_goal = Goal(title="Workout for 4 weeks",
-                            type="Duration",
-                            description="Workout consistently for 4 weeks 4 times/week",
-                            rate=4,
-                            duration=4,
-                            end_date=utc_now + timedelta(days=28), # End date is the day after the number of days given by user
-                            date_started=utc_now,
-                            weeks_completed=0,
-                            user_id=current_user.id)
-            db.session.add(new_goal)
-            db.session.commit()
-            flash("Built in goal created successfully!", category="success")
-            return redirect(url_for('views.manage_goals'))
-        elif "bench-PR" in request.form:
-            new_goal = Goal(title="Bench PR",
-                            type="New PR",
-                            description="Bench your bodyweight ex: if you are 150lbs, you need to bench 150lbs",
-                            rate=None,
-                            duration=None,
-                            end_date=None,
-                            date_started=utc_now,
-                            user_id=current_user.id)
-            db.session.add(new_goal)
-            db.session.commit()
-            flash("Built in goal created successfully!", category="success")
-            return redirect(url_for('views.manage_goals'))
-        elif "lose-weight" in request.form:
-            new_goal = Goal(title="Lose 10% of your weight",
-                            type="Lose/Gain Weight",
-                            description="Lose 10% of your bodyweight ex: if you are 100lbs, you need to get to 90lbs",
-                            rate=None,
-                            duration=None,
-                            end_date=None,
-                            date_started=utc_now,
-                            user_id=current_user.id)
-            db.session.add(new_goal)
-            db.session.commit()
-            flash("Built in goal created successfully!", category="success")
-            return redirect(url_for('views.manage_goals'))
+            title, goal_type, description = "Workout for 4 weeks", "Duration", "Workout consistently for 4 weeks 4 times/week"
+            rate, duration, weeks_completed = 4, 4, 0
+            end_date = utc_now + timedelta(days=28)
+            message = "Built in goal created successfully!"
+        
         else:
-            title = request.form.get('goal-title')
-            goal_type = request.form.get('goal-type')
-            description = request.form.get('goal-description')
+            if "bench-PR" in request.form or "lose-weight" in request.form:
+                rate, duration, weeks_completed, end_date = None, None, None, None
 
-            if goal_type == "Duration":
-                rate = int(request.form.get('goal-rate'))
-                duration = int(request.form.get('goal-duration'))
-                new_goal = Goal(title=title, type=goal_type, description=description, rate=rate, duration=duration, weeks_completed=0, end_date=utc_now + timedelta(days=7 * duration), date_started=utc_now, user_id=current_user.id)
+                if "bench-PR" in request.form:
+                    title, goal_type, description = "Bench PR", "New PR", "Bench your bodyweight ex: if you are 150lbs, you need to bench 150lbs"
+
+                elif "lose-weight" in request.form:
+                    title, goal_type, description = "Lose 10% of your weight", "Lose/Gain Weight", "Lose 10% of your bodyweight ex: if you are 100lbs, you need to get to 90lbs"
+                
+                message = "Built in goal created successfully!"
+
             else:
-                new_goal = Goal(title=title, type=goal_type, description=description, rate=None, duration=None, end_date=None, date_started=utc_now, user_id=current_user.id)
+                # Add custom goal if user chooses custom goal on the form
+                title = request.form.get('goal-title')
+                goal_type = request.form.get('goal-type')
+                description = request.form.get('goal-description')
 
-            db.session.add(new_goal)
-            db.session.commit()
-            flash("Custom goal created successfully!", category="success")
-            return redirect(url_for('views.manage_goals'))
+                if goal_type == "Duration":
+                    rate = int(request.form.get('goal-rate'))
+                    duration = int(request.form.get('goal-duration'))
+                    weeks_completed = 0
+                    end_date = utc_now + timedelta(days=7 * duration)
+
+                else:
+                    rate, duration, weeks_completed, end_date = None, None, None, None
+                
+                message = "Custom goal created successfully!"
+
+        new_goal = Goal(user_id=current_user.id, title=title, type=goal_type, description=description,
+                        rate=rate, duration=duration, weeks_completed=weeks_completed, date_started=utc_now,
+                        end_date=end_date)
+        db.session.add(new_goal)
+        db.session.commit()
+        flash(message, category="success")
+        return redirect(url_for('views.manage_goals'))
 
     return render_template('manage_goals.html', user=current_user, goals=Goal.query.all())
 
-# Edit a goal
 @views.route('/edit-goal/', methods=['GET', 'POST'])
 @login_required
 def edit_goal():
@@ -113,12 +103,10 @@ def edit_goal():
         goal.title = request.form.get('edit-goal-title')
         goal.description = request.form.get('edit-goal-description')
 
-        goal.user_id = current_user.id
         db.session.add(goal)
         db.session.commit()
 
         flash(f"Edited \"{original_goal_title}\" successfully", category="success")
-
         return redirect(url_for("views.manage_goals"))
 
     return render_template('manage_goals.html', user=current_user, goals=Goal.query.all())
@@ -131,14 +119,14 @@ def handle_finish_week(goal_id):
     weeks_completed = goal.weeks_completed + 1
     current_week = math.ceil(((datetime.now(timezone.utc) - goal.date_started.replace(tzinfo=timezone.utc)).days + 1) / 7)
 
-    # Ensure the user hasn't missed a week first
+    # Ensure the user hasn't missed a week first. If they have, delete the goal
     if current_week - goal.weeks_completed >= 2:
         db.session.delete(goal)
         db.session.commit()
         flash(f"You have missed one or more weeks on \"{goal.title}\", thus failing to meet its requirements. Goal deleted", category="error")
         return redirect(url_for('views.manage_goals'))
     
-    # If a user finishes all weeks
+    # If a user finishes all weeks, mark the goal complete
     elif weeks_completed == goal.duration:
         return redirect(url_for('views.mark_goal_complete', goal_id=goal_id))
     
@@ -182,8 +170,10 @@ def mark_goal_complete(goal_id):
 def delete_goal(goal_id):
     goal = Goal.query.get_or_404(goal_id)
     goal_title = goal.title
+
     db.session.delete(goal)
     db.session.commit()
+
     flash(f"Deleted \"{goal_title}\" successfully", category="success")
     return redirect(url_for('views.manage_goals'))
 
@@ -216,6 +206,8 @@ def manage_workouts():
         new_workout = Workout(title=workout_title, description=workout_description, user_id=current_user.id)
         db.session.add(new_workout)
         db.session.commit()
+
+        # Then, add each title and description to a new exercise
         for i in range(len(added_input_titles)):
             next_exercise_title = added_input_titles[i]
             next_exercise_description = added_input_descriptions[i]
@@ -226,6 +218,7 @@ def manage_workouts():
         flash("Workout created successfully", category="success")
         return redirect(url_for("views.manage_workouts"))
 
+    # Store days with their corresponding workouts to display on schedule
     workouts = Workout.query.filter_by(user=current_user).all()
     days_workouts = dict() # Stores a day with its corresponding workouts
     for workout in workouts:
@@ -239,9 +232,8 @@ def manage_workouts():
     # To pass into javascript to access exercise titles and descriptions for each exercise in each workout
     workout_exercises = {workout.id: [[exercise.title, exercise.description] for exercise in workout.exercises] for workout in Workout.query.filter_by(user=current_user)}
 
-    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=lines[random.randint(0, len(lines) - 1)], workout_exercises=escapejs(json.dumps(workout_exercises)), days_order=DAYS_ORDER, days_workouts=days_workouts)
+    return render_template('manage_workouts.html', user=current_user, workouts=Workout.query.all(), random_quote=random.choice(lines), workout_exercises=escapejs(json.dumps(workout_exercises)), days_order=DAYS_ORDER, days_workouts=days_workouts)
 
-# Edit a workout
 @views.route('/edit-workout/', methods=['GET', 'POST'])
 @login_required
 def edit_workout():
@@ -250,14 +242,15 @@ def edit_workout():
         workout = Workout.query.get_or_404(workout_id)
         original_workout_title = workout.title
 
+        # First, set the workout title and description to what user entered
         workout.title = request.form.get('edit-workout-title')
         workout.description = request.form.get('edit-workout-description')
 
-        # First, delete all exercises for this workout
+        # Then, delete all exercises for this workout 
         for i in range(len(workout.exercises)):
             db.session.delete(workout.exercises[i])
 
-        # Then, add the workout and all the exercises
+        # Finally, add the workout and all the exercises
         added_input_titles = []
         added_input_descriptions = []
         request_form_data = dict(request.form)
@@ -272,6 +265,7 @@ def edit_workout():
 
         db.session.add(workout)
         db.session.commit()
+
         for i in range(len(added_input_titles)):
             next_exercise_title = added_input_titles[i]
             next_exercise_description = added_input_descriptions[i]
@@ -311,7 +305,6 @@ def add_to_schedule():
         workout.add_to_schedule = True
         day_name_list = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         days_scheduled = [request.form.get(name) for name in day_name_list if request.form.get(name)]
-        print(days_scheduled)
         workout.set_days_scheduled(days_scheduled)
         db.session.add(workout)
         db.session.commit()
@@ -324,19 +317,20 @@ def remove_from_schedule(workout_id, day):
     workout = Workout.query.get_or_404(workout_id)
     workout_days_scheduled = workout.get_days_scheduled()
     workout_days_scheduled.remove(day)
+
+    # When workout was scheduled for one day and that one day was removed, there are no days on schedule
     if not workout_days_scheduled:
         workout.add_to_schedule = False
 
     workout.set_days_scheduled(workout_days_scheduled)
     db.session.add(workout)
     db.session.commit()
+
     flash(f"Removed \"{workout.title}\" on \"{day}\" from schedule successfully", category="success")
     return redirect(url_for('views.manage_workouts'))
 
 @views.route("/achievements")
 def achievements():
-    # db.drop_all()
-
     # Determine the awards the user earns
     awards = []
     new_PR_goals_achieved = list(GoalAchieved.query.filter_by(user=current_user, type="New PR"))
