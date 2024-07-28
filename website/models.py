@@ -1,3 +1,5 @@
+# 'models.py' contains blueprints for specific database tables
+
 import json
 
 from . import db

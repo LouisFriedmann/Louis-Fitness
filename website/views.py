@@ -1,3 +1,5 @@
+# 'views.py' handles the routes proceeding user authentication
+
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import current_user, LoginManager, login_manager
 from flask_security import login_required

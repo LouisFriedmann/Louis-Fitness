@@ -1,3 +1,5 @@
+# 'main.py' is responsible for running the app
+
 from website import create_app
 
 app = create_app() # Deployment on PythonAnywhere needs 'app' object before 'main.py' is ran

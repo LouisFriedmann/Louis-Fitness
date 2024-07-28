@@ -1,3 +1,5 @@
+# '__init__.py' initializes the 'website' package and creates the flask app for 'main.py' to use
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
