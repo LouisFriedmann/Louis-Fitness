@@ -1,3 +1,5 @@
+// 'achievements.js' is responsible for all functions dedicated to achievements page
+
 function addContentToViewAchievement(title, type, description, rate, duration, dateStarted, dateFinished)
 {
     // Delete previous elements from container

@@ -1,3 +1,5 @@
+// 'manage_workouts.js' is responsible for all functions dedicated to manage workouts page
+
 // change value of workout so when user opens popup to edit a workout, the initial values will be there
 // and the . Then, store value of goal_id in hidden html element called goal_id
 function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, workout_exercises, formClassId, formId)

@@ -1,4 +1,6 @@
-// Any function used in or is an event listener for: two or more files will be in this file
+// 'index.js' is responsible for having functions to be used across multiple files
+
+// Note: Any function used in or is an event listener for: two or more files will be in this file
 
 function openPopup(id)
 {

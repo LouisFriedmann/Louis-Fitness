@@ -1,3 +1,5 @@
+// 'manage_goals.js' is responsible for all functions dedicated to manage goals page
+
 // Disable all input elements' required attributes
 function disableInputRequired(formId)
 {

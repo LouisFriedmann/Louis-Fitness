@@ -1,3 +1,5 @@
+// 'auth.js' is responsible for functions related to user authentication
+
 // Functions to save and load data in authentication forms utilizing local storage to
 // preserve form elements before user passes authentication
 // (ex: user enters data in sign up form, goes to login form and back to sign up form.
