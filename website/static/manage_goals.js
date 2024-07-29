@@ -1,6 +1,6 @@
 // 'manage_goals.js' is responsible for all functions dedicated to manage goals page
 
-// Disable all input elements' required attributes
+// Disable all input elements' required attributes in a form
 function disableInputRequired(formId)
 {
     var form = document.getElementById(formId);
@@ -12,76 +12,67 @@ function disableInputRequired(formId)
     }
 }
 
-// function allows target elements to be shown and required when the selected option is equal to 'duration', otherwise, they won't be shown nor required
+// function allows target elements to be shown and required when the selected option is equal to 'Duration', otherwise, they won't be shown nor required
 function toggleAttributeBasedOnOption(selectId, targetElementIDs)
 {
     const selectElement = document.getElementById(selectId);
     const selectedValue = selectElement.value;
 
-    if (selectedValue === 'Duration')
+    for (let i = 0; i < targetElementIDs.length; i++)
     {
-        for (let i = 0; i < targetElementIDs.length; i++)
-        {
-            const nextTargetElement = document.getElementById(targetElementIDs[i]);
-            nextTargetElement.removeAttribute('hidden');
+        const nextTargetElement = document.getElementById(targetElementIDs[i]);
+        const inputElement = nextTargetElement.querySelector('input[type="number"]');
 
-            const inputElement = nextTargetElement.querySelector('input[type="number"]');
+        if (selectedValue === 'Duration')
+        {
+            nextTargetElement.removeAttribute('hidden');
             inputElement.required = true;
         }
-    }
-    else
-    {
-        for (let i = 0; i < targetElementIDs.length; i++)
+        else
         {
-            const nextTargetElement = document.getElementById(targetElementIDs[i]);
             nextTargetElement.setAttribute('hidden', '');
-
-            const inputElement = nextTargetElement.querySelector('input[type="number"]');
             inputElement.required = false;
         }
     }
 }
 
-// change value of goal so when user opens popup to edit a goal, the initial values of title and description will be there
-// and the. Then, store value of goal_id in hidden html element called goal_id
-function changeGoalAndOpenPopup(title, description, formClassId, formId, goalFormId, goalId)
+// Change value of goal so when user opens popup to edit a goal, the initial values of title and description will be there
+// Then, open the popup and store value of goal_id in hidden html element called 'goalId'
+function changeGoalAndOpenPopup(title, description, formClassId, goalFormId, goalId)
 {
    const goal_title = document.getElementById("edit-goal-title");
    goal_title.value = title;
    const goal_description = document.getElementById("edit-goal-description");
    goal_description.value = description;
 
-   const form = document.getElementById(formId);
-
-   const buttons = form.getElementsByTagName("button");
-   const submitButton = buttons[buttons.length - 1]; // submit button is last button in form
+   const submitButton = document.getElementById("edit-goal-submit-button");
    submitButton.disabled = false;
-   openPopup(formClassId)
+   openPopup(formClassId);
 
    const goalIdElement = document.getElementById(goalFormId);
    goalIdElement.value = goalId;
 }
 
-// timers for duration goals
+// Clock for duration goal updates every second
 setInterval(goalTimer, 1000);
 
-// controls the timer for all of the duration based goals
+// controls the timer for the clock for all of the duration based goals and popups
 function goalTimer()
 {
     var goalElements = document.getElementsByClassName("current-goal");
     for (let i = 0; i < goalElements.length; i++)
     {
         // Edit clock for duration goal only. (clock only appears for duration goal)
-        if (goalElements[i].getElementsByClassName("clock").length > 0)
+        if (goalElements[i].querySelector(".clock") !== null)
         {
             // Get local start date (originally in UTC) and local current date of the user 
             var startDateString = goalElements[i].querySelector('h5[name="hidden-start-datetime"]').innerHTML.replace(" ", "T") + "Z";
             var localStartDate = UTCToLocal(startDateString);
             var localUserDate = new Date();
 
-            // Display clocks based on if the duration goal is finished for the week is finished or not and handle when timer goes off
+            // Display time left for week or time until next week using start and current date
             timeDifference = getTimeInWeek(localStartDate, localUserDate)
-            if (goalElements[i].getElementsByClassName("week-finished").length > 0)
+            if (goalElements[i].querySelector(".week-finished") !== null)
             {
                 goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
             }
@@ -100,12 +91,15 @@ function editViewGoalClock()
 {
     var fullGoalForm = document.getElementById('view-full-goal');
     var hiddenStartDatetimeElement = fullGoalForm.querySelector('h5[name="hidden-start-datetime"]');
+
     if (hiddenStartDatetimeElement)
     {
-        startDateString = hiddenStartDatetimeElement.innerHTML.replace(" ", "T") + "Z";
-        localStartDate = UTCToLocal(startDateString);
-        localUserDate = new Date();
+        // Get local start date (originally in UTC) and local current date of the user 
+        const startDateString = hiddenStartDatetimeElement.innerHTML.replace(" ", "T") + "Z";
+        const localStartDate = UTCToLocal(startDateString);
+        const localUserDate = new Date();
 
+        // Display time left for week or time until next week using start and current date
         const timeDifference = getTimeInWeek(localStartDate, localUserDate);
         const isWeekFinished = fullGoalForm.getElementsByClassName("week-finished")[0].getAttribute("data-value");
         if (isWeekFinished == "True")
@@ -142,7 +136,7 @@ function getTimeInWeek(date1, date2)
     const minutes = Math.floor((timeRemainingInMs / (1000 * 60)) % 60);
     const seconds = Math.floor((timeRemainingInMs / 1000) % 60);
 
-    // Create the result string
+    // Format string
     const result = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
 
     return result;
@@ -175,9 +169,11 @@ document.getElementById('add-goals-form').addEventListener("keypress",
 
 function addContentToViewGoal(title, type, description, rate, duration, dateStarted, endDate, isWeekFinished)
 {
+    // First, delete previous elements in container
     var elementsContainer = document.getElementById('view-full-goal-elements');
     elementsContainer.innerHTML = "";
 
+    // Create elements
     var formHeader = document.createElement('h2');
     var br = document.createElement('br');
     var titleElement = document.createElement('h5');
@@ -187,6 +183,7 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     var hiddenIsWeekFinishedElement = document.createElement('h5');
     var clockElement = document.createElement('h5');
 
+    // Set their content
     formHeader.innerHTML = "Full Goal";
     titleElement.innerHTML = title;
     if (type === 'Duration')
@@ -206,17 +203,13 @@ function addContentToViewGoal(title, type, description, rate, duration, dateStar
     hiddenIsWeekFinishedElement.setAttribute("class", "week-finished");
     hiddenIsWeekFinishedElement.setAttribute("data-value", isWeekFinished);
 
-    elementsContainer.appendChild(br.cloneNode());
-    elementsContainer.appendChild(formHeader);
-    elementsContainer.appendChild(br);
-    elementsContainer.appendChild(titleElement);
+    // Add to form in specific order
+    appendChildren(elementsContainer, [br.cloneNode(), formHeader, br.cloneNode(), titleElement]);
     if (type === "Duration")
     {
         elementsContainer.appendChild(clockElement);
     }
-    elementsContainer.appendChild(otherGoalInfoElement);
-    elementsContainer.appendChild(descriptionElement);
-    elementsContainer.appendChild(hiddenStartDatetimeElement);
+    appendChildren(elementsContainer, [otherGoalInfoElement, descriptionElement, hiddenStartDatetimeElement]);
     if (isWeekFinished)
     {
         elementsContainer.appendChild(hiddenIsWeekFinishedElement);
@@ -232,6 +225,7 @@ function editFullGoalDates(goalType)
     const timeZoneAbbreviation = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(now)
     .find(part => part.type === 'timeZoneName').value;
     
+    // Convert start datetime from HTML to local user time
     var startDateTimeString = null;
     if (goalType === "Duration")
     {
@@ -246,7 +240,7 @@ function editFullGoalDates(goalType)
     const formattedLocalStartDate = `${String(localStartDate.getMonth() + 1).padStart(2, '0')}-${String(localStartDate.getDate()).padStart(2, '0')}-${localStartDate.getFullYear()} ${timeZoneAbbreviation}`;
     goalInfo.innerHTML = goalInfo.innerHTML.replace(startDateTimeString, formattedLocalStartDate);
 
-    // Edit end date for duration goal only. 
+    // Edit end date for duration goal only.
     if (goalType === "Duration")
     {
         const endDateTimeString = goalInfoString.substring(goalInfoString.indexOf("End date:") + 10);
