@@ -1,8 +1,10 @@
 function addContentToViewAchievement(title, type, description, rate, duration, dateStarted, dateFinished)
 {
+    // Delete previous elements from container
     var elementsContainer = document.getElementById('view-full-achievement-elements');
     elementsContainer.innerHTML = "";
 
+    // Add content to elements and append them to container
     var formHeader = document.createElement('h2');
     var br = document.createElement('br');
     var titleElement = document.createElement('h5');
@@ -13,7 +15,7 @@ function addContentToViewAchievement(title, type, description, rate, duration, d
     titleElement.innerHTML = title;
     if (type === 'Duration')
     {
-        otherAchievementInfoElement.innerHTML = `Type: ${type} | Duration: ${duration} week | Rate: ${rate} days per week | Start date: ${dateStarted} | Date completed: ${dateFinished}`
+        otherAchievementInfoElement.innerHTML = `Type: ${type} | Duration: ${duration} week | Rate: ${rate} days per week | Start date: ${dateStarted} | Date completed: ${dateFinished}`;
     }
     else
     {
@@ -21,13 +23,8 @@ function addContentToViewAchievement(title, type, description, rate, duration, d
     }
     otherAchievementInfoElement.setAttribute("class", "other-achievement-info");
     descriptionElement.innerHTML = description;
-
-    elementsContainer.appendChild(br.cloneNode());
-    elementsContainer.appendChild(formHeader);
-    elementsContainer.appendChild(br);
-    elementsContainer.appendChild(titleElement);
-    elementsContainer.appendChild(otherAchievementInfoElement);
-    elementsContainer.appendChild(descriptionElement);
+    appendChildren(elementsContainer, [br.cloneNode(), formHeader, br.cloneNode(), titleElement, 
+                   otherAchievementInfoElement, descriptionElement]);
 }
 
 // For the view achievement popup when it is clicked
@@ -39,6 +36,7 @@ function editFullAchievementDates()
     const timeZoneAbbreviation = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(now)
     .find(part => part.type === 'timeZoneName').value;
     
+    // Extract inner HTML of achievement info and replace its start dates and end dates in UTC with user's local time
     var startDateTimeString = null;
     startDateTimeString = achievementInfoString.substring(achievementInfoString.indexOf("Start date:") + 12, achievementInfoString.indexOf("Date completed:") - 3);
     const startDateTimeStringUTC = startDateTimeString.replace(" ", "T") + "Z";

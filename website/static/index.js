@@ -169,3 +169,12 @@ function confirmDelete(event, name)
         event.preventDefault();
     }
 }
+
+// Append multiple children to a container in the order that they appear in the list
+function appendChildren(container, children)
+{
+    for (const child of children)
+    {
+        container.appendChild(child);
+    }
+}
