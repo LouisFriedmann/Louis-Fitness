@@ -2,6 +2,8 @@
 
 // change value of workout so when user opens popup to edit a workout, the initial values will be there
 // Then, store value of workout_id in hidden html element called workoutId
+
+
 function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, workoutExercises, formClassId, formId)
 {
     // First, delete all previous form container elements
@@ -25,10 +27,10 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     workoutDescriptionElement.value = workoutDescription;
     newTitleLabel.textContent = "Workout Title:";
     setAttributes(newTitleInput, {"type": "text", "placeholder": "Enter workout title", 
-        "data-validate": "true", "maxlength": "50", "required": "true", "name": "edit-workout-title", "value": workoutTitle});
+                 "data-validate": "true", "maxlength": "50", "required": "true", "name": "edit-workout-title", "value": workoutTitle});
     newDescriptionLabel.textContent = "Workout Description: ";
     setAttributes(newDescriptionInput, {"type": "text", "placeholder": "Enter workout description",
-                  "date-validate": "true", "maxlength": "200", "required": "true", "name": "edit-workout-description", "value": workoutDescription});
+                  "data-validate": "true", "maxlength": "200", "required": "true", "name": "edit-workout-description", "value": workoutDescription});
     setAttributes(addExerciseButton, {"type": "button", "class": "button", "name": "add-workout"});
     addExerciseButton.onclick = function()
     {
@@ -38,11 +40,13 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
                  "class": "plus-sign", "style": "display: block;"});
     setAttributes(addExerciseButtonLabel, {"style": "display: inline-flex;", "class": "add-workout"});
     addExerciseButtonLabel.textContent = "Add Exercise";
-
+    
+    // Append them to container
     addExerciseButton.appendChild(plusSign);
     appendChildren(elementsCreated, [newTitleLabel, newTitleInput, br.cloneNode(), newDescriptionLabel, newDescriptionInput, br.cloneNode(),
                    br.cloneNode(), addExerciseButton, addExerciseButtonLabel, br.cloneNode()]);
 
+    // To the same thing (create, add content, append to container) with each exercise
     const exercises = workoutExercises[workoutId];
     var exerciseNumber = 1;
     var submitButton = document.getElementById('edit-workout-submit-button');
@@ -50,49 +54,31 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
 
     for (const [title, description] of exercises)
     {
+        // create the elements
+        newHeaderTag = document.createElement("h4");
+        newTitleLabel = document.createElement("label");
+        newTitleInput = document.createElement("input");
+        newDescriptionLabel = document.createElement("label");
+        newDescriptionInput = document.createElement("input");
+        var deleteButton = document.createElement("button");
         var breakLines = [br.cloneNode(), br.cloneNode(), br.cloneNode(), br.cloneNode()];
 
-        var newHeaderTag = document.createElement("h4");
+        // Edit their contents
         newHeaderTag.innerText = "Next Exercise";
         newHeaderTag.align = "center";
-        elementsCreated.appendChild(breakLines[0]);
-        elementsCreated.appendChild(newHeaderTag);
-
-        newTitleLabel = document.createElement("label");
         newTitleLabel.textContent = "Title:";
-        newTitleInput = document.createElement("input");
-        newTitleInput.setAttribute("type", "text");
-        newTitleInput.setAttribute("placeholder", "Enter title");
-        newTitleInput.setAttribute("data-validate", "true");
-        newTitleInput.setAttribute("maxlength", "50");
-        newTitleInput.setAttribute("required", "true");
-        newTitleInput.setAttribute("name", "edit-workout-" + String(workoutId) + "-exercise-" + String(exerciseNumber) + "-title");
-
-        newTitleInput.value = title;
-
-        elementsCreated.appendChild(newTitleLabel);
-        elementsCreated.appendChild(newTitleInput);
-        elementsCreated.appendChild(breakLines[1]);
-
-        newDescriptionLabel = document.createElement("label");
+        setAttributes(newTitleInput, {"type": "text", "placeholder": "Enter title",
+                     "data-validate": "true", "maxlength": "50", "required": "true", "name": "edit-workout-" + String(workoutId) + "-exercise-" + String(exerciseNumber) + "-title", 
+                     "value": title});
         newDescriptionLabel.textContent = "Description: ";
-        newDescriptionInput = document.createElement("input");
-        newDescriptionInput.setAttribute("type", "text");
-        newDescriptionInput.setAttribute("placeholder", "Enter description");
-        newDescriptionInput.setAttribute("data-validate", "true");
-        newDescriptionInput.setAttribute("maxlength", "200");
-        newDescriptionInput.setAttribute("required", "true");
-        newDescriptionInput.setAttribute("name", "edit-workout-" + String(workoutId) + "-" + "exercise-description-" + String(exerciseNumber));
-        newDescriptionInput.value = description;
-
-        // create the delete button
-        var deleteButton = document.createElement("button");
+        setAttributes(newDescriptionInput, {"type": "text", "placeholder": "Enter description",
+                    "data-validate": "true", "maxlength": "200", "required": "true", "name": "edit-workout-" + String(workoutId) + "-" + "exercise-description-" + String(exerciseNumber), 
+                    "value": description});
         deleteButton.setAttribute("type", "button");
         deleteButton.innerHTML = "Delete";
         deleteButton.style.width = "80px";
         deleteButton.style.height = "30px";
         deleteButton.style.backgroundColor = "red";
-
         // delete the two title and description elements on top of the button when it is clicked (the corresponding elements created in this function call)
         (function (titleLabel, titleInput, descriptionLabel, descriptionInput, headerTag, breakLines, button) {
             deleteButton.onclick = function() {
@@ -115,12 +101,10 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
                 }
             };
             })(newTitleLabel, newTitleInput, newDescriptionLabel, newDescriptionInput, newHeaderTag, breakLines, deleteButton);
-
-        elementsCreated.appendChild(newDescriptionLabel);
-        elementsCreated.appendChild(newDescriptionInput);
-        elementsCreated.appendChild(breakLines[2]);
-        elementsCreated.appendChild(deleteButton);
-        elementsCreated.appendChild(breakLines[3]);
+        
+        // Append them to form
+        appendChildren(elementsCreated, [breakLines[0], newHeaderTag, newTitleLabel, newTitleInput,
+                      breakLines[1], newDescriptionLabel, newDescriptionInput, breakLines[2], deleteButton, breakLines[3]]);
 
         exerciseNumber++;
     }
@@ -132,9 +116,8 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
 }
 
 // Add html element for a new exercise
-function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId, elementsCreatedContainerId)
+function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreatedContainerId)
 {   
-    const formContainer = document.getElementById(formContainerId);
     const form = document.getElementById(formId);
     const elementsCreatedContainer = document.getElementById(elementsCreatedContainerId);
 
@@ -194,10 +177,10 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
         titleInput.remove();
         descriptionLabel.remove();
         descriptionInput.remove();
-        br1.remove();
-        br2.remove();
-        br3.remove();
-        br4.remove();
+        for (var breakLine of breakLines)
+        {
+            breakLine.remove();
+        }
         newHeaderTag.remove();
         deleteButton.remove();
 
@@ -211,23 +194,10 @@ function addExerciseElement(formContainerId, formId, nameKeyword, submitButtonId
     };
 
     var br = document.createElement("br");
-    var br1 = br.cloneNode();
-    var br2 = br.cloneNode();
-    var br3 = br.cloneNode();
-    var br4 = br.cloneNode();
+    const breakLines = [br.cloneNode(), br.cloneNode(), br.cloneNode(), br.cloneNode()];
 
-    elementsCreatedContainer.appendChild(br1);
-    elementsCreatedContainer.appendChild(newHeaderTag);
-    elementsCreatedContainer.appendChild(titleLabel);
-    elementsCreatedContainer.appendChild(titleInput);
-    elementsCreatedContainer.appendChild(br2);
-    elementsCreatedContainer.appendChild(descriptionLabel);
-    elementsCreatedContainer.appendChild(descriptionInput);
-    elementsCreatedContainer.appendChild(br3);
-    elementsCreatedContainer.appendChild(deleteButton);
-    elementsCreatedContainer.appendChild(br4);
-
-    // Insert a space between the label and the input element
+    appendChildren(elementsCreatedContainer, [breakLines[0], newHeaderTag, titleLabel, titleInput, breakLines[1],
+                  descriptionLabel, descriptionInput, breakLines[2], deleteButton, breakLines[3]]);
 
 }
 
@@ -237,10 +207,7 @@ function addScheduledWorkoutId(scheduleFormId, workoutId)
     form = document.getElementById(scheduleFormId);
 
     var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', "scheduled-workout");
-    hiddenInput.setAttribute('value', workoutId);
-
+    setAttributes(hiddenInput, {"type": "hidden", "name": "scheduled-workout", "value": workoutId});
     form.appendChild(hiddenInput);
 }
 
@@ -252,11 +219,11 @@ function checkScheduleForm()
         const form = event.target.closest("form");
         if (form)
         {
-            console.log(form.id);
             if (form.id === 'schedule-workout-form')
             {
                 const submitButton = document.getElementById("schedule-submit-button");
-                for (inputElement of form.querySelectorAll('input'))
+
+                for (var inputElement of form.querySelectorAll('input'))
                 {
                     if (inputElement.checked)
                     {
@@ -280,8 +247,12 @@ function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExerci
     const elementsContainer = document.getElementById('view-full-workout-elements');
     elementsContainer.innerHTML = "";
 
-    // Then, create and insert 'Full Workout' label, title and description
+    // Then, create, insert, and append to container the 'Full Workout' label, title and description
     const header = document.createElement('h2');
+    const workoutTitleElement = document.createElement('h3');
+    const workoutDescriptionElement = document.createElement('p');
+    const br = document.createElement('br');
+
     if (dayScheduled)
     {
         header.innerHTML = dayScheduled;
@@ -290,39 +261,29 @@ function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExerci
     {
         header.innerHTML = "Full Workout";
     }
-    const workoutTitleElement = document.createElement('h3');
     workoutTitleElement.innerHTML = workoutTitle;
-    const workoutDescriptionElement = document.createElement('p');
     workoutDescriptionElement.innerHTML = workoutDescription;
-    const br = document.createElement('br');
 
-    elementsContainer.appendChild(br.cloneNode());
-    elementsContainer.appendChild(header);
-    elementsContainer.appendChild(workoutTitleElement);
-    elementsContainer.appendChild(workoutDescriptionElement);
-    elementsContainer.appendChild(br.cloneNode());
+    appendChildren(elementsContainer, [br.cloneNode(), header, workoutTitleElement, workoutDescriptionElement,
+                  br.cloneNode()]);
 
-    // Then, create and append each exercise
+    // Then, create, add content to, and append each exercise
     const exercises = workoutExercises[workoutId];
 
     for (const [title, description] of exercises)
     {
         const exerciseDiv = document.createElement('div');
-        exerciseDiv.setAttribute("class", "current-exercise")
         const exerciseLabel = document.createElement('h5');
-        exerciseLabel.innerHTML = "Next Exercise";
         const exerciseTitle = document.createElement('h6');
-        exerciseTitle.innerHTML = title;
         const exerciseDescription = document.createElement('h7');
-        exerciseDescription.innerHTML = description;
 
-        exerciseDiv.appendChild(exerciseLabel);
-        exerciseDiv.appendChild(exerciseTitle);
-        exerciseDiv.appendChild(exerciseDescription);
-        elementsContainer.appendChild(exerciseDiv);
-        elementsContainer.appendChild(br.cloneNode());
-        elementsContainer.appendChild(br.cloneNode());
-        elementsContainer.appendChild(br.cloneNode());
+        exerciseDiv.setAttribute("class", "current-exercise")
+        exerciseLabel.innerHTML = "Next Exercise";
+        exerciseTitle.innerHTML = title;
+        exerciseDescription.innerHTML = description;
+        
+        appendChildren(exerciseDiv, [exerciseLabel, exerciseTitle, exerciseDescription]);
+        appendChildren(elementsContainer, [exerciseDiv, br.cloneNode(), br.cloneNode(), br.cloneNode()]);
     }
 }
 
