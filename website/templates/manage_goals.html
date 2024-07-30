@@ -5,37 +5,37 @@
 {% block title %}Manage Goals{% endblock %}
 
 {% block stylesheets %}
-.button {
-    width: 50px; /* Specify units */
-    height: 50px; /* Specify units */
-    background-color: lightgreen;
-    cursor: pointer; /* Change cursor to pointer */
-    position: relative; /* Enable positioning for the image */
-    display: inline-flex;
-}
-
-.button:hover {
-    background-color: #45a049;
-}
-
-.plus-sign {
-    width: 35px; /* Specify units */
-    height: auto; /* Maintain aspect ratio */
-    display: block;
-    position: absolute; /* Override the align center */
-    top: 50%; /* Position in the center vertically */
-    left: 50%; /* Position in the center horizontally */
-    transform: translate(-50%, -50%); /* Adjust the positioning */
-    vertical-align: middle;
-}
-.add-goal-span
-{
-    display: inline-flex;
-    align-items: center; /* Aligns the text vertically in the center */
-    margin-left: 8px; /* Space between button and text */
-    vertical-align: middle; /* Aligns the span with the button */
-}
-
+    .button
+    {
+        width: 50px; /* Specify units */
+        height: 50px; /* Specify units */
+        background-color: lightgreen;
+        cursor: pointer; /* Change cursor to pointer */
+        position: relative; /* Enable positioning for the image */
+        display: inline-flex;
+    }
+    .button:hover
+    {
+        background-color: #45a049;
+    }
+    .plus-sign
+    {
+        width: 35px; /* Specify units */
+        height: auto; /* Maintain aspect ratio */
+        display: block;
+        position: absolute; /* Override the align center */
+        top: 50%; /* Position in the center vertically */
+        left: 50%; /* Position in the center horizontally */
+        transform: translate(-50%, -50%); /* Adjust the positioning */
+        vertical-align: middle;
+    }
+    .add-goal-span
+    {
+        display: inline-flex;
+        align-items: center; /* Aligns the text vertically in the center */
+        margin-left: 8px; /* Space between button and text */
+        vertical-align: middle; /* Aligns the span with the button */
+    }
     .align-with-button
     {
         font-size: 40px;
@@ -48,7 +48,7 @@
         position: relative;
         top: -10px;
         left: 10px;
-        
+
     }
     .form-popup
     {
@@ -70,7 +70,6 @@
     {
         word-break: break-word;
     }
-
     .form-container
     {
         text-align: center;
@@ -207,7 +206,8 @@
         height: 30px;
         background-color: red;
     }
-    .rectangle {
+    .rectangle
+    {
         height: 100px; /* Set a fixed height */
         overflow: auto; /* Enables scrollbars if content overflows */
     }
@@ -215,7 +215,6 @@
     {
         text-align: center;
     }
-
 {% endblock %}
 
 {% block content %}
@@ -297,58 +296,57 @@
       </form>
     </div>
     <!--Display pop up of form allowing user to add a new goal-->
-        </br>
-        </br>
-        <h2 align="center">Current Goals</h2>
-        {% for goal in goals %}
-            {% if goal.user_id == user.id %}
-                <div class="current-goal">
-                    {% if goal.type == "Duration" %}
-                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '{{ goal.rate }}', '{{ goal.duration }}', '{{ goal.date_started }}', '{{ goal.end_date }}', '{{ goal.is_week_finished }}'); openPopup('view-full-goal'); editFullGoalDates('{{ goal.type }}')">
-                            <span aria-hidden="true" style="color:white">Details</span>
-                        </button>
+    </br>
+    </br>
+    <h2 align="center">Current Goals</h2>
+    {% for goal in goals %}
+        {% if goal.user_id == user.id %}
+            <div class="current-goal">
+                {% if goal.type == "Duration" %}
+                    <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '{{ goal.rate }}', '{{ goal.duration }}', '{{ goal.date_started }}', '{{ goal.end_date }}', '{{ goal.is_week_finished }}'); openPopup('view-full-goal'); editFullGoalDates('{{ goal.type }}')">
+                        <span aria-hidden="true" style="color:white">Details</span>
+                    </button>
+                {% else %}
+                    <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '', '', '{{ goal.date_started }}', '', ''); openPopup('view-full-goal'); editFullGoalDates('{{ goal.type }}')">
+                        <span aria-hidden="true" style="color:white">Details</span>
+                    </button>
+                {% endif %}
+                <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', 'edit-goal', 'goal-id', '{{ goal.id }}')">
+                    <span aria-hidden="true" style="color:white">Edit</span>
+                    </button>
+                    <h5 class="current-goal-title">{{ goal.title }}</h5>
+                {% if goal.type == "Duration" %}
+                    <!--Handle time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
+                    <h5 class="clock current-goal-other-info"></h5>
+                    {% if goal.is_week_finished %}
+                        <h5 class="week-finished" hidden></h5>
                     {% else %}
-                        <button name="view-goal-button" type="submit" class="view-goal-button" onclick="addContentToViewGoal('{{ goal.title }}', '{{ goal.type }}', '{{ goal.description }}', '', '', '{{ goal.date_started }}', '', ''); openPopup('view-full-goal'); editFullGoalDates('{{ goal.type }}')">
-                            <span aria-hidden="true" style="color:white">Details</span>
-                        </button>
-                    {% endif %}
-                    <button name="edit-goal-edit-button" type="submit" class="edit-button" onclick="changeGoalAndOpenPopup('{{ goal.title }}', '{{ goal.description }}', 'edit-goal', 'goal-id', '{{ goal.id }}')">
-                        <span aria-hidden="true" style="color:white">Edit</span>
-                        </button>
-                        <h5 class="current-goal-title">{{ goal.title }}</h5>
-                    {% if goal.type == "Duration" %}
-                        <!--Handle time and 'Finish Week' instead of 'Complete' button for the goal if the goal is of type duration-->
-                        <h5 class="clock current-goal-other-info"></h5>
-                        {% if goal.is_week_finished %}
-                            <h5 class="week-finished" hidden></h5>
-                        {% else %}
-                            <a href="{{ url_for('views.handle_finish_week', goal_id=goal.id) }}">
-                             <button name="edit-goal-finish-week-button" type="submit" class="finish-week-button">
-                                 <span aria-hidden="true" style="color:white">Finish</span>
-                             </button>
-                            </a>
-                        {% endif %}
-                        <h5 name="hidden-start-datetime" hidden>{{ goal.date_started }}</h5>
-                        <h6 class="goal-info current-goal-other-info">Type: {{ goal.type }} | Duration: {{ goal.duration }} weeks | Rate: {{ goal.rate }} days per week | Start date: {{ goal.date_started }} | End date: {{ goal.end_date }}</h6>
-                        <!--Handle time and 'End Week' instead of 'Complete' button for the goal if the goal is of type duration-->
-                    {% else %}
-                        <a href="{{ url_for('views.mark_goal_complete', goal_id=goal.id) }}">
-                            <button name="edit-goal-complete-button" type="submit" class="complete-button">
-                                <span aria-hidden="true" style="color:white">Complete</span>
+                        <a href="{{ url_for('views.handle_finish_week', goal_id=goal.id) }}">
+                            <button name="edit-goal-finish-week-button" type="submit" class="finish-week-button">
+                                <span aria-hidden="true" style="color:white">Finish</span>
                             </button>
                         </a>
-                        <h6 class="goal-info current-goal-other-info">Type: {{ goal.type }} | Start date: {{ goal.date_started }}</h6>
                     {% endif %}
-                    <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
-                        <button name="edit-goal-delete-button" type="submit" class="delete-button" onclick="confirmDelete(event, 'goal')">
-                            <span aria-hidden="true" style="color:white">Delete</span>
+                    <h5 name="hidden-start-datetime" hidden>{{ goal.date_started }}</h5>
+                    <h6 class="goal-info current-goal-other-info">Type: {{ goal.type }} | Duration: {{ goal.duration }} weeks | Rate: {{ goal.rate }} days per week | Start date: {{ goal.date_started }} | End date: {{ goal.end_date }}</h6>
+                    <!--Handle time and 'End Week' instead of 'Complete' button for the goal if the goal is of type duration-->
+                {% else %}
+                    <a href="{{ url_for('views.mark_goal_complete', goal_id=goal.id) }}">
+                        <button name="edit-goal-complete-button" type="submit" class="complete-button">
+                            <span aria-hidden="true" style="color:white">Complete</span>
                         </button>
                     </a>
-                    <p class="current-goal-description">{{ goal.description }}</p>
-                </div>
-            {% endif %}
-        {% endfor %}
-
+                    <h6 class="goal-info current-goal-other-info">Type: {{ goal.type }} | Start date: {{ goal.date_started }}</h6>
+                {% endif %}
+                <a href="{{ url_for('views.delete_goal', goal_id=goal.id) }}">
+                    <button name="edit-goal-delete-button" type="submit" class="delete-button" onclick="confirmDelete(event, 'goal')">
+                        <span aria-hidden="true" style="color:white">Delete</span>
+                    </button>
+                </a>
+                <p class="current-goal-description">{{ goal.description }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
     <!-- Edit goals popup form -->
     <div class="form-popup" id="edit-goal">
       <form action="{{ url_for('views.edit_goal') }}" method="post" id="edit-goal-form">
@@ -375,17 +373,17 @@
         </div>
       </form>
     </div>
-<!-- Edit goals popup form -->
+    <!-- Edit goals popup form -->
 
-<!-- View full goal popup form -->
-<div class="form-popup form-popup-full-goal" id="view-full-goal">
-    <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('view-full-goal')">
-        <span aria-hidden="true" style="color:white">&times;</span>
-    </button>
-    <div class="view-full-goal-elements" id="view-full-goal-elements">
-        <!-- Full goal will be displayed here -->
+    <!-- View full goal popup form -->
+    <div class="form-popup form-popup-full-goal" id="view-full-goal">
+        <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('view-full-goal')">
+            <span aria-hidden="true" style="color:white">&times;</span>
+        </button>
+        <div class="view-full-goal-elements" id="view-full-goal-elements">
+            <!-- Full goal will be displayed here -->
+        </div>
     </div>
-</div>
-<!-- View full goal popup form -->
+    <!-- View full goal popup form -->
 {% endblock %}
 
