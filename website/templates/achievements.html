@@ -4,74 +4,24 @@
 {% block title %}Achievements{% endblock %}
 
 {% block stylesheets %}
-    .goal-achieved
+    .goal-achieved-rectangle
     {
-        width: device-width - 40px;
-        height: auto;
-        border-style: solid;
         border-color: #c0c0c0; /* Silver color */
-        text-align: center;
-        position: relative;
-        margin: 5px;
         background: linear-gradient(45deg, #c0c0c0, #c0c0c0 10%, #e0e0e0 10%, #e0e0e0 20%); /* Visually appealing grey */
-        border: 2px solid #c0c0c0; /* Border color */
+        border: 2px solid #c0c0c0;
+        overflow: visible;
         border-radius: 10px;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
         min-height: 100px;
-        /* Center */
-        flex-direction: column;
-        align-items: center;
-        display: flex;
-        justify-content: center;
     }
-    /* Media width >=800px: show all content. Media width less than 800px: only show title to preserve space 
-    (there is a full details button showing all content for all widths anyway) */
-    @media (min-width: 800px)
+    .award-rectangle
     {
-        .title
-        {
-            max-width: 100%;
-            word-break: break-word; /* Break long words */
-        }
-        .other-text
-        {
-            max-width: 70%;
-            overflow: hidden;
-            word-break: break-word;
-        }
-    }
-    @media (max-width: 799px)
-    {
-        .title
-        {
-            max-width: 100%;
-            word-break: break-word;
-            margin-right: 120px;
-            vertical-align: center;
-        }
-        .other-text
-        {
-            display: none;
-        }
-    }
-    .award
-    {
-        width: device-width - 40px;
-        height: auto;
-        border-style: solid;
         border-color: gold;
-        text-align: center;
-        position: relative;
-        margin: 5px;
         background: linear-gradient(45deg, #FFD700, #FFECB3, #FFD700);
         border: 2px solid #DAA520;
         border-radius: 10px;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-        display: flex;
-        align-items: center;
-        padding: 0 10px;
     }
-    
     .image-award-title-container
     {
         display: flex;
@@ -80,7 +30,6 @@
         position: relative;
         width: 100%;
     }
-    
     .image-award-title-wrapper
     {
         display: flex;
@@ -92,7 +41,6 @@
     {
         margin-right: 10px;
     }
-    
     .text-center
     {
         text-align: center;
@@ -101,7 +49,6 @@
         left: 50%;
         transform: translateX(-50%);
     }
-    
     .award-description
     {
         text-align: center;
@@ -109,42 +56,11 @@
     }
     .view-achievement-button
     {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 110px;
-        height: 30px;
-        background-color: #4169E1;
-    }
-    .form-popup
-    {
-        display: none;
-        position: absolute;
-        left: 50%; 
-        z-index: 9;
-        transform: translate(-50%, 0%);
-        width: auto;
-        height: auto;
-        max-height: 500px;
-        border: 3px solid #f1f1f1;
-        background: white;
-        overflow-x: hidden;
-        Overflow-y: scroll;
-        padding: 10px;
+        background-color: #4169E1; /* Royal blue color */
     }
     .form-popup-full-goal
     {
         word-break: break-word;
-    }
-    .top-right-button
-    {
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
-    .view-full-achievement-elements
-    {
-        text-align: center;
     }
 {% endblock %}
 
@@ -154,7 +70,7 @@
     <!--Display the awards user earns based on the goals they've achieved-->
     <h2 align="center">Awards</h2>
     {% for award in awards %}
-        <div class="award">
+        <div class="rectangle award-rectangle">
             <div class="image-award-title-container">
                 {% if award == 'New PR' %}
                     <div class="image-award-title-wrapper">
@@ -190,14 +106,14 @@
     <h2 align="center">Goals Achieved</h2>
     {% for goal_achieved in goals_achieved %}
         {% if goal_achieved.user_id == user.id %}
-            <div class="goal-achieved">
-                <button name="view-achievement-button" type="submit" class="view-achievement-button" onclick="addContentToViewAchievement('{{ goal_achieved.title }}', '{{ goal_achieved.type }}', '{{ goal_achieved.description }}', '{{ goal_achieved.rate }}', '{{ goal_achieved.duration }}', '{{ goal_achieved.date_started }}', '{{ goal_achieved.date_finished }}'); openPopup('view-full-achievement'); editFullAchievementDates()">
+            <div class="rectangle goal-achieved-rectangle">
+                <button name="view-achievement-button" type="submit" class="view-details-button view-achievement-button" onclick="addContentToViewAchievement('{{ goal_achieved.title }}', '{{ goal_achieved.type }}', '{{ goal_achieved.description }}', '{{ goal_achieved.rate }}', '{{ goal_achieved.duration }}', '{{ goal_achieved.date_started }}', '{{ goal_achieved.date_finished }}'); openPopup('view-full-achievement'); editFullAchievementDates()">
                     <span aria-hidden="true" style="color:white">Details</span>
                 </button>
-                <div class="title">
+                <div class="rectangle-title">
                     <h5>{{ goal_achieved.title }}</h5>
                 </div>
-                <div class="other-text">
+                <div class="rectangle-other-info">
                     {% if goal_achieved.type == 'Duration' %}
                         <h6 class="achievement-info">Type: {{ goal_achieved.type }} | Duration: {{ goal_achieved.duration }} week | Rate: {{ goal_achieved.rate }} days per week | Start date: {{ goal_achieved.date_started }} | Date completed: {{ goal_achieved.date_finished }}</h6>
                     {% else %}
@@ -215,7 +131,7 @@
         <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('view-full-achievement')">
             <span aria-hidden="true" style="color:white">&times;</span>
         </button>
-        <div class="view-full-achievement-elements" id="view-full-achievement-elements">
+        <div class="view-full-details-elements" id="view-full-achievement-elements">
             <!-- Full achievement will be dynamically created here -->
         </div>
     </div>

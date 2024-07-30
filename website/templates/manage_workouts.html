@@ -5,102 +5,10 @@
 {% block title %}Manage Workouts{% endblock %}
 
 {% block stylesheets %}
-    .button
-    {
-        width: 50px;
-        height: 50px;
-        background-color: lightgreen;
-        cursor: pointer;
-        position: relative;
-        display: inline-flex;
-    }
-    .button:hover
-    {
-        background-color: #45a049;
-    }
-    .plus-sign
-    {
-        width: 35px;
-        height: auto; /* Maintain aspect ratio */
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        vertical-align: middle;
-    }
-    .align-with-button
-    {
-        font-size: 40px;
-        position: relative;
-        top: -10px;
-    }
-    .add-workout
-    {
-        font-size: 40px;
-        position: relative;
-        top: -10px;
-        left: 10px;
-    }
-    .form-popup
-    {
-        display: none;
-        position: absolute;
-        left: 50%;
-        z-index: 9;
-        transform: translate(-50%, 0%);
-        width: auto;
-        height: auto;
-        max-height: 500px;
-        border: 3px solid #f1f1f1;
-        background: white;
-        overflow-x: hidden;
-        Overflow-y: scroll;
-        padding: 10px;
-    }
     .form-popup-full-workout
     {
         word-break: break-word;
         min-width: 300px;
-    }
-    .top-right-button
-    {
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
-    .form-container
-    {
-        text-align: center;
-    }
-    .submit-button
-    {
-        background-color: lightgreen !important;
-        height: 50px;
-    }
-    .submit-color
-    {
-        color: blue;
-        text-align: center;
-    }
-    .current-workout
-    {
-        width: device-width - 40px;
-        height: auto;
-        text-align: center;
-        position: relative;
-        background: lightgreen;
-        border-style: solid;
-        border-color: black;
-        border-width: 5px;
-        margin-bottom: 5px;
-        overflow: hidden;
-        min-height: 147px;
-        /* Center */
-        flex-direction: column;
-        align-items: center;
-        display: flex;
-        justify-content: center;
     }
     .current-scheduled-workout
     {
@@ -113,65 +21,12 @@
         position: relative;
         margin: 5px;
     }
-    /* Media width >=800px: show all content. Media width less than 800px: only show title to preserve space 
-    (there is a full details button showing all content for all widths anyway) */
-    @media (min-width: 800px)
-    {
-        .current-workout-title
-        {
-            max-width: 100%;
-            word-break: break-word; /* Break long words */
-        }
-        .current-workout-other-info 
-        {
-            max-width: 70%;
-            overflow: hidden;
-            word-break: break-word;
-            align-text: center;
-        }
-    }
-    @media (max-width: 799px)
-    {
-        .current-workout-title
-        {
-            max-width: 100%;
-            word-break: break-word;
-            margin-right: 120px;
-            vertical-align: center;
-        }
-        .current-workout-other-info 
-        {
-            display: none;
-        }
-    }
-    .custom-input
-    {
-        margin-bottom: 10px;
-    }
-    .view-workout-button
-    {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 100px;
-        height: 30px;
-        background-color: purple;
-    }
-    .edit-button
-    {
-        position: absolute;
-        top: 35px;
-        right: 0px;
-        width: 100px;
-        height: 30px;
-        background-color: orange;
-    }
     .add-to-schedule-button
     {
         position: absolute;
-        top: 70px;
+        top: 67.5px;
         right: 0px;
-        width: 100px;
+        width: 110px;
         height: 30px;
         background-color: blue;
     }
@@ -184,19 +39,6 @@
         height: 30px;
         background-color: red;
     }
-    .delete-button
-    {
-        position: absolute;
-        top: 105px;
-        right: 0px;
-        width: 100px;
-        height: 30px;
-        background-color: red;
-    }
-    .view-full-workout-elements
-    {
-        text-align: center;
-    }
 {% endblock %}
 
 {% block content %}
@@ -206,10 +48,10 @@
     </br>
     </br>
     <div align="center">
-        <button type="submit" class="button" name="add-workout" onclick="openPopup('add-workouts')">
+        <button type="submit" class="add-button" name="add-workout" onclick="openPopup('add-workouts')">
             <img src="/static/images/plus_sign.png" alt="Add" width="35" class="plus-sign" style="display: block;">
         </button>
-        <span style="display: inline-flex;" class="add-workout">Add workout</span>
+        <span class="plus-sign-button-label">Add workout</span>
     </div>
     </br>
     </br>
@@ -233,10 +75,10 @@
            </br>
            </br>
            <div align="center">
-              <button type="button" class="button" name="add-workout" onclick="addExerciseElement('add-workouts-form', 'add', 'workout-submit-button', 'add-workouts-elements-created', 'add-workouts')">
+              <button type="button" class="add-button" name="add-workout" onclick="addExerciseElement('add-workouts-form', 'add', 'workout-submit-button', 'add-workouts-elements-created', 'add-workouts')">
                 <img src="/static/images/plus_sign.png" alt="Add" width="35" class="plus-sign" style="display: block;">
               </button>
-              <span style="display: inline-flex;" class="add-workout">Add Exercise</span>
+              <span class="plus-sign-button-label">Add Exercise</span>
            </div>
            </br>
            <div id="add-workouts-elements-created">
@@ -262,7 +104,7 @@
     {% for day in days_order %}
         {% for workout in days_workouts[day] %}
             <div class="current-workout current-scheduled-workout">
-                <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', '{{ day }}'); openPopup('view-full-workout')">
+                <button name="view-details-button" type="submit" class="view-details-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', '{{ day }}'); openPopup('view-full-workout')">
                     <span aria-hidden="true" style="color:white">Details</span>
                 </button>
                 <a href="{{ url_for('views.remove_from_schedule', workout_id=workout.id, day=day) }}">
@@ -270,12 +112,12 @@
                         <span aria-hidden="true" style="color:white">Remove</span>
                     </button>
                 </a>
-                <h3 class="current-workout-title">{{ day }}</h3>
+                <h3 class="rectangle-title">{{ day }}</h3>
                 </br>
-                <div class="current-workout-title">
+                <div class="rectangle-title">
                     <h4>{{ workout.title }}</h4>
                 </div>
-                <div class="current-workout-other-info">
+                <div class="rectangle-other-info">
                 <p>{{ workout.description }}</p>
                 </div>
             </div>
@@ -288,8 +130,8 @@
     <h2 align="center">Workouts</h2>
     {% for workout in workouts %}
         {% if workout.user_id == user.id %}
-            <div class="current-workout">
-                <button name="view-workout-button" type="submit" class="view-workout-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', ''); openPopup('view-full-workout')">
+            <div class="rectangle">
+                <button name="view-details-button" type="submit" class="view-details-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', ''); openPopup('view-full-workout')">
                     <span aria-hidden="true" style="color:white">Details</span>
                 </button>
                 <button name="edit-workout-edit-button" type="submit" class="edit-button" onclick="changeWorkoutAndOpenPopup('{{ workout.id }}', '{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), 'edit-workout', 'edit-workout-form')">
@@ -303,10 +145,10 @@
                         <span aria-hidden="true" style="color:white">Delete</span>
                     </button>
                 </a>
-                <div class="current-workout-title">
+                <div class="rectangle-title">
                     <h3>{{ workout.title }}</h3>
                 </div>
-                <div class="current-workout-other-info">
+                <div class="rectangle-other-info">
                     <p>{{ workout.description }}</p>
                 </div>
             </div>
@@ -382,7 +224,7 @@
         <button class="close-button top-right-button" aria-label="Close alert" type="button" data-close style="background-color:red" onclick="closePopup('view-full-workout')">
             <span aria-hidden="true" style="color:white">&times;</span>
         </button>
-        <div class="view-full-workout-elements" id="view-full-workout-elements">
+        <div class="view-full-details-elements" id="view-full-workout-elements">
             <!-- Full workout will be added here -->
         </div>
     </div>

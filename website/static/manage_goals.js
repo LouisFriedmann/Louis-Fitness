@@ -59,7 +59,7 @@ setInterval(goalTimer, 1000);
 // controls the timer for the clock for all of the duration based goals and popups
 function goalTimer()
 {
-    var goalElements = document.getElementsByClassName("current-goal");
+    let goalElements = document.querySelectorAll('.rectangle.current-goal');
     for (let i = 0; i < goalElements.length; i++)
     {
         // Edit clock for duration goal only. (clock only appears for duration goal)

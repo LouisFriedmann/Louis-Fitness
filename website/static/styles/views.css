@@ -1,2 +1,167 @@
 /* 'views.css' contains classes generalized to 'manage_goals.html' and 'manage_workouts.html' 
 and 'achievements.html' */
+
+/* Specific to only manage_goals and manage_workouts */
+.add-button
+{
+    width: 50px;
+    height: 50px;
+    background-color: lightgreen;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex;
+}
+.add-button:hover
+{
+    background-color: #45a049;
+}
+.plus-sign
+{
+    width: 35px;
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+.align-with-button
+{
+    font-size: 40px;
+    position: relative;
+    top: -10px;
+}
+.plus-sign-button-label
+{
+    font-size: 40px;
+    position: relative;
+    top: -10px;
+    left: 10px;
+    display: inline-flex;
+}
+.form-container
+{
+    text-align: center;
+}
+.submit-button
+{
+    background-color: lightgreen !important;
+    height: 50px;
+}
+.submit-color
+{
+    color: blue;
+    text-align: center;
+}
+.custom-input
+{
+    margin-bottom: 10px;
+}
+.edit-button
+{
+    position: absolute;
+    top: 33.75px;
+    right: 0;
+    width: 110px;
+    height: 30px;
+    background-color: orange;
+    margin-left: auto;
+}
+.delete-button
+{
+    position: absolute;
+    top: 101.25px;
+    right: 0px;
+    width: 110px;
+    height: 30px;
+    background-color: red;
+}
+/* Specific to only manage_goals and manage_workouts */
+
+.form-popup
+{
+    display: none;
+    position: absolute;
+    left: 50%;
+    z-index: 9;
+    transform: translate(-50%, 0%);
+    width: auto;
+    height: auto;
+    max-height: 500px;
+    border: 3px solid #f1f1f1;
+    background: white;
+    overflow-x: hidden;
+    Overflow-y: scroll;
+    padding: 10px;
+}
+.top-right-button
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+/* Content for each current goal, current workout, and current goal achieved */
+.rectangle
+{
+    width: device-width - 40px;
+    height: auto;
+    text-align: center;
+    position: relative;
+    background: lightgreen;
+    border-style: solid;
+    border-color: black;
+    border-width: 5px;
+    margin: 5px;
+    overflow: hidden;
+    min-height: 147px;
+    /* Center */
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* Media width >= 800px: show all content. Media width less than 800px: only show title to preserve space 
+    (there is a full details button showing all content for all widths anyway) */
+@media (min-width: 800px)
+{
+    .rectangle-title
+    {
+        max-width: 100%;
+        word-break: break-word; /* Break long words */
+    }
+    .rectangle-other-info
+    {
+        max-width: 70%;
+        overflow: hidden;
+        word-break: break-word;
+        text-align: center;
+    }
+}
+@media (max-width: 799px)
+{
+    .rectangle-title
+    {
+        max-width: 100%;
+        word-break: break-word;
+        margin-right: 120px;
+        vertical-align: center;
+    }
+    .rectangle-other-info
+    {
+        display: none;
+    }
+}
+.view-details-button
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 110px;
+    height: 30px;
+    background-color: purple;
+}
+.view-full-details-elements
+{
+    text-align: center;
+}

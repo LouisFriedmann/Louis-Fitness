@@ -29,14 +29,14 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     newDescriptionLabel.textContent = "Workout Description: ";
     setAttributes(newDescriptionInput, {"type": "text", "placeholder": "Enter workout description",
                   "data-validate": "true", "maxlength": "200", "required": "true", "name": "edit-workout-description", "value": workoutDescription});
-    setAttributes(addExerciseButton, {"type": "button", "class": "button", "name": "add-workout"});
+    setAttributes(addExerciseButton, {"type": "button", "class": "add-button", "name": "add-workout"});
     addExerciseButton.onclick = function()
     {
         addExerciseElement('edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created', 'edit-workout');
     };
     setAttributes(plusSign, {"src": "/static/images/plus_sign.png", "alt": "add", "width": "35",
                  "class": "plus-sign", "style": "display: block;"});
-    setAttributes(addExerciseButtonLabel, {"style": "display: inline-flex;", "class": "add-workout"});
+    setAttributes(addExerciseButtonLabel, {"style": "display: inline-flex;", "class": "plus-sign-button-label"});
     addExerciseButtonLabel.textContent = "Add Exercise";
     
     // Append them to container

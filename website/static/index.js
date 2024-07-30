@@ -101,7 +101,8 @@ document.addEventListener('DOMContentLoaded', function()
     .find(part => part.type === 'timeZoneName').value;
 
     // First in 'manage_goal.html'
-    var goalElements = document.getElementsByClassName("current-goal");
+    let goalElements = document.querySelectorAll('.rectangle.current-goal');
+    console.log(goalElements);
     for (let i = 0; i < goalElements.length; i++)
     {
         // Get goalInfo string
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function()
     }
 
     // Then in 'achievements.html'
-    var achievementElements = document.getElementsByClassName("goal-achieved");
+    let achievementElements = document.querySelectorAll('.rectangle.goal-achieved-rectangle');
     for (let i = 0; i < achievementElements.length; i++)
     {
         // Get achievement info string
