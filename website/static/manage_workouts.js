@@ -2,8 +2,6 @@
 
 // change value of workout so when user opens popup to edit a workout, the initial values will be there
 // Then, store value of workout_id in hidden html element called workoutId
-
-
 function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, workoutExercises, formClassId, formId)
 {
     // First, delete all previous form container elements
@@ -34,7 +32,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     setAttributes(addExerciseButton, {"type": "button", "class": "button", "name": "add-workout"});
     addExerciseButton.onclick = function()
     {
-        addExerciseElement('edit-workout', 'edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created');
+        addExerciseElement('edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created');
     };
     setAttributes(plusSign, {"src": "/static/images/plus_sign.png", "alt": "add", "width": "35",
                  "class": "plus-sign", "style": "display: block;"});
@@ -121,7 +119,7 @@ function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreated
     const form = document.getElementById(formId);
     const elementsCreatedContainer = document.getElementById(elementsCreatedContainerId);
 
-    // Get next exercise number
+    // Get next exercise number to add to name of titles and description inputs
     
     // Handle case where there are no exercise elements added
     if (Array.from(elementsCreatedContainer.getElementsByTagName('h4')).filter(h4 => h4.innerHTML.includes('Exercise')) == 0)
@@ -136,33 +134,26 @@ function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreated
         var newExerciseNumber = exerciseNumber + 1;
     }
 
-    // create two new label and input elements for: Title of exercise and its description and a header for next exercise
+    // create, add content, append to container: two new label and input elements for: Title of exercise and its description and a header for next exercise
+    // and a button for deleting exercises
     var titleLabel = document.createElement("label");
-    titleLabel.textContent = "Title:";
     var titleInput = document.createElement("input");
-    titleInput.setAttribute("type", "text");
-    titleInput.setAttribute("placeholder", "Enter title");
-    titleInput.setAttribute("data-validate", "true");
-    titleInput.setAttribute("maxlength", "50");
-    titleInput.setAttribute("required", "true");
-    titleInput.setAttribute("name", nameKeyword + "-exercise-title-" + String(newExerciseNumber));
     var newHeaderTag = document.createElement("h4");
+    var descriptionLabel = document.createElement("label");
+    var descriptionInput = document.createElement("input");
+    var deleteButton = document.createElement("button");
+    var br = document.createElement("br");
+    const breakLines = [br.cloneNode(), br.cloneNode(), br.cloneNode(), br.cloneNode()];
+
+    titleLabel.textContent = "Title:";
+    setAttributes(titleInput, {"type": "text", "placeholder": "Enter title",
+                "data-validate": "true", "maxlength": "50", "required": "true", "name": nameKeyword + "-exercise-title-" + String(newExerciseNumber)});
+    titleInput.setAttribute("name", nameKeyword + "-exercise-title-" + String(newExerciseNumber));
     newHeaderTag.innerText = "Next Exercise"
     newHeaderTag.align = "center";
-
-    var descriptionLabel = document.createElement("label");
     descriptionLabel.textContent = "Description:";
-    var descriptionInput = document.createElement("input");
-    descriptionInput.setAttribute("type", "text");
-    descriptionInput.setAttribute("placeholder", "Enter description");
-    descriptionInput.setAttribute("data-validate", "true");
-    descriptionInput.setAttribute("maxlength", "200");
-    descriptionInput.setAttribute("required", "true");
-
-    descriptionInput.setAttribute("name", "exercise-description-" + String(newExerciseNumber));
-
-    // create the delete button
-    var deleteButton = document.createElement("button");
+    setAttributes(descriptionInput, {"type": "text", "placeholder": "Enter description",
+        "data-validate": "true", "maxlength": "200", "required": "true", "name": "exercise-description-" + String(newExerciseNumber)});
     deleteButton.setAttribute("type", "button");
     deleteButton.innerHTML = "Delete";
     deleteButton.style.width = "80px";
@@ -192,9 +183,6 @@ function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreated
             submitButton.disabled = false;
         }
     };
-
-    var br = document.createElement("br");
-    const breakLines = [br.cloneNode(), br.cloneNode(), br.cloneNode(), br.cloneNode()];
 
     appendChildren(elementsCreatedContainer, [breakLines[0], newHeaderTag, titleLabel, titleInput, breakLines[1],
                   descriptionLabel, descriptionInput, breakLines[2], deleteButton, breakLines[3]]);
