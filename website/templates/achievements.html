@@ -13,16 +13,19 @@
         text-align: center;
         position: relative;
         margin: 5px;
-        background: linear-gradient(45deg, #c0c0c0, #c0c0c0 10%, #e0e0e0 10%, #e0e0e0 20%);
+        background: linear-gradient(45deg, #c0c0c0, #c0c0c0 10%, #e0e0e0 10%, #e0e0e0 20%); /* Visually appealing grey */
         border: 2px solid #c0c0c0; /* Border color */
         border-radius: 10px;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+        min-height: 100px;
+        /* Center */
         flex-direction: column;
         align-items: center;
-        min-height: 100px;
         display: flex;
         justify-content: center;
     }
+    /* Media width >=800px: show all content. Media width < 800px: only show title to preserve space 
+    (there is a full details button showing all content for all widths anyway) */
     @media (min-width: 800px)
     {
         .title
@@ -223,7 +226,7 @@
             <span aria-hidden="true" style="color:white">&times;</span>
         </button>
         <div class="view-full-achievement-elements" id="view-full-achievement-elements">
-            <!-- Full achievement will be displayed here -->
+            <!-- Full achievement will be dynamically created here -->
         </div>
     </div>
     <!-- View full achievement popup form -->

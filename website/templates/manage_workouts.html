@@ -1,4 +1,4 @@
-<!--'manage_goals.html' allows users to add, edit, complete, and delete different types of workouts-->
+<!--'manage_workouts.html' allows users to add, edit, complete, and delete different types of workouts-->
 
 {% extends 'base.html' %}
 
@@ -95,9 +95,10 @@
         border-width: 5px;
         margin-bottom: 5px;
         overflow: hidden;
+        min-height: 147px;
+        /* Center */
         flex-direction: column;
         align-items: center;
-        min-height: 147px;
         display: flex;
         justify-content: center;
     }
@@ -112,6 +113,8 @@
         position: relative;
         margin: 5px;
     }
+    /* Media width >=800px: show all content. Media width < 800px: only show title to preserve space 
+    (there is a full details button showing all content for all widths anyway) */
     @media (min-width: 800px)
     {
         .current-workout-title
@@ -244,7 +247,7 @@
                 <label>Description:</label>
                 <input type="text" placeholder="Enter description" data-validate="true" maxlength="200" name="add-workout-exercise-description-1" required>
                 </br>
-                <!--New exercises will be created here-->
+                <!--New exercises will be dynamically created here-->
            </div>
            </br>
            <button type="submit" class="submit-button btn btn-primary btn-lg" name="workout-submit-button" id="workout-submit-button" disabled>
@@ -322,10 +325,11 @@
             <h2>Edit</h2>
             </br>
              <div id="edit-workout-elements-created">
-                <!-- Edit workout elements will be added here from the javascript -->
-                <!-- Edit workout elements will be added here from the javascript -->
+                <!-- Edit workout dynamically created here -->
              </div>
+            <!-- Use to identify workout in server -->
             <input id="workout-id" name="workout-id" value="" hidden>
+            <!-- Use to identify workout in server -->
             </br>
             <button type="submit" class="submit-button btn btn-primary btn-lg" name="edit-workout-submit-button" id="edit-workout-submit-button" disabled>
                 <p class="submit-color">Submit</p>

@@ -115,12 +115,15 @@
         margin: 5px;
         background: lightgreen;
         overflow: hidden;
+        min-height: 147px;
+        /* Center */
         flex-direction: column;
         align-items: center;
-        min-height: 147px;
         display: flex;
         justify-content: center;
     }
+    /* Media width >=800px: show all content. Media width < 800px: only show title to preserve space 
+    (there is a full details button showing all content for all widths anyway) */
     @media (min-width: 800px)
     {
         .current-goal-title
@@ -298,6 +301,7 @@
     </br>
     </br>
     <h2 align="center">Current Goals</h2>
+    <!--Display user's goals-->
     {% for goal in goals %}
         {% if goal.user_id == user.id %}
             <div class="current-goal">
@@ -346,6 +350,7 @@
             </div>
         {% endif %}
     {% endfor %}
+    <!--Display user's goals-->
     <!-- Edit goals popup form -->
     <div class="form-popup" id="edit-goal">
       <form action="{{ url_for('views.edit_goal') }}" method="post" id="edit-goal-form">
