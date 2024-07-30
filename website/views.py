@@ -17,6 +17,8 @@ from django.utils.html import escapejs
 
 views = Blueprint('views', __name__)
 
+GOALS_ACHIEVED_UNTIL_AWARD = 3
+
 @views.route("/")
 @login_required
 def home():
@@ -146,6 +148,7 @@ def mark_goal_complete(goal_id):
     # Add the achievement
     goal = Goal.query.get_or_404(goal_id)
     goal_title = goal.title
+    goal_type = goal.type
     new_goal_achieved = GoalAchieved(title=goal.title,
                             type=goal.type,
                             description=goal.description,
@@ -161,7 +164,17 @@ def mark_goal_complete(goal_id):
     db.session.delete(goal)
     db.session.commit()
 
-    flash(f"Completed \"{goal_title}\"! You can view this now in \"Achievements\"", category="success")
+    # Tell the user if they just achieved a built in award or how far they are from one
+    goal_type_achievements_num = len(list(GoalAchieved.query.filter_by(user=current_user, type=goal_type)))
+    award_message = ""
+
+    if goal_type_achievements_num == GOALS_ACHIEVED_UNTIL_AWARD:
+        flash(f"Congratulations, you have achieved a \"{goal_type}\" award! You can now view this in \"Achievements\"!", category="award")
+    
+    elif goal_type_achievements_num < GOALS_ACHIEVED_UNTIL_AWARD:
+        award_message = f" You are {GOALS_ACHIEVED_UNTIL_AWARD - goal_type_achievements_num} goal(s) achieved of type \"{goal_type}\" away from a built in award for \"{goal_type}\"!"
+
+    flash(f"Completed \"{goal_title}\"!{award_message} You can view this goal achieved now in \"Achievements\".", category="success")
     return redirect(url_for('views.manage_goals'))
 
 # Delete a goal from the database
@@ -337,13 +350,13 @@ def achievements():
     duration_goals_achieved = list(GoalAchieved.query.filter_by(user=current_user, type="Duration"))
     weight_goals_achieved = list(GoalAchieved.query.filter_by(user=current_user, type="Lose/Gain Weight"))
 
-    if len(new_PR_goals_achieved) >= 3:
+    if len(new_PR_goals_achieved) >= GOALS_ACHIEVED_UNTIL_AWARD:
         awards.append("New PR")
     
-    if len(duration_goals_achieved) >= 3:
+    if len(duration_goals_achieved) >= GOALS_ACHIEVED_UNTIL_AWARD:
         awards.append("Duration")
     
-    if len(weight_goals_achieved) >= 3:
+    if len(weight_goals_achieved) >= GOALS_ACHIEVED_UNTIL_AWARD:
         awards.append("Lose/Gain Weight")
 
     return render_template('achievements.html', user=current_user, goals_achieved=GoalAchieved.query.all(), awards=awards)
