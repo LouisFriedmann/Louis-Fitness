@@ -1,0 +1,25 @@
+/* 'auth.css' contains classes generalized to 'login.html' and 'sign_up.html' */
+
+.auth-form
+{
+    text-align: center;
+    display: grid;
+    place-items: center;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.auth-form form
+{
+    width: 100%;
+}
+.input-group
+{
+    width: 100%;
+}
+.form-group
+{
+    width: 100%;
+}

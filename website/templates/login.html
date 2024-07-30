@@ -4,58 +4,33 @@
 
 {% block title %}Login{% endblock %}
 
-{% block stylesheets %}
-    .login-form
-    {
-        text-align: center;
-        display: grid;
-        place-items: center;
-        max-width: 800px;
-        width: 100%;
-        margin: 0 auto;
-        padding: 20px; /* Optional: to give some padding inside the form */
-        box-sizing: border-box; /* Ensures padding is included in the width */
-    }
-    .login-form form {
-        width: 100%;
-    }
-    .input-group {
-        width: 100%;
-    }
-    .form-group {
-        width: 100%;
-    }
-{% endblock %}
-
 {% block content %}
     <h3 align="center">Login</h3>
-
     </br>
     </br>
     </br>
-
-    <div class="login-form">
-    <form oninput="saveLoginData()" method="post" id="login-form" novalidate>
-		<p>Login Here!</p>
-		<hr>
-        <div class="form-group">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-user"></i></span>
-				<input type="text" class="form-control" name="login-username" id="login-username" placeholder="Username" required="required" value="{{ username }}">
-			</div>
-        </div>
-        </br>
-		<div class="form-group">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-				<input type="password" class="form-control" name="login-password" id="login-password" placeholder="Password" required="required">
-			</div>
-        </div>
-        </br>
-		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg">Login</button>
-        </div>
-    </form>
-</div>
+    <div class="auth-form">
+        <form oninput="saveLoginData()" method="post" id="login-form" novalidate>
+            <p>Login Here!</p>
+            <hr>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input type="text" class="form-control" name="login-username" id="login-username" placeholder="Username" required="required" value="{{ username }}">
+                </div>
+            </div>
+            </br>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input type="password" class="form-control" name="login-password" id="login-password" placeholder="Password" required="required">
+                </div>
+            </div>
+            </br>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
