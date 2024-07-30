@@ -94,7 +94,7 @@ function setSignUpSubmissionType(type)
 var signUpForm = document.getElementById("sign-up-form");
 if (signUpForm)
 {
-    document.getElementById('sign-up-form').addEventListener('keypress', function(event)
+    signUpForm.addEventListener('keypress', function(event)
     {
         if (event.key === 'Enter')
         {
@@ -102,4 +102,15 @@ if (signUpForm)
             removeSignUpData();
         }
     });
+}
+
+// Remove sign up data upon submitting login form
+var loginForm = document.getElementById("login-form");
+if (loginForm)
+{
+    loginForm.addEventListener('submit', function(event)
+    {
+        removeSignUpData();
+    });
+    
 }
