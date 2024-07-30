@@ -119,7 +119,7 @@ function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreated
     const form = document.getElementById(formId);
     const elementsCreatedContainer = document.getElementById(elementsCreatedContainerId);
 
-    // Get next exercise number to add to name of titles and description inputs
+    // Get next exercise number to add to name of title and description inputs
     
     // Handle case where there are no exercise elements added
     if (Array.from(elementsCreatedContainer.getElementsByTagName('h4')).filter(h4 => h4.innerHTML.includes('Exercise')) == 0)
@@ -286,7 +286,7 @@ function addContentToViewWorkout(workoutTitle, workoutDescription, workoutExerci
     }
 }
 
-// Set multiple attributes on an element
+// Set multiple attributes on an element at once
 function setAttributes(element, attributesValues)
 {
     for (const [attribute, value] of Object.entries(attributesValues))
