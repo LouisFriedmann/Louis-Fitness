@@ -154,9 +154,9 @@
     <!--Display the awards user earns based on the goals they've achieved-->
     <h2 align="center">Awards</h2>
     {% for award in awards %}
-        {% if award == 'New PR' %}
-            <div class="award">
-                <div class="image-award-title-container">
+        <div class="award">
+            <div class="image-award-title-container">
+                {% if award == 'New PR' %}
                     <div class="image-award-title-wrapper">
                         <img class="award-image" src="/static/images/weight.png" width="50" alt="Weight">
                         <div class="text-center">
@@ -164,12 +164,7 @@
                         </div>
                     </div>
                     <p class="award-description">Congratulations, you have completed 3 or more "New PR" goals!</p>
-                </div>
-            </div>
-        {% endif %}
-        {% if award == 'Duration' %}
-            <div class="award">
-                <div class="image-award-title-container">
+                {% elif award == 'Duration' %}
                     <div class="image-award-title-wrapper">
                         <img class="award-image" src="/static/images/clock.png" width="50" alt="Duration">
                         <div class="text-center">
@@ -177,12 +172,7 @@
                         </div>
                     </div>
                     <p class="award-description">Congratulations, you have completed 3 or more "Duration" goals!</p>
-                </div>
-            </div>
-        {% endif %}
-        {% if award == 'Lose/Gain Weight' %}
-            <div class="award">
-                <div class="image-award-title-container">
+                {% else %}
                     <div class="image-award-title-wrapper">
                         <img class="award-image" src="/static/images/scale.png" width="50" alt="Lose/Gain Weight">
                         <div class="text-center">
@@ -190,9 +180,9 @@
                         </div>
                     </div>
                     <p class="award-description">Congratulations, you have completed 3 or more "Lose/Gain Weight" goals!</p>
-                </div>
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
     {% endfor %}
     <!--Display the awards user earns based on the goals they've achieved-->
     </br>
