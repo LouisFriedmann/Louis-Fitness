@@ -32,7 +32,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
     setAttributes(addExerciseButton, {"type": "button", "class": "button", "name": "add-workout"});
     addExerciseButton.onclick = function()
     {
-        addExerciseElement('edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created');
+        addExerciseElement('edit-workout-form', 'edit', 'edit-workout-submit-button', 'edit-workout-elements-created', 'edit-workout');
     };
     setAttributes(plusSign, {"src": "/static/images/plus_sign.png", "alt": "add", "width": "35",
                  "class": "plus-sign", "style": "display: block;"});
@@ -114,7 +114,7 @@ function changeWorkoutAndOpenPopup(workoutId, workoutTitle, workoutDescription, 
 }
 
 // Add html element for a new exercise
-function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreatedContainerId)
+function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreatedContainerId, popupContainerId)
 {   
     const form = document.getElementById(formId);
     const elementsCreatedContainer = document.getElementById(elementsCreatedContainerId);
@@ -186,6 +186,17 @@ function addExerciseElement(formId, nameKeyword, submitButtonId, elementsCreated
 
     appendChildren(elementsCreatedContainer, [breakLines[0], newHeaderTag, titleLabel, titleInput, breakLines[1],
                   descriptionLabel, descriptionInput, breakLines[2], deleteButton, breakLines[3]]);
+    
+    // Move popup back into border if its going off bottom border
+    const margin = 10;
+    const viewportHeight = window.innerHeight;
+    const popupContainer = document.getElementById(popupContainerId);
+    const popupRect = popupContainer.getBoundingClientRect();
+
+    if (popupRect.bottom > viewportHeight)
+    {
+        popupContainer.style.top = `${window.scrollY + viewportHeight - popupContainer.offsetHeight - margin}px`;
+    }
 
 }
 
