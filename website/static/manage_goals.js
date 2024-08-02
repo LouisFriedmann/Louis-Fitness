@@ -71,8 +71,9 @@ function goalTimer()
             var localUserDate = new Date();
 
             // Display time left for week or time until next week using start and current date
-            timeDifference = getTimeInWeek(localStartDate, localUserDate)
-            if (goalElements[i].querySelector(".week-finished") !== null)
+            const timeDifference = getTimeInWeek(localStartDate, localUserDate);
+            const isWeekFinished = goalElements[i].querySelector(".week-finished") !== null;
+            if (isWeekFinished)
             {
                 goalElements[i].getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
             }
@@ -123,18 +124,18 @@ function getTimeInWeek(date1, date2)
 
     // Calculate the time remaining until the next occurrence of the same time of the week
     let timeRemainingInMs = MS_PER_WEEK - (diffInMs % MS_PER_WEEK);
-    
-    // Handle negative time remaining (if date2 is before date1 in the same week)
-    if (timeRemainingInMs < 0)
-    {
-        timeRemainingInMs += MS_PER_WEEK;
-    }
 
     // Calculate the time components
     const days = Math.floor(timeRemainingInMs / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeRemainingInMs / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((timeRemainingInMs / (1000 * 60)) % 60);
     const seconds = Math.floor((timeRemainingInMs / 1000) % 60);
+
+    // Reload page when clock hits zero so server can tell the user they failed their goal or they can move onto the next one
+    if ((days == 0 && hours == 0 && minutes == 0 && seconds == 0) || (days == 6 && hours == 23 && minutes == 59 && seconds == 59))
+    {
+        setTimeout(() => location.reload(), 1000);
+    }
 
     // Format string
     const result = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;

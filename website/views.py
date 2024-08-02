@@ -135,7 +135,8 @@ def handle_finish_week(goal_id):
     # Otherwise, this means they've checked off another week (they haven't finished the goal yet)
     else:
         goal.weeks_completed = weeks_completed
-        goal.is_week_finished = True
+        if goal.weeks_completed == current_week:
+            goal.is_week_finished = True
         db.session.add(goal)
         db.session.commit()
         flash("Week completed successfully!", category="success")
