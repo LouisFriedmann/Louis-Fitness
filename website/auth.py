@@ -25,7 +25,7 @@ def sign_up():
 
     if request.method == 'POST':
         # Check if the user wants their password to be generated randomly, save user info except password
-        username = request.form.get('sign-up-username')
+        username = request.form.get('sign-up-username').lower()
         password = request.form.get('sign-up-password')
         confirmed_password = request.form.get('sign-up-confirm-password')
 
@@ -53,7 +53,7 @@ def sign_up():
             flash("Password must have at least one lowercase letter in it", category="error")
 
         elif password.lower() == password:
-            flash("Password must have at least one uppercase letters in it", category="error")
+            flash("Password must have at least one uppercase letter in it", category="error")
 
         else:
             password_has_number = False
@@ -103,7 +103,7 @@ def login():
     username = ""
 
     if request.method == 'POST':
-        username = request.form.get('login-username')
+        username = request.form.get('login-username').lower()
         password = request.form.get('login-password')
         user_account = User.query.filter_by(username=username).first()
 
@@ -114,6 +114,13 @@ def login():
         elif user_account:
             if check_password_hash(pwhash=user_account.password, password=password):
                 login_user(user_account, remember=True)
+
+                # Ensure info from sign up form is deleted
+                session.pop('generated_password', None)
+                session.pop('username', None)
+                session.pop('password', None)
+                session.pop('confirmed_password', None)
+
                 flash(f"Hello {username}!", category="success")
                 return redirect(url_for('views.home'))
             

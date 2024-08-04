@@ -91,25 +91,28 @@ function goalTimer()
 function editViewGoalClock()
 {
     var fullGoalForm = document.getElementById('view-full-goal');
-    var hiddenStartDatetimeElement = fullGoalForm.querySelector('h5[name="hidden-start-datetime"]');
-
-    if (hiddenStartDatetimeElement)
+    if (fullGoalForm)
     {
-        // Get local start date (originally in UTC) and local current date of the user 
-        const startDateString = hiddenStartDatetimeElement.innerHTML.replace(" ", "T") + "Z";
-        const localStartDate = UTCToLocal(startDateString);
-        const localUserDate = new Date();
+        var hiddenStartDatetimeElement = fullGoalForm.querySelector('h5[name="hidden-start-datetime"]');
 
-        // Display time left for week or time until next week using start and current date
-        const timeDifference = getTimeInWeek(localStartDate, localUserDate);
-        const isWeekFinished = fullGoalForm.getElementsByClassName("week-finished")[0].getAttribute("data-value");
-        if (isWeekFinished == "True")
+        if (hiddenStartDatetimeElement)
         {
-            fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
-        }
-        else
-        {
-            fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + timeDifference;
+            // Get local start date (originally in UTC) and local current date of the user 
+            const startDateString = hiddenStartDatetimeElement.innerHTML.replace(" ", "T") + "Z";
+            const localStartDate = UTCToLocal(startDateString);
+            const localUserDate = new Date();
+
+            // Display time left for week or time until next week using start and current date
+            const timeDifference = getTimeInWeek(localStartDate, localUserDate);
+            const isWeekFinished = fullGoalForm.getElementsByClassName("week-finished")[0].getAttribute("data-value");
+            if (isWeekFinished == "True")
+            {
+                fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Week is finished! Time until next week: " + timeDifference;
+            }
+            else
+            {
+                fullGoalForm.getElementsByClassName("clock")[0].innerHTML = "Time left to finish week: " + timeDifference;
+            }
         }
     }
 }
@@ -146,27 +149,31 @@ function getTimeInWeek(date1, date2)
 // Handle enter key press for submitting manage goals form
 
 // Add event listener for keydown event on the form
-document.getElementById('add-goals-form').addEventListener("keypress",
-    function(event)
-    {
-        if (event.key == "Enter")
+const addGoalsForm = document.getElementById('add-goals-form')
+if (addGoalsForm)
+{
+    document.getElementById('add-goals-form').addEventListener("keypress",
+        function(event)
         {
-            event.preventDefault();
-
-            // check if all input elements are filled in before clicking submit button
-            var addGoalsFormInputs = document.getElementById('add-goals-form').querySelectorAll("input");
-            for (let i = 0; i < addGoalsFormInputs.length; i++)
+            if (event.key == "Enter")
             {
-                if (!addGoalsFormInputs[i].value && addGoalsFormInputs[i].required)
+                event.preventDefault();
+
+                // check if all input elements are filled in before clicking submit button
+                var addGoalsFormInputs = document.getElementById('add-goals-form').querySelectorAll("input");
+                for (let i = 0; i < addGoalsFormInputs.length; i++)
                 {
-                    return;
+                    if (!addGoalsFormInputs[i].value && addGoalsFormInputs[i].required)
+                    {
+                        return;
+                    }
                 }
+                var submitButton = document.getElementById("goal-submit-button");
+                submitButton.click();
             }
-            var submitButton = document.getElementById("goal-submit-button");
-            submitButton.click();
         }
-    }
-);
+    );
+}
 
 function addContentToViewGoal(title, type, description, rate, duration, dateStarted, endDate, isWeekFinished)
 {

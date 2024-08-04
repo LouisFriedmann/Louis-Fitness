@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function()
 
     // First in 'manage_goal.html'
     let goalElements = document.querySelectorAll('.rectangle.current-goal');
-    console.log(goalElements);
     for (let i = 0; i < goalElements.length; i++)
     {
         // Get goalInfo string

@@ -35,7 +35,7 @@
         position: absolute;
         top: 35px;
         right: 0px;
-        width: 100px;
+        width: 110px;
         height: 30px;
         background-color: red;
     }
@@ -103,7 +103,7 @@
     <!--schedule content-->
     {% for day in days_order %}
         {% for workout in days_workouts[day] %}
-            <div class="current-workout current-scheduled-workout">
+            <div class="rectangle current-scheduled-workout">
                 <button name="view-details-button" type="submit" class="view-details-button" onclick="addContentToViewWorkout('{{ workout.title }}', '{{ workout.description }}', JSON.parse('{{ workout_exercises }}'), '{{ workout.id }}', '{{ day }}'); openPopup('view-full-workout')">
                     <span aria-hidden="true" style="color:white">Details</span>
                 </button>
