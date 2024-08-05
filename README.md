@@ -1,7 +1,7 @@
 # Louis Fitness
 Welcome to Louis Fitness, the website that allows you to set new goals for yourself, create new workouts, and keep track of your progress! 
 
-View the official website here: [https://louisfit.pythonanywhere.com](https://louisfit.pythonanywhere.com)
+View the official website here: <a href="https://louisfit.pythonanywhere.com" target="_blank">https://louisfit.pythonanywhere.com</a>
 
 ## __Overview__
 "Louis Fitness" is a free-to-use website, allowing its users to set fitness goals for themselves, make their own workouts, and view their achievements in a simple and organized way. 
