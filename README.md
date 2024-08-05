@@ -9,6 +9,9 @@ View the official website here: [https://louisfit.pythonanywhere.com](https://lo
 ## __Technologies/libraries__
 Flask, django, flask-sqlalchemy.
 
+## __Deployment Information__
+This website is deployed on the amazing platform: PythonAnywhere. We'd like to thank PythonAnywhere for hosting this website.
+
 ## __After creating an account__
 Once a user has signed up for an account (don't forget to try out our password generator) and agreed to our very important and __totally serious__ terms of use and privacy policy pages, they will be redirected to our fabulous homepage and there, greeted by the man, the myth, the legend: David Goggins, in order to inspire and motivate them.
 
