@@ -20,3 +20,6 @@ __Manage goals__: In "manage goals," users can choose to click one of our built-
 __Manage workouts__: In "manage workouts," users can create workouts and add exercises to them. Each time a request is sent to this route (ex: reload, submitting a form), a random motivational quote is displayed. They can also edit their workouts, schedule them for some amount of days of the week in order to stay organized, view details (just like manage goals, except the user can't see all the exercises on devices of bigger widths so they will need to push details button to see full workouts. Just workout titles are displayed on devices of smaller widths and details button allows user to view their full workout). And of course, users can delete their workouts.
 
 __Achievements__: In "achievements," users can view the goals they have accomplished (same idea with the details button as __manage goals__) and if they have accomplished 3 or more goals of the same type, a built-in award will be displayed to showcase their accomplishment!
+
+## __Final words__
+Thank you for taking a look at our website. We hope you have found it useful. Have a nice day!
